@@ -2,7 +2,7 @@
 
 This project implements a Retrieval-Augmented Generation (RAG) system using FastAPI for the backend, Streamlit for the frontend, and LangChain with ChromaDB for the RAG functionality.
 
-This is a demo based on the [PDF file](https://web.stanford.edu/~jurafsky/slpdraft/10.pdf) from the book "Speech and Language Processing" by Jurafsky and Martin, 
+This is a demo based as a source for RAG on the [PDF file](https://web.stanford.edu/~jurafsky/slpdraft/10.pdf) from the book "Speech and Language Processing" by Jurafsky and Martin, 
 specifically Chapter 10, Transformers and Large Language Models. 
 The link on pdf-source is from Stanford's Spring 2024 CS224N "Natural Language Processing with Deep Learning course". 
 
