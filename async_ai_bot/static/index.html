@@ -1,0 +1,121 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ChatBot UI</title>
+    <style>
+        /* General styling for the body element */
+        body { 
+            font-family: Arial, sans-serif;
+            background-color: #2c2c2c; /* Dark background */
+            color: #ffffff; /* White text color */
+        }
+        /* Styling for the main heading */
+        h1 {
+            color: #a3a3ff; /* Light purple color for the heading */
+        }
+        /* Styling for the chat box */
+        #chat-box { 
+            width: 100%; 
+            height: 400px; 
+            border: 1px solid #3a3a3a; /* Dark gray border */
+            background-color:  #e0f4dc; /* Light green background for chat box */
+            overflow-y: scroll; /* Enable vertical scrolling */
+            padding: 10px;
+            color: #000000; /* Black text color in the chat */
+            font-family: Arial, sans-serif; /* Use Arial font */
+            font-size: 16px; /* Set font size to 16px */
+        }
+        /* Styling for the user input field */
+        #user-input { 
+            width: 80%; 
+            padding: 10px; 
+            background-color: #3a3a3a; /* Dark gray background for input field */
+            color: #ffffff; /* White text color in the input field */
+            border: 1px solid #5a5a5a; /* Border around the input field */
+            font-size: 16px; /* Set font size to 16px */
+        }
+        /* Styling for the send button */
+        #send-button { 
+            padding: 10px 20px; 
+            background-color: #a3a3ff; /* Light purple background for the button */
+            color: #000000; /* Black text color on the button */
+            border: none; /* Remove border */
+            font-family: 'Comic Sans MS', 'Cursive', sans-serif; /* Handwritten style font */
+            font-size: 16px; /* Set font size to 16px */
+        }        
+    </style>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
+</head>
+<body>
+    <!-- Main heading of the page -->
+    <h1>Async AI ChatBot with memory</h1>
+
+    <!-- Container for displaying chat messages -->
+    <div id="chat-box"></div>
+
+    <!-- Input field for user to type messages -->
+    <input type="text" id="user-input" placeholder="Type your message here..." />
+
+    <!-- Button to send the user's message -->
+    <button id="send-button">Send</button>
+
+    <script>
+        // Get references to the chat box, user input field, and send button
+        const chatBox = document.getElementById('chat-box');
+        const userInput = document.getElementById('user-input');
+        const sendButton = document.getElementById('send-button');
+
+        // Variable to store session ID
+        let sessionId = '';
+
+        // Function to create a new session by making a POST request to the server
+        async function createSession() {
+            const response = await fetch('/create_session', { method: 'POST' });
+            const data = await response.json();
+            sessionId = data.session_id; // Store the session ID
+            connectWebSocket(); // Establish WebSocket connection
+        }
+
+        // Function to establish WebSocket connection
+        function connectWebSocket() {
+            const socket = new WebSocket(`ws://${window.location.host}/ws/${sessionId}`);
+
+            // Event handler for receiving messages from the server
+            socket.onmessage = function(event) {
+                const message = document.createElement('div');
+                // Display the bot's message in green bold text
+                message.innerHTML = `<strong style="color: green;">AI Bot:</strong> ${event.data}`;
+                chatBox.appendChild(message); // Add the message to the chat box
+                chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+            };
+
+            // Event handler for sending user messages
+            sendButton.addEventListener('click', () => {
+                const message = userInput.value;
+                if (message.trim() !== '') { // Check if the message is not empty
+                    socket.send(message); // Send the message to the server
+                    const userMessage = document.createElement('div');
+                    // Display the user's message in dark blue bold text
+                    userMessage.innerHTML = `<strong style="color: darkblue;">You:</strong> ${message}`;
+                    chatBox.appendChild(userMessage); // Add the user's message to the chat box
+                    chatBox.scrollTop = chatBox.scrollHeight; // Auto-scroll to the bottom
+                    userInput.value = ''; // Clear the input field
+                }
+            });
+
+            // Allow sending message by pressing the Enter key
+            userInput.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter') {
+                    sendButton.click(); // Trigger the send button click event
+                }
+            });
+        }
+
+        // Call the function to create a session when the page loads
+        createSession();
+    </script>
+</body>
+</html>
