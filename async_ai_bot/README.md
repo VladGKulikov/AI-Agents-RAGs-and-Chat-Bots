@@ -1,4 +1,4 @@
-# Async AI bot with memory without AI(LangChain etc.) and UI frameworks.
+# Async AI bot with memory without any UI and AI frameworks.
 
 For start:
 python main.py
