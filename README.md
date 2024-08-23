@@ -1,2 +1,2 @@
 # AI-RAGs-and-chat-bots
-All about RAG(Retrieval-augmented generation) and AI Chat-Bots
+My project on AI Agents, RAG (Retrieval-Augmented Generation), and AI Chatbots
