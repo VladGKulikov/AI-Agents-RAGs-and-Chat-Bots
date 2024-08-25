@@ -1,0 +1,1755 @@
+today I'm delighted to introduce us our
+final guest speaker
+um Bean Kim
+um being Kim is a staff research
+scientist at Google brain if you're
+really into googleology you know those
+funny words the beginning like staff
+sort of says how senior you are
+um and that means that being's a good
+research scientist
+um
+um so uh I I discovered at lunch today
+that bean started out
+um studying mechanical engineering at
+Seoul national university but she moved
+on to uh I don't know if it's better
+things or not but she moved on to
+computer science and did a PhD
+um at MIT and there she started working
+on the interpretability and
+explainability of machine learning
+models
+um I think she'll be talking about some
+different parts of her work but a theme
+that she's had in some of her recent
+work that I find especially appealing as
+an NLP person is the idea that we should
+be using higher level human
+interpretable languages for
+communication between people and
+machines and so welcome Bean looking
+forward to your talk
+um and go for it thank you thank you
+thanks for having me it's honored to be
+here it's the rainiest Stanford I've
+ever seen last night I got here last
+night but then I'm I live in Seattle so
+this is pretty common so I still was
+able to see the blue sky today I was
+like this works I really like it here so
+today I'm going to share some of my
+dreams chasing my dreams to communicate
+with machines
+so if you're in this class you probably
+agree you don't have to that large
+language models and generated models are
+pretty cool they're impressive but you
+may also agree that they're a little bit
+frightening
+not just because they're impressive
+they're doing really good job but also
+we're not quite sure where we're going
+with this technology in 10 years out
+will we look back and say that
+technology was net positive or we will
+say ah that was catastrophic we didn't
+know that that would happen
+and ultimately what I would like to do
+or maybe hopefully what we all want to
+do is to have this technology benefit us
+humans I know in 10 years time or maybe
+well 20 years or earlier he's gonna ask
+me he's gonna be like Mom did you work
+on this AI stuff I watched some of your
+talks
+and did you know that how this will
+profoundly change our lives
+and what did you do about that
+and I have to answer that question and I
+really hope that I have some good things
+to say to him
+so my initial thought or an instill so
+or current thought is that if we want
+our ultimate goal to be benefit Humanity
+why not directly optimize for it why
+wait
+so how can we benefit there's lots of
+different ways we can benefit but one
+way we can benefit is to treat this like
+a colleague you know a colleague who are
+really good at something
+it's called it's not perfect but it's
+good at something enough that you want
+to learn something from them
+one difference is though in this case is
+that this colleague is kind of weird
+this colleague might have very different
+values it might has very different
+experiences in the world it may not care
+about surviving as much as we do maybe
+mortality isn't really a thing for this
+colleague
+so you have to navigate that in our
+conversation
+so what do you do when you first meet
+somebody there's someone so different
+what do you do
+you try to have a conversation
+to figure out what how do you do what
+you do how are you solving decades-old
+protein folding problem
+how are you so how are you beating the
+world gold champion
+so easily What It Seems
+are you using the same language the
+science knowledge the language that we
+use atoms molecules or do you think
+about the world in a very different way
+and more importantly how can we work
+together
+I have a one area that I really want to
+talk to and it's alphago
+so alphago beat world of gold Champion
+Isador in 2016. Isidore is from South
+Korea I'm from South Korea I watched
+every single batch it was such a big
+deal in South Korea and worldwide I hope
+and in one of the matches alphago played
+this move called move 37. how many
+people watched alphago match matches
+and how many people remember move 37.
+yeah a few people right and I remember
+the nine Don commentator who's been like
+talking a lot throughout the matches
+suddenly got really quiet
+and he said hmm that's a very strange
+move
+and I knew then that something really
+interesting has just happened in from my
+eyes
+that this is gonna change something the
+South Fargo has made something that
+we're gonna remember forever and sure
+enough this move turned around the game
+for alphago and leading Alpha go to win
+one of the matches
+so go players today continue to analyze
+this move and still discuss people talk
+about this is not the move a human would
+Phantom
+so the question is how did alphago know
+this is a good move
+my dream is to learn something new by
+communicating the machine with machines
+and having a conversation
+and such that Humanity will gain some
+new angle to our important problems like
+medicine and Science and many others
+and this is not just about discovering
+new things if you think about reward
+hacking
+you have to have a meaningful
+conversation with somebody to truly
+figure out what their true goal is
+so in a way solving this problem is a
+superset of solving AI safety too
+so how do we have this conversation
+conversation assumes that we share some
+common vocabulary between uh that that
+exchange to exchange meaning and
+ultimately the knowledge and naturally a
+representation plays a key role in this
+conversation on the left and we can
+visualize this on the left we say what
+this is a representational space of what
+humans know on the right what machines
+know
+here in left Circle there will be
+something like this dog is Fluffy and
+you know what that means because we all
+share somewhat similar recovery
+but on the right we have something like
+move 37 where we humans yet to have a
+representation for
+so how do we have this conversation our
+representation space needs overlap and
+the more overlap we have the better
+conversation we're going to have humans
+are all good at learning new things like
+here everyone is learning something new
+so we can expand what we know by
+learning new Concepts and vocabularies
+and doing so I believe will help us to
+build machines that can better align
+with our values and our goals
+so this is the talk that I gave if
+you're curious about some of the work
+we're doing towards this direction I
+highly recommend it's a YouTube video I
+clear keen on half an hour you can fast
+uh do a best feed
+but today I'm going to talk more about
+my hopes and dreams
+and hopefully at the end of the day your
+hopes and dream is there
+so first of all
+I'm just gonna set the expectation so at
+the end of this talk we still don't know
+how the move 37 is made okay sorry
+that's going to take a while
+in fact the first part of this talk is
+going to be about how we move backwards
+in this progress
+in in terms of making this progress in
+our journey and still very very small
+portion of our entire Journey towards
+understanding move 37
+and of course this journey wouldn't be
+like a singular path there will be lots
+of different branches coming in core
+ideas like Transformer helped many
+domains across they will be similar here
+so I'm going to talk in the part two
+some of our work on understanding
+emerging behaviors in reinforcement
+learning
+and all the techniques that I'm going to
+talk about is going to be in principle
+applicable to NLP
+so coming back to our move our dreams
+and hopes and dreams 37.
+so let's first think about how we might
+realize this dream
+and taking a step back we have to ask do
+we have tools to First estimate what
+even machines know
+there has been many development in
+machine learning last decade now to
+develop tools to understand and estimate
+this purple circle
+so is that accurate
+unfortunately many Recent research
+showed that there's a huge gap between
+What machines actually know and what we
+think the machines know
+and identifying and bridging this Gap is
+important because these tools will form
+basis for understanding that move 37.
+so what are these tools how many people
+familiar with sale in cmaps
+a lot but you don't have to explain what
+it is so saliency map is one of the
+popular interpretability methods for
+Simplicity let's say an imagenet you
+have an image like this you have a bird
+the explanation is going to take a form
+of the same image but where each pixel
+is numb with associated with a number
+that is supposed to
+imply some importance of that pixel for
+prediction of this image
+and one definition of that importance is
+that that number indicates how the
+function looked like around this pixel
+so for example if I have a pixel I XJ
+maybe around XJ the function moves up
+like the yellow curve or function is
+flat or a function is going down like
+the green curve
+and so if it's flat like a like a blue
+curve or red curve maybe that feature is
+irrelevant to predicting bird maybe it's
+going up then it's maybe more important
+because the value of X increases and the
+function value goes up function value
+here like a prediction value
+so let's think about what are the few
+ways why this Gap might exist there are
+fewer is not exhaustive they're overlap
+a little bit but helpful for us to think
+about maybe assumptions are wrong so
+this alien again these machines that we
+train Works in a completely different
+perhaps completely different
+representational space very different
+experiences about the world so assuming
+that it sees the world that we do just
+like we do like having the gesture
+phenomenon there's few dots humans are
+have tendency to connect them maybe
+machines have the two maybe not so maybe
+our assumptions about these machines
+were wrong
+maybe our expectations are mismatched we
+thought it was doing X but it was
+actually doing y
+or
+maybe it's beyond us maybe it's showing
+something superhuman that humans just
+can't understand
+I'm going to take a deeper into one of
+uh some of these our work this is more
+recent work
+so again coming back to the earlier
+story about Salient cement we're going
+to play with some of these methods
+now uh in 2018
+we
+stumbled upon this phenomenon that was
+quite shocking which was that we were
+actually trying to write some different
+people again people of Christians here
+but we were testing something and we
+realized that train Network and
+untrained network has the same very
+similar as alien cmap in other words
+random prediction and meaningful
+prediction were giving me the same
+explanation
+so that was puzzling we thought we had a
+bug but it turned out we didn't it
+actually is in this thing
+indistinguishable qualitatively and
+quantitatively
+so that was shocking
+but then we wondered maybe this one-off
+case maybe it still works somehow in
+practice
+so we tested that in a follow-up paper
+okay what if the model had an error one
+of these errors maybe it has a labeling
+error maybe it has a spheres correlation
+maybe that had Auto distribution at test
+time if we intentionally insert these
+bugs can explanation tell us that
+there's something wrong with the model
+it turns out that that's also not quite
+true
+you might think that oh maybe superior's
+correlation another follow-up work also
+showed that this is also not the case
+so we were disappointed
+but then still we say you know maybe
+there is a there's no theoretical proof
+of this maybe this is again a lab
+setting test we had grad students to
+test this system maybe there's still
+some hope
+so this is more recent work where we
+theoretically prove that some of these
+methods very popular methods cannot do
+better than random so I'm going to talk
+a little a little bit about that
+I'm missing one person oh I'm missing
+Tang way in the author list I just
+realized this is also work with pangwei
+so let's first talk about our
+expectation what is our expectation
+about this tool now the original paper
+that developed this method IG and Shop
+talks about how IG can be used for
+accounting the contributions of each
+feature
+so what that means is that when the Tool
+assigns zero attribution to a pixel
+we're gonna say okay well pixel is on
+used by the function
+and that means that F will be
+insensitive if I perturb this X
+and in fact this is how it's been used
+it in practice this is a paper published
+in nature they use the shop to figure
+out the eligibility criteria in a
+medical trial
+what we show in this work is that none
+of these inferences that seemed pretty
+natural were true
+and in fact just because popular
+attribution methods tell you anything
+about it attribution is X you cannot
+conclude anything about the actual Model
+Behavior
+so how does that work
+how many people here do Theory proof
+or few great I'll tell you I I learned
+about Theory proving from this project
+as well so I'll tell you like the way
+that that we pursued this particular
+work is that first think about this
+problem and we're going to formulate
+into some other problem that we know how
+to solve so in this case we formulate
+this as hypothesis testing because once
+you formulate in the hypothesis testing
+yes or no there are lots of tools in
+statistics you can use to prove this
+so what is hypothesis the hypothesis is
+that I'm a user I got an attribution
+value from one of these tools and I have
+a mental model of ah this feature is
+important or maybe not important
+then the hypothesis is that whether
+that's true or not
+and what we showed is that given
+whatever hypothesis you may have we can
+you cannot do better than random
+guessing invalidating or invalidating
+this hypothesis testing
+and that means yes it's sometimes it's
+right but you don't do hypothesis
+testing if you cannot validate yes or no
+you just don't because like what's the
+point of doing it if you just don't know
+if it's as good as random guessing right
+and the result is that yes for for this
+for this graph it's just a visualization
+of our results if you plot true negative
+and true positive and line is random
+guessing because this is the worst
+method that's the best method all the
+equal distance is this line methods that
+we know shop in IG all all falls under
+this line of random guessing
+that's bad news
+but maybe
+maybe this still works in practice for
+some reason maybe there were some
+assumptions that we had that didn't
+quite meet in the practice
+so does this phenomenal hold in practice
+the answer is yes we did we now have
+more image graphs and more bigger models
+but here we test two concrete and tasks
+that people care about in
+interpretability or use these methods to
+do recourse or spiritual correlation so
+recourse for those are not familiaries
+you're getting a loan and you wonder
+whether if I'm older I would have a high
+chance of getting a loan so I tweak this
+one feature and see if my value goes up
+or down very reasonable task have people
+do all the time pretty significant
+implications socially
+so for two of these concrete and tasks
+both of them boil down to this
+hypothesis testing framework that I
+talked about
+they're all around the random guessing
+line over worse than random guessing
+so you might say oh no this is not good
+A lot of people are using these tools
+what do we do
+we have very simple idea about this
+so
+people like
+developing complex tools and I really
+hope you're not one of those people
+because a lot of times simple methods
+work who comes Razer but also simple
+methods are elegant there's a reason
+perhaps a lot of times why they work
+they're simple that you can understand
+them they make sense so let's try that
+idea here so again your goal is to
+estimate a function shape what do you do
+well the simplest thing you do is you
+have a point of interest you sample
+around that point and evaluate the
+function around that point if it goes up
+maybe functions going up if it goes down
+maybe functions coming down right so
+that's the simplest way you can kind of
+brute force it
+but then the question is how many
+samples do we need so here this is the
+equation that you're boosting you're
+lifting this line upwards that way by
+adding that additional term
+uh it's proportional to number of
+samples the more samples you have the
+better estimation you have makes sense
+and differences in output how much
+resolution do you care do you care point
+zero point one to point point one to
+point two or do you only care zero slope
+to like slope one that's resolution that
+you care about and number of features of
+course so if you worry about making some
+conclusion based on function shape
+sample
+easy
+so
+can we infer the Model Behavior using
+this popular methods the answer is no
+and this holds both theory and practice
+we're currently working on even bigger
+models to to show just like again you
+know again empirical evidence that yes
+it just really doesn't work please you
+know think of think twice and three
+times before using these methods
+and also a model dependent sample
+complexity if your function is kind of
+crazy of course you're going to need
+more samples so what is the definition
+of how do we characterize these
+functions
+and finally we haven't quite given up
+yet because these methods have a pretty
+good root in economics and and sharply
+values and all that so maybe they're a
+lot narrower condition where these
+methods work and we believe such such
+condition does exist we just have to
+figure out when
+once we figure out what that condition
+is then in given function I can test it
+and say yes I can use shop here yes I
+can use IG here or no I can't
+that would be still very useful so
+ongoing work
+before I go to the next one any
+questions
+yes do the findings you have about the
+these models like does it only applied
+in computer-bit models or does it
+applies any model and that has a
+function
+yeah very simple simple actually
+simplest proof that can show simply any
+function this holds
+any other questions
+it's wonderful yeah this relate to you a
+lot but like it's almost seems like for
+the last couple of years they're being
+at least dozens maybe hundreds of people
+writing to people through the Shipley
+values I mean it
+if you're guessed that most of that work
+that's invalid or that a lot of it might
+be okay because the the point of a
+condition where it's all right right off
+of you being there
+so two answers to that question my
+hypothesis testing results shows that
+it's random right so maybe in the
+optimistic case optimistic case 50 of
+those papers
+you hit it
+and on the other side on the second note
+even if maybe shop wasn't perfect maybe
+it was kind of wrong but even if if it
+helped human at the end task whatever
+that might be Health doctors to be more
+efficient identifying bugs and whatnot
+and if they did the validation correctly
+with the right control testing setup
+then I think it's good you know you
+figure it out somehow how to make this
+noisy tools together work with human
+interlude maybe and that's also good and
+I personally really like shop uh paper
+and I'm a I'm a good friend with Scott
+and I love all his work it's just that I
+think we need to narrow down our
+expectations so that our expectations
+are better aligned
+all right I'm going to talk about
+another word that's a kind of similar
+flavor
+now it's an NLP
+so this is one of those papers just like
+the many other papers that that we we
+ended up writing one of those
+Serendipity paper so initially Peter
+came up as an intern and we thought
+we're gonna locate ethical knowledge in
+this large language models and then
+maybe we're gonna edit them to make them
+a little more ethical so that was a goal
+and then we thought oh the wrong paper
+from David Bowie and I also love David's
+work and let's use that so that's the
+start of this work
+but then we start digging into and
+implementing the realm and like things
+didn't quite line up so we do like
+sanity check experiment after sanity
+check and we ended up writing completely
+different paper which I'm going to about
+to talk to you about
+so
+the this paper the Rome for those who
+are not familiar which I'm going into
+detail a little more detail in a bit is
+about editing a model so you first
+locate a knowledge in a in a model like
+the Space Needle is in Seattle that's a
+factor knowledge you locate them you
+edit them because you can locate them
+you can mess with it to edit that fact
+that's like the whole promise of it in
+fact that's a lot of times how
+localization or editing methods were
+motivated in their literature
+but what we show is that this assumption
+is actually not true
+and to be quite honest with you like I
+still don't quite get why this is not
+related and I'll talk more about this
+because this is like a big question uh
+to us this is a pretty pretty um active
+work
+so substantial fraction of factual
+knowledge is stored outside of layers
+that are identified as having no
+knowledge
+and you can you can you can see you can
+you will see this a little more detail
+in a bit
+in fact the correlation between where
+the location where where the facts are
+located and how well you will edit if we
+edit that location is completely
+correlated uncorrelated so they have
+nothing to do with each other
+so we thought well maybe it's the
+problem with the definition of editing
+what we mean by editing can mean a lot
+of different things so let's think about
+different ways to edit a thing so we try
+a bunch of things with a little success
+we couldn't find an editing definition
+that actually relates really well with
+localization methods like in particular
+with ROM
+so let's talk a little bit about Rome
+how Rome Works super briefly there's a
+lot of details missed out on this side
+but roughly you will get the idea so
+Rome is Magneto 2022 uh they have what's
+called causal tracing algorithm and the
+way it works is that you're going to run
+a model on this particular data set now
+counter effect data set that has this
+Tuple subject relation and object the
+space needle look is located in Seattle
+and so you're going to have a clean run
+of the Space Needle is in Seattle one
+time you stole every single module every
+single value activations
+and then in the second run which they
+call corrupted run you're going to add
+noise in those Space Needle is or or the
+space
+then then you're going to intervene at
+every single one of those modules
+as if from by copying this module to the
+corrupted run so as if that particular
+model was never
+interrupted never a noise was never
+added to that module
+so it's a typical like intervention case
+where you pretend everything else being
+equal if I change just this one module
+what is the probability of having the
+right answer so in this case probability
+of the right answer Seattle given that I
+know it's the model and I intervened on
+it
+so at the end of the day you'll find
+graph like that where each layer and
+each token has a score How likely it is
+if I intervene on that token in that
+layer how How likely is it that I will
+recover the right answer because if I
+recover right answer that's the model
+that's the module that's stored on
+knowledge
+really reasonable algorithm I couldn't
+find technical flow in this algorithm I
+quite like it actually
+so but but when we start looking at this
+using the same model that they use GPT
+gptj we realized that a lot of these
+facts so so Rome uses just layer 6 to
+edit because that was the supposedly the
+best layer across this data set to add
+in most of the factual knowledge is
+stored in layer 6 and they showed uh
+editing success and whatnot
+but we realized the truth looks like the
+graph on the right so the red line is
+the layer 6 their extension paper called
+memet and it's multiple layers that's
+the Blue Line blue region
+the black bars are histogram of where
+the knowledge was actually peaked if you
+test every single layer and as you can
+see not a lot of facts fall into that
+region so in fact every single fact has
+like different regions that where it
+peaked so layer six for a lot of facts
+weren't the best layer
+what the editing really worked it really
+works and we did we were able to
+duplicate that results so we thought
+what do we do to find this ethics
+ethical knowledge how do we find the
+best layer to edit so that's where we
+started but then we thought you know
+what take a step back we're going to
+actually do alternative check first to
+make sure that tracing effect the the
+tracing effect is the localization
+rip implies better editing results and
+that's when everything started to
+falling apart
+so let's define some metrics first the
+edit success this is the rewrite score
+same score as roam paper used that's
+what we use and the tracing effect this
+is localization
+is probably you can beat the due to the
+slide
+so when we plotted the relation between
+tracing effect and rewrite score the
+local uh the the editing method Redline
+applies the perfect correlation
+and that was our assumption that there
+will be perfectly correlated and which
+is why we do localization to begin with
+the actual line was yellow
+it's close to zero it's actually
+negative in this particular data set
+that is not even on correlated it's like
+anti-correlated
+and we didn't stop there we were like we
+were so puzzled we're gonna do this for
+every single layer and we're gonna find
+R square value so how much of the choice
+of layer
+versus the localization the tracing
+effect explains the variance of
+successful edit
+if you're not familiar with r squared r
+squares like a think about it as an
+importance of a factor
+and it turns out that layer takes 94
+dressing effect is zero zero one six
+and so we were really opposed that we
+were like scratching our head why is
+this true
+but it was true across layer we tried
+all sorts of different things we we
+tried different model we tried different
+data set it was all like roughly the
+case so we were at this point we
+contacted David and we start talking
+about and and we resolve them they
+acknowledge that this is a phenomenon
+that that exists you know
+so apart from the layer the other way in
+which localization can happen is are you
+looking at the correct token is that the
+other like corresponding yeah yeah in
+this graph the token
+so the added benefit of the rest of the
+localization could only help you look at
+which is the correct subgroup token is
+that it yeah yeah and so looking at any
+of the software tokens it sort of finds
+what I should think of yeah yeah just
+layer layer is the most biggest thing
+that's the only thing you should care if
+you care about editing layers
+in fact don't worry about localization
+at all it's extra wasted carbon uh
+climate effect yeah so that was that was
+our conclusion
+but then we thought you know maybe the
+particular definition of edit that they
+used in the room was was maybe different
+maybe maybe there's exists a definition
+of editing that correlates a lot better
+with localization because there must be
+I'm still puzzled why is this not
+correlated so we tried a bunch of
+different definitions of edits you might
+inject an error you might uh you might
+invert reverse the tracing you might
+want to erase effect you might we might
+want to amplify the fact all these
+things like maybe one of these will work
+you did it
+so the craft that you're seeing down
+here is R square value for four
+different methods and this wasn't just
+the case for Roman memory it was also
+the case for fine tuning methods
+that you want to look at the difference
+between blue and orange bar represents
+how much the tracing effect influenced
+our Square value of the tracing effect
+as you can see it's ignorable they're
+all the same
+you might feel the effect forcing the
+last one has a little bit of Hope but
+still
+compared to the impact of layer choice
+of layer it's ignorable
+so at this point we said okay well we
+can't locate the ethics no ethical
+knowledge at this project we're going to
+have to switch the direction and we end
+up doing a lot more in-depth analysis on
+on this
+so in summary does localization help
+editing no
+the relationship is actually zero for
+this particular editing method that from
+what I know is pretty state-of-the-art
+and the counter of counter effect data
+it's not true
+are there any other editing methods that
+correlate better no but if somebody can
+answer this question for me that will be
+very satisfying like I feel like there
+should start something still be
+something there that we're missing
+but causal tracing I think what it does
+is it reveals the factual information
+when the Transformer is passing forward
+I think it represents where's the fact
+when you're doing that
+but what we found here is that it has
+nothing to do with editing success those
+two things are different and we have to
+resolve that somehow
+but a lot of insights that they found in
+their paper is still useful like the
+early to mid-range NLP representation
+last token there they represent the
+factual something we didn't know before
+but it is important not to validate
+localization methods using the editing
+method now we know and maybe not to
+motivate editing methods using via
+localization those are the two things
+now we know that we shouldn't do because
+we couldn't find a relationship
+any questions on this one before I move
+on to the next one
+you're not shocked by this
+I am shocked by this I'm still so
+puzzled like it should be there should
+be something I don't know
+all right
+so in summary of this first part we
+talked about why there the Gap might
+exist and what she what machines know
+versus what we think machines now there
+are three hypothesis there are three
+ideas assumptions are wrong maybe our
+expectations are wrong maybe it's beyond
+us there's a good quote that says good
+at good artist still I think good
+researchers doubt we have to be really
+suspicious of everything that we do and
+that's maybe the biggest lesson that
+I've learned over many years that once
+you like your results so much that's a
+bad sign
+like come back like go home have a beer
+go to sleep and next day you come back
+and like put your paper in on your desk
+and think okay now I'm gonna review this
+paper
+how do I criticize this one what do I
+not like about this paper right that's
+the one way to look at criticize your
+own research and and that will improve
+your thinking a lot
+so let's bring our attention back to our
+hopes and dreams it keeps coming back
+so here
+I came to realize maybe instead of just
+building tools to understand perhaps we
+need to do some groundwork what do I
+mean well this alien that we've been
+dealing with trying to generate
+explanations seems to be a different
+kind so maybe we should study them as if
+they're like new species in the wild
+so what do you do when you observe a new
+species in the wild you have a couple
+ways but one of the ways is to
+observational study so you saw some
+species in the wild far away first you
+just kind of watch them you watch them
+and see what are they like what are
+their habitat how they what what do they
+what are their values and whatnot
+and second way you can actually
+intervene and do a control study so we
+did something like this with
+reinforcement learning setup
+I'm going to talk about these two papers
+first paper
+emergent behaviors in multi-agent
+systems has been so cool who who saw
+this hide and seek video by open AI
+yeah it's so cool if you haven't seen it
+just Google it and watch it it's so
+fascinating I'm only covering the tip of
+an iceberg in this but at the end of
+this hide and seek episode at some point
+the agents reveal a discover a bug in
+this physical system and start like
+anti-gravity flying in the air and like
+shooting hiders everywhere a super
+interesting video you must watch
+so lots of that and also humanoid
+football and capture the flag from
+deepmind lots of interesting behaviors
+emerging that we observed
+here's the my favorite one but but these
+labels so here these are labels that are
+provided by open AI running and chasing
+for building and ramp use but and these
+ones were that oh human or humans when
+painstakingly one by one watch all these
+videos and label them manually
+so our question is can we is there
+better way to discover this emergent
+behaviors perhaps some nice
+visualization can help us explore this
+complex uh complex domain a little
+better so that's our goal
+so in this work we're going to again
+treat the agents like an observational
+study like us new species then we're
+going to do observational study and what
+that means is that we only get to
+observe State and action pair so where
+they are what are they doing or uh yeah
+what are they doing
+and we're going to discover agent
+Behavior by basically kind of like a
+clustering the data that's all we're
+gonna do
+and how do we do it pretty simple a
+generative model have you have covered
+the Bayesian generator graphical no
+gotcha okay so think about
+hi then also what you teach yeah so this
+is a graphical model
+um think about this as a fake or
+hypothetical data generation process so
+how does this work like I'm generating
+the data I created this system I'm going
+to first generate a joint latent
+embedding space for that represents all
+numbers that represents all the
+behaviors in the system
+and then I'm gonna for each agent I'm
+going to generate another embedding
+and each embedding when it's conditioned
+with State it's going to generate policy
+it's going to decide what it's going to
+do what action is given the state and
+the embedding pair
+and then what that whole thing generates
+is what you see the state and action
+pair so how does this work well and then
+given this you build a model and you do
+inference to learn all these parameters
+kind of same business as neural network
+but it's just have a little more
+structure
+so this is completely made up right this
+is like my idea of how these new species
+might work and our goal is to we're
+going to try this and see if anything
+useful comes up and the way you do this
+is one of the ways you do this is you
+optimize for a variation lower bound you
+don't need to know that it's very cool
+actually if if one gets into this
+exponential family business uh it's very
+cool
+CS 228 okay so here's one of the results
+that we had it's a domain called mujoko
+here we're going to pretend that we have
+two agents one controlling back leg and
+one controlling the front leg and on the
+right we're showing that joint embedding
+space Z Omega and z alpha while video is
+running
+I'm going to try to
+put the video back
+okay so now I'm going to select this is
+a visualization that we built or online
+you can you can go check it out you can
+select a little space in agent one space
+and you see it maps to pretty tight
+space and Agent Zero and it shows pretty
+decent running ability so that's cool
+and now I'm going to select somewhere
+else in agent one that maps to kind of
+disperse area in Agent Zero it looks
+like it's not not doing as well
+and this is just an Insight that we gain
+for this data only but like I was
+quickly able to identify ah this type
+mapping business kind of represents the
+good running behavior and bad running
+behaviors that's something that you can
+do pretty efficiently
+and now I'm going to show you something
+more interesting so of course we have to
+do this because we have the data it's
+it's here it's so cool so we apply this
+framework in the when ai's hide and seek
+this has four agent it looks like a
+simple game but it has pretty complex
+structure 100 dimensional observations
+uh five-dimensional action space
+so in this work remember that we pretend
+that we don't know the labels given by
+open AI we just shuffle them in the mix
+but we can color them our results with
+respect to their labels so again this is
+the result of Z Omega and z alpha the
+individual agents but the coloring is
+something that we didn't know before we
+just did it after the fact
+you can see in the Z Omega there's nice
+kind of
+pattern that we can roughly separate
+what human what makes sense to humans
+and what makes sense to us but remember
+the the green and gray kind of
+everywhere they're mixed so in this
+particular run of open AIS hide and seek
+it seemed that those two representations
+were kind of entangled
+the running and chasing the blue dots it
+seems to be pretty separate and
+distinguishable from all the other
+colors and that kind of makes sense
+because that's basis of playing this
+game so if you don't have that
+representation you have a you have a big
+trouble
+but in case of like orange which is fort
+building
+it's a lot more distinguishable in
+hiders and that makes sense because
+hiders are the ones building the fort
+then Seekers don't build the fort so
+we're in just a little more entangled in
+Seekers perhaps if Seekers had built
+more separate for building uh
+representation maybe they would have win
+this game
+so this work can we learn something
+interesting emerging behaviors by just
+simply observing the system the answer
+seems to be yes at least for the domains
+that we tested a lot more more complex
+domains should be tested but these are
+the ones we had
+but remember that these methods don't
+give you names of these clusters so you
+would have to go and investigate and
+click through and explore
+and if the cluster represents super
+superhuman concept this is not going to
+help you and I'll talk a little more
+about the work that that we do try to
+help them but this is not for you this
+is not going to help you there
+and also if you have access to the model
+and the reward signal you should use it
+why why dump it
+so next part we do use it I'm going to
+talk about let's work with Nico and
+Natasha and Shay again
+so here this time we're going to
+intervene we're going to be a little
+intrusive but hopefully we'll learn a
+little more
+so problem is that we're going to build
+a new multi-agent system we're going to
+build it from scratch such that we can
+do control testing but at the same time
+we shouldn't sacrifice the performance
+so we're going to try to match the the
+performance of the overall system and we
+do succeed
+I had this paper collaboration with
+Folks at Sanford actually here in 2020
+where we propose this pretty simple idea
+which is you have on your own network
+why don't we embed Concepts in the
+middle of the bottleneck where one
+neuron represents three the other
+represents stripes and just train the
+model end to end
+and why are we doing this well because
+then at inference time you can actually
+intervene you can pretend you know
+predicting zebra I don't think three
+should matter so I'm gonna zero out this
+neuron and feed forward and see what
+happens so it's particularly useful in
+the medical setting where there are some
+features that doctors don't want we can
+cancel on and test
+so this is the work to extend this to RL
+setting it's actually not as simple
+extension then as we thought it came out
+to be pretty complex but essentially
+we're doing that and we're building each
+of the concept bottleneck for each agent
+and at the end of the day what you
+optimize is what you usually do typical
+PPO just think about this as make the
+make daughter system work plus
+minimizing the difference between the
+true concept and estimated concept
+that's all you do
+why are we doing this you can intervene
+you can pretend now agent 2 pretend that
+you can't see agent 1. what happens now
+that's what we're doing here
+we're going to do this in two domains
+first domain how many people looked at
+the uh saw this cooking game before
+yeah it's a it's a pretty commonly used
+cooking uh domain in reinforcement
+learning very simple
+we have two agents yellow and blue and
+they're going to make soup
+they can bring Three Tomatoes they get a
+war they wait for the tomato and bring
+the dishes a dish to the cooking pot
+they get a reward finally their goal is
+to deliver as many soups as possible
+given given some time
+and here Concepts that we use are agent
+position orientation agent has tomato it
+has Dish etc etc something that's
+immediately available to you already
+and you can of course tweak the
+environment to make it more fun so you
+can make it that they have to
+collaborate like you can build a wall
+between them so that they have to work
+together in order to serve any tomato
+soup or you can make them freely
+available you can work independently or
+together
+whatever your choice
+first uh just kind of send you the check
+was that you can you can detect the
+emerging behavior of coordination versus
+non-coordination so when the impassable
+environment when we made up that
+environment and suppose that RL system
+that we trained worked they were able to
+deliver some soups then you see that
+when we intervene uh this graph let me
+explain this is a reward of an agent one
+when we when there's no intervention so
+this is perfectly good world and when
+there was an intervention this is the
+average value of intervening on all
+Concepts but I'm also going to show you
+each concept soon
+if you compare left and right you can
+tell that in the right when we intervene
+reward deteriorated quite a lot for both
+of them and that's one way to see yeah
+they are coordinating because somehow
+intervening and at this concept impacted
+a lot of their performance
+but this is what what uh what was really
+interesting to me and I'm curious anyone
+can guess so this is the same graph as
+the one you saw before
+but except I'm plotting for intervention
+for each concept so I'm intervening team
+position team orientation team has
+tomato etc etc
+it turns out that they are using or
+rather when we intervene on team
+orientation the degradation of
+performance was the biggest to the
+extent that we believe that orientation
+had to do with subcoordination
+does anyone can guess why this might be
+the position
+there's orientation
+yes just a clarification question on the
+orientation is that like the direction
+that the teammate is producing yes so it
+seems like orientation would let you
+yes yes that's right yes where were you
+when I was when I was pulling my hair
+hair over this question yes that's
+exactly right and initially I was really
+puzzled like why not position because I
+expect it to be positioned but exactly
+that's exactly right so the orientation
+is the first signal that an agent can
+get about the next move over the other
+Asian because they're facing the pot
+they're going to the pot they're facing
+the Tomato they're going to get the
+tomato
+really interesting intuition but some
+too obvious to some but I needed this
+graph to work that out
+and of course you can use this to
+identify lazy agents if you look at the
+rightmost uh yellow agent our friend
+just chilling in the in the background
+and he's lazy and if you train our
+religion there's always some agents just
+hanging out they just not do anything
+and you can you can easily identify this
+by using this graph if I intervene it it
+just doesn't impact any any of their
+Rewards
+so the second domain we're going to look
+at a little more complex domain so this
+is uh it's studying inter-agent social
+dynamics so in this domain there is a
+little bit of tension this is called a
+cleanup we have four agents they only
+get rewards if they eat apples just
+yellow things or green things or apples
+uh but if you don't clean the river then
+Apple stops through all so somebody has
+to clean the river and you can see if
+there are four people trying to collect
+apples you can just stay someone else's
+to wait until someone else to to clean
+the river and then collect the apples
+and in fact that's sometimes what
+happens
+and Concepts here again are pretty uh
+pretty uh pretty common things position
+orientation and and pollution positions
+Etc
+so
+would we first plotted the same graph as
+the previous domain
+it it it it tells a story so the story
+here is that when I intervene on Asian
+one
+it seems to influence Asian too quite a
+lot if you look at these three different
+uh graph reward how reward was impacted
+when I intervened on Asian one it's
+agent three and four are fine but it
+seems that only agent two is influenced
+same with idle time same with the Intel
+agent distance so we were like oh maybe
+that's true but we keep wondering
+there's like a lot going on in this
+domain like how do we know this is the
+case
+so we decided to take
+another step so
+we're going to do a little more work
+here uh but but not a lot we're going to
+fill the graph to discover interagent
+relationships this is simplest dumbest
+way to build a graph but again I like
+simple things so how do you build a
+graph well suppose that you have you're
+building a graph between movies this is
+like not what we do but just to describe
+what we're trying to do we have each row
+if we want to build a matrix each row is
+a movie and each column consists of
+features of these movies so length
+Jungle of the movie and so on
+and the simplest way to build a graph is
+to do a regression so exclude I I throw
+and then we're going to regress over
+everyone else
+and that gives me beta
+which is kind of coefficient for for
+each of these and that beta represents
+the strength between uh strengths of the
+edges so this movie is more related to
+this movie and not the other movie and
+ta-da you have a graph it's like dummy
+story there's a lot of caveats to you
+shouldn't do this with them a lot of
+times but you know this is the simplest
+way to do it
+so we did the same thing here instead
+instead of movie we're going to use
+intervention on concept C on agent n as
+our node
+and for to build this Matrix we're going
+to use intervention outcome which
+wouldn't happen to be available without
+our framework
+for reward resource collected and and
+many other things
+and when you build this graph at the end
+of the day you get betas that represent
+relationship between these interventions
+okay
+so I had a
+graph of that Matrix apparently I
+removed before I came over but imagine
+there was a matrix
+there is a nicely highlighted between
+agent 1 and 4 and that only
+contradicting the original hypothesis
+that we had and this is the video of it
+so when we stared at that Matrix it it
+turns out that there's no High Edge
+strong edges between agent one and two
+so we were like that's weird but there
+is strong edges between agent one and
+four so we like dig deeper into it
+watched a lot of uh a lot of sessions to
+validate what's happening and it turns
+out that the story was a lot more
+complicated the ones orientation was
+important for four
+but when that fails agent 1 and 2 kinda
+gets cornered in and you can see that in
+the graph agent 4 kind of get a get
+agent one and four uh sorry one and two
+blue and yellow agent kind of gets in
+the corner together they kind of get
+stuck and this is simply just accidental
+because of the way that we built this
+environment it just happened
+but but the true the raw statistics
+wouldn't have told us this story that
+this was completely accidental in fact
+there was no correlation no coordination
+between agent one and two but only after
+the graph we realized this was the case
+now this might be one-off case but you
+know what a lot of emerging behaviors
+that we want to detect a lot of them
+will be one-off case and we really want
+to get to the truth of that rather than
+having some surface level statistics
+so
+can we build multi-agent system that
+enables intervention and performs as
+well the answer is yes there's a graph
+that shows the red line and blue line
+roughly a line that's good news we are
+performing as well
+um but remember these Concepts you need
+to label them or you should have some
+way of getting those Concepts positions
+and orientation there might be something
+that we would love to extend in the
+future
+before I go on any questions
+you shy
+[Music]
+cool
+all right
+so I did tell you that we're not gonna
+know uh move uh the solution to move 37
+I still don't okay I still don't
+but I'll tell you a little bit of work
+that I'm currently doing I'm really
+excited about uh that we started
+thinking you know what will this
+understanding move 37 happen before
+within my lifetime and I was like oh
+maybe not but I kind of want it to
+happen so we start this is all about
+research right you started carving out a
+space where things are a little
+resolvable and you try to attack that
+problem so this is our attempt to do
+exactly that to get a little closer to
+our ultimate goal or my ultimate goal of
+understanding that move 37.
+so before that how many people here know
+Alpha Zero from T my yes Alpha zero is a
+self-trained uh self-trained chess
+playing machine that beats that has
+higher yellow rating than any other
+humans and beats stockfish which is
+arguably no existing human can beat
+stock fish so in the previous paper we
+try to discover human chess Concepts in
+this network so when does concept like
+material imbalance appear in its Network
+which layer and when in the training
+time
+and which we call what when and where
+plots
+and we also compare the evolution of
+opening moves between humans and Alpha
+zero these are the first couple moves
+that you make when you play chess and as
+you can see there's a pretty huge
+difference left is human right is Alpha
+zero it turns out that Alpha zero can
+master or supposedly Master a lot of
+variety of different types of openings
+openings can be very aggressive openings
+can be very boring could be very long
+range targeting for long range strategy
+or short range very different so that
+begs a question what does alpha zero
+know that humans don't know don't you
+want to learn what that might be
+so that's what we're doing right now
+we're actually almost um we're about to
+about to evaluate
+so the goal of this war is please teach
+the world chess champion on new chess
+superhuman chess strategy
+and we just got yes from Magnus Carlson
+who is the world chess champion
+he just lost the match I know but but
+you know he still he's still champion in
+my mind he's still championed in two
+categories actually
+so the way that we're doing this is
+we're going to discover new chess
+strategy by explicitly explicitly for
+getting existing chess strategy which we
+have a lot of data for
+and then we're going to learn a graph
+this time a little more complicated
+graph by uh using the the existing
+relationships between existing Concepts
+so that we can get a little bit of more
+idea of what the New Concept might look
+like
+and Magnus Carlson uh so my favorite
+part about this work I talk about
+carving out my favorite part about this
+work is that the evaluation is going to
+be pretty clear so it's not just like
+Magnus coming in inside say oh your work
+is kind of nice and and say nice things
+about our work no Magnus actually has to
+solve some puzzles
+and we will be able to evaluate him
+whether he did it or not so it's like a
+kind of success and fail but I'm
+extremely excited this kind of work I
+can only do because of Lisa who is a
+champion herself but also a PhD student
+at Oxford and like she played against
+Magnus in the past and many others
+chestplates in the world and she's going
+to be the ultimate uh pre-super human
+filtering to filter out these Concepts
+that will eventually get to Magnus
+so I'm super excited about this I have
+no results but it's coming up I'm
+excited yes
+generator because it's already so many
+puzzles out there so I'm assuming that
+there's probably something new
+what are the problems
+puzzles are actually pretty simple so
+the way that we generate concepts are
+within the embedding space of alpha zero
+and given that because Alpha zero has
+really weird architecture so every
+single latent layer in Alpha zero has
+the exact same position as a chessboard
+that's just the way that they decide to
+do it so because of that we can actually
+identify or generate the board positions
+that corresponds to that concept and
+because we have MCTS we can predict what
+move it's going to make given that board
+position because at inference time it's
+actually deterministic of the whole lot
+plus zero thing so these we have a lot
+of board positions and that's all you
+need for puzzles you give up board
+position and then ask Magnus to make a
+move we explain the concept and then
+give Magnus more board positions and see
+if we can apply that concept that he
+just learned
+for example
+right but it seems like you're kind of
+underneath
+yeah so the if I were to ask stockfish
+to
+solve those puzzles that were a
+different question because we're
+interested in whether we can teach human
+not stockfish stockfish might be able to
+do that's actually interesting uh thing
+that we could do now I think about but
+our goal is to just teach one superhume
+like if I have for example 10 000
+superhuman Concepts and only three of
+them are digestible by Magnus that's a
+win that would be a big win for for this
+type of research
+questions
+all right yeah so oh so wrap up small
+steps towards our hopes and dreams we
+talked about the gap between What
+machines know versus what we think
+machines know three ideas why that might
+be true the three different maybe angles
+we can try to attack and answer those
+questions and the the bridge that Gap we
+talked about studying aliens these
+machines in observation study or control
+study there are many other ways to study
+your species uh and I'm not an expert
+but anthropology and other Humanity
+studies would know a lot better more
+about this
+and maybe just maybe we can try to
+understand move 37 at some point
+hopefully within my lifetime through
+this chess uh project that I'm very
+excited about thank you
+[Applause]
+you talked about interprecility research
+that costs NLP vision and RL
+um do you think there's much about first
+taking certain interpretability
+techniques from one modality into other
+modalities
+all right
+so it depends on your goal I think like
+think about fairness research which uh
+Builds on strong mathematical foundation
+and that's like applicable for any
+questions around fairness or hopefully
+applicable but then once you if your
+goal is to actually solve a fairness
+issue at hand for somebody the real
+person in the world that's completely
+different question you would have to
+customize it for a particular
+application so there are two venues and
+I think similar is true interoperability
+like the theory work that I talked about
+shop and IG are used across domains like
+Vision texts so that theory paper would
+be applicable across the domain things
+like RL and the way that we build that
+generative model you would need to test
+a little bit more to make sure that this
+works in NLP uh I don't even know how to
+think about agents in NLP yet so it will
+need a little bit of tweaking but both
+directions are fruitful
+John has a question
+I saw the recent work in which
+some amateur go players found a very
+tricky strategy to trick up I think it
+was alphago and that seemed like a
+concept that humans know that machines
+don't in that Venn
+diagrams about that yeah actually it's
+funny you mentioned that Lisa can beat
+Alpha zero pretty easily and it's a
+similar idea because uh if you you kind
+of know what are the most unseen out of
+distribution moves are and and he she
+can break Alpha zero pretty easily at
+least I guess that if Isa Dole had known
+something more about AI then maybe he
+would have tried to confuse alphago but
+the truth is you know it takes a lot
+it's a high stake game like he said oh
+it's like a the famous star worldwide so
+he wouldn't want to make a a move that
+would be seen as a complete mistake like
+the one that Magnus made couple of days
+ago that got on the news feed everywhere
+that he made this Taco century-wide
+mistake and that's that's probably hurts
+any other questions
+zero for example I just like building
+machine learning
+lazy's games really well
+um
+well these work that I've presented are
+pretty you
+um but there has been a bit of
+discussion in in the robotics applying
+potentially these two Robotics and of
+course I can't talk about details but
+um
+uh things that
+reinforcement learning in the wild
+people worry about or some of the
+surprises right if you have a test for
+it like if you have a unit test for it
+you're never going to fail because
+you're going to test before you deploy I
+think the biggest risk for any of this
+deployment systems is the surprises that
+you didn't expect
+so my work around the visualization and
+others aim to help you with that so we
+may not know names of these surprises
+but here's a tool that help you better
+discover those surprises before someone
+else does or someone else gets harm
+um this is kind of an open independent
+question but I was wondering we're
+talking about a lot of ways in which we
+try to kind of visualize or understand
+what's going on in the representation
+inside the machine but I was wondering
+whether we could turn it around and try
+to teach machines to tell us like what
+using our language is what they're doing
+and their representations like illegal
+representations of ours and then get the
+machine to do the translation for us
+instead of us going into the English
+yeah great question so it's a really
+interesting question because um that's
+something that I kind of
+tried in in my work previous work called
+testing with Concept activation vectors
+so that was to map human language into
+machine space so that they can only
+speak our language because I understand
+my language and just talk to me in my
+language the challenge is that how would
+you do that for something like Alpha
+zero like we don't have a vocabulary for
+it like move 37 then there's going to be
+a lot of missing valuable knowledge that
+we might we might not get from the
+machine so I think the approach has to
+be both ways we should leverage as much
+as we can but acknowledging that even
+that mapping that trying to map our
+language to machines is going to is not
+going to be perfect because it's a kind
+of proxy for what we think like a
+penguin is there's a psychology research
+that says everyone thinks very
+differently about what penguin is like
+if I like a picture of penguin everyone
+was thinking different penguin right now
+right Australia has the cutest penguin
+the fairy penguin I'm thinking that
+right I don't know how many people are
+thinking that so given that like we give
+we're so different machine's gonna think
+something else so how do you bridge that
+Gap extend that to 100 Concepts and
+composing those Concepts it's gonna go
+out a while very soon so there's pros
+and cons I'm into both of them I think
+some applications
+exclusively exclusively just using human
+concepts are still very helpful it gets
+you uh halfway but my ambition is that
+we shouldn't stop there we should
+benefit from them by having us having
+them teach us new things that we didn't
+know before
+but like um I don't know but like trying
+to locate like specific strategies in
+the embedding space
+What are the alternatives I guess I
+don't know the Alternatives just because
+I feel like the wrong thing
+that's possible so like it's like some
+transformed space of our embedding space
+in Alpha zero maybe it's a function of
+uh applied to that embedding space so
+thinking about that as a raw Vector is
+is a is a dead end could be uh we'll see
+how this chess project goes in a couple
+months I might I might rethink my
+strategy but interesting thought
+yeah so I'm a Psychology major and I do
+realize that a lot of the stuff will be
+trying to hear like at least this is how
+we can figure out how our brains work
+and so I think that this would there be
+um stuff that um use that's applicable
+to internal networks and on the contrary
+youth English means interpretability
+it's in the studies of neural network
+will help us understand and stuff for
+our own brain yeah I talked to Jeffrey
+Hinton uh you know he would really like
+this so I believe I believe you probably
+know about this history I think that's
+how it all started right the whole
+neural network is to understand human
+brain
+um
+so so that that that's that's the answer
+to your question interesting however in
+my view there is some biases that we
+have in neuros Neuroscience because of
+the limitations of tools like physical
+tools and availability of humans that
+you can poke in I think that influences
+interpretability research and I'll try
+to give you an example what I mean so in
+you know cat near the the line or the
+horizontal line and vertical line neuron
+in cat brain so they put the prop in and
+figure out this one neuron detects
+vertical lines and you can like validate
+it's really cool if you look at the
+video the video is still online
+yeah what is it
+yes yes yes uh so why why did they do
+that well because you had one cat and a
+four poor cat and you had uh we can only
+prob a few neurons at a time right
+so that that implied a lot of few
+interpreportable research actually
+looked at or very focused on like neuron
+wise representation like this one neuron
+must be very special I actually think
+that's not true that was limited by our
+ability like physical ability ability to
+prop organisms but in your network you
+don't have to do that like you can apply
+functions to embeddings you can change
+the whole embedding to something else
+override so that kind of uh is actually
+a uh obstacle in our thinking rather
+than helping
+yeah
+okay maybe we should call it there
+um so for Thursday when you're not
+having uh lecture on Thursday
+um there'll be Tas in me here so if you
+have any you know last minute panics on
+your project so I think we might have
+some straight inside to help you we
+probably won't actually
+um
+final lecture cs224 in today
+[Applause]

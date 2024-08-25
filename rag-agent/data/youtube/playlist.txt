@@ -1,0 +1,11 @@
+# YouTube playlist URL
+# Stanford CS224N: Natural Language Processing with Deep Learning | 2023
+https://www.youtube.com/playlist?list=PLoROMvodv4rMFqRtEuo6SGjY4XbRIVRd4
+
+Stanford CS224N: NLP with Deep Learning | Winter 2021 | Lecture 1 - Intro & Word Vectors
+https://www.youtube.com/watch?v=rmVRLeJRkl4&list=PLoROMvodv4rMFqRtEuo6SGjY4XbRIVRd4&index=1
+
+Stanford CS224N NLP with Deep Learning | Winter 2021 | Lecture 2 - Neural Classifiers
+https://www.youtube.com/watch?v=gqaHkPEZAew&list=PLoROMvodv4rMFqRtEuo6SGjY4XbRIVRd4&index=2
+
+...

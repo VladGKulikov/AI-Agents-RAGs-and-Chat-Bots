@@ -1,0 +1,25 @@
+The lecture discusses the integration of knowledge into language models, exploring how traditional knowledge bases can be incorporated with models like BERT or T5 to improve their performance on tasks requiring factual recall. 
+
+### Main Questions and Points:
+
+1. **Integration of Knowledge and Language Models**:
+   - **Importance**: The lecture emphasizes that while language models trained on vast text corpora can learn a lot, they struggle with reliably recalling factual knowledge, making the integration of structured knowledge essential.
+   - **Methods**: Various approaches are discussed, including using pre-trained entity embeddings, external memory systems, and modifying training data to better encode knowledge.
+
+2. **Pre-trained Entity Embeddings**:
+   - **Concept**: The lecture explains how pre-trained embeddings for entities (like "Washington" referring to "George Washington") can enhance a language model's ability to handle tasks involving specific knowledge.
+   - **Challenges**: Issues include aligning these entity embeddings with the model's existing word embeddings and determining how to incorporate them effectively during training.
+
+3. **External Memory Systems**:
+   - **Description**: Some models use external memory to store knowledge separately from the model's parameters. This allows for easier updating and more interpretability but adds complexity and requires more resources.
+   - **KGLM Example**: The lecture describes the Knowledge Graph Language Model (KGLM), which conditions the language model on a dynamically built local knowledge graph, improving predictions by leveraging specific contextual information.
+
+4. **Modifying Training Data**:
+   - **Technique**: The lecture also discusses methods to implicitly integrate knowledge by modifying training data, such as using masking strategies that emphasize important entities or replacing entities to create "negative" samples for better learning.
+   - **Advantages**: These methods require no architectural changes and are less computationally expensive but may not be as effective as methods involving explicit knowledge integration.
+
+5. **Evaluation of Knowledge in Models**:
+   - **Probes and Tasks**: The lecture outlines different techniques for evaluating how well language models recall and use knowledge, including probing tasks that test specific types of knowledge without fine-tuning.
+
+### Summary:
+The lecture provides an overview of how researchers are working to enhance language models with structured knowledge, improving their performance on tasks that require factual recall. Techniques such as using pre-trained entity embeddings, incorporating external memory, and modifying training data are discussed, along with the challenges and benefits of each approach. The importance of evaluation methods that accurately assess a model's knowledge is also emphasized, indicating ongoing research in this area.

@@ -1,0 +1,2067 @@
+so this is lecture 15. and today we'll
+be talking about code generation so
+a little bit unusual since it's a we'll
+be generating unnatural languages this
+time
+but it'll connect in a number of ways to
+natural language Generation
+Um so before I start just a few
+announcements
+the project Milestone is due this
+Thursday you are certainly aware of that
+um
+and also when doing the projects it's
+always good to keep track of how much
+you're spending on Azure in AWS
+and one thing to notice is that disk
+costs money like it doesn't cost that
+much
+compared to gpus but it still costs
+something for me be sure to not
+be spending all your money on on disk
+um
+so tomorrow John will be running a
+discussion on training large language
+models
+it'll be really cool um so it'll be at 3
+30.
+in the skinny Auditorium there's more
+details on that
+and this Thursday we have our first
+invited talk
+in our regular lecture time and
+attendance is expected so
+please everyone show up it'll be really
+cool
+um
+all right so let's let's get started
+so
+we'll be talking about a problem
+that in the literature is called Perkin
+synthesis and let's see what that means
+so Perkin synthesis is actually a pretty
+old uh challenge of artificial
+intelligence and the goal is to write
+programs to create programs that can
+take some sort of specification and
+write a program that satisfies that
+specification so it's a program that
+writes a program
+uh so so that's what a program
+synthesizer is right it's a program
+that's
+takes your specification and is able to
+generate some program
+and then you can ask what kind of
+specification
+um so one possible specification for
+example could be a logical formula it
+could be uh like a mathematical formula
+that specifies what Behavior we want
+from the program
+it could be an equivalence program
+so I could say okay here is a slow
+implementation of the Sorting algorithm
+bubble sorts for example and it runs in
+O of N squared and I want to synthesize
+another program that's equivalent so it
+generates all the the same outputs given
+the same inputs but it's maybe faster so
+that could be a form of specification
+um
+I could give examples right I could say
+Okay I want a program that if I give you
+if I give it this input it should
+generate this output if I give this
+string it should should give me back
+this ring
+um or as more popular these days we
+could also
+maybe in addition to or instead of these
+other kinds of specifications also give
+a natural language description right I
+could just write I want a program that
+performs certain a certain operations
+and
+so so just to warm up let's see how this
+synthesis from logical specifications
+could look like
+um so when would it make sense to use
+the program synthesizer at all
+um
+so it would only make sense to use a
+program to write a program for us if
+that's in some way easier than writing
+the program ourselves right
+so there should be
+it should be easier to specify what the
+program does compared to exactly how it
+should do that
+so let's
+and this is um different than natural
+language generation an important way in
+that we usually have ways to test our
+output automatically right so if if I
+give the synthesizer okay I want a
+program that given these inputs
+generates these outputs and this
+synthesizer gives me back a program I
+can go in there and execute the program
+on the inputs that I gave and verify
+that it generates the correct outputs
+and and this is different than a natural
+language task for example if I ask it to
+summarize
+an article or in a paragraph and it
+gives me back a response and I can
+evaluate it in some ways I can compare
+it to a true human reference summaries
+or
+or I can use a language model to
+to evaluate the output of another
+language model but but in I can't like
+execute the summary and verify that it's
+a good summary
+um
+so
+yes
+certain that the output is always
+correct considering like
+I mean without formal verification how
+can you just make sure that the output
+program is correct since you'll be
+posting to the iOS on the test cases
+only yeah that's a good question so the
+question was how can I make sure that
+the output is correct uh in general well
+it depends on what specification we have
+right if this specification is input
+output examples all we can do is verify
+that it satisfies those examples we'll
+talk about the problem with that in a
+little bit
+um
+any other questions about this I'll give
+an example so it would be very concrete
+starting
+um okay so let's see how this could work
+let's try to specify a program using the
+sort of logical specification
+um
+so our first attempt will be to specify
+how do I sort an array right I want a
+program that receives an array as input
+and returns a sorted array so how would
+I write that mathematically
+our first attempt could be well let's
+say that this program takes an array a
+and outputs on array B
+um I can specify that I want the array B
+to be sorted right so mathematically I
+could write that as for all of the
+indices I of the output I want the
+element at that index should be smaller
+than the OR at most the the next element
+right so like sorted in increasing order
+second
+look at the statement and say okay so if
+if the output satisfies that then it's a
+sorted array
+um
+does this look good
+maybe right so I can give that
+specification to a synthesizer and then
+it'll go and search for programs that
+satisfies this and then it returns this
+program
+which is called sword takes an array a
+and Returns the array 1 2.
+so if you look at the mathematical form
+let's say well for all of the indices of
+the output that element is smaller than
+or equal to the next element so it
+satisfies the specification that we gave
+but of course not the program we wanted
+um
+and then
+okay so maybe we missed something we
+missed that
+the output not only should be sorted but
+also should have the same elements as
+the input right so I can specify that as
+like uh I want the array B to have the
+same length as array a and has to be a
+permutation for each element of the the
+output has to be somewhere there in the
+input
+um
+and then
+writing a little bit more formally in
+first of the logic it would look like
+that don't have to try to parse it and
+then if I give that to the synthesizer
+maybe to go and search for some programs
+and return like quick sort or some
+function that actually sorts Theory
+um so
+notice that the problem here is it's
+quite non-trivial because the formula as
+little as it is it doesn't tell us how
+to sort the rate just says that the rate
+should be sorted in some way so it's not
+just a syntactical translation between
+the synthetic the the the the formula
+that we gave and the the programming
+language that that we're targeting
+um
+but the thing that's obvious here is
+that these logical specifications are
+quite hard to read they're quite hard to
+write of course and also to check right
+if I just gave you the the formula that
+says and resorted
+maybe at first it's not easy to see the
+corner case that just being sorted is
+not enough
+um
+and
+I mean if I tell you that we are
+making a synthesizer that takes this
+formula and returns like a function that
+sorts an array you could reasonably say
+that maybe it's just easier to write the
+function yourself
+but it is quite a challenge to this or
+even then
+any questions about the
+the setup here
+okay
+so maybe it's maybe logical forms are
+too much right we don't want to be
+specifying even simple programs like
+sorting with those ugly first order
+formulas we could try something simpler
+we could try examples
+right so input output example is a very
+natural kind of specification and in
+fact when writing program software
+Engineers usually already write tests
+which are kind of like input output
+examples right like if I call the
+function with this input should return
+this I assert that it does that
+um so how could I specify sorting in
+that case
+I could say well if I give the array 3 2
+1 0 it should return 0 1 2 3
+for 142 which would return one to four
+and four nine should return 9. any
+human looking at these inputs and
+outputs could reasonably guess that oh
+maybe it's just like sorting the input
+array right
+um
+but as we just saw with this the The
+Logical synthesizer
+we could
+also get a program that looks like this
+well if the array has exactly four
+elements return zero one two three and
+if it's if it has three returns this
+exact array and otherwise always return
+nine right satisfies the input output
+examples but somehow it's still not what
+we want
+um
+of course this is a
+kind of an adversarial output
+um
+and synthesis by example was actually
+massively used in the last decade
+because of this feature in Excel called
+Flash Fill
+which was
+released in in 2013 and it was for a
+while one of the hottest things to have
+happened to Microsoft Excel
+um so uh flash flow is this really cool
+feature where uh the goal is to for
+Excel to guess what string
+transformation you're applying so you
+can write for example uh if you have a
+column that has
+people's first and last names and you
+want to just get the the first name for
+example of everyone and you create the
+second column and you type like in this
+example Ned
+um then Excel if you like click on the
+flash flow button it will magically
+guess that what you're doing is you're
+splitting on the space and maybe taking
+the first of those strings and suggest
+to complete that as the second column
+and it can actually do quite complex
+Transformations and usually from one or
+two examples and it's quite cool
+um
+but as is clear at this point
+synthesis from examples
+has there's a hearing problem of
+ambiguity right for any
+set of examples input output examples
+that I give there will be usually an
+infinite number of programs that that
+have that exactly that behavior on those
+examples right
+um
+but somehow
+that's very non-human because humans
+for some reason have a very specific
+preference over this over this Infinite
+Space of programs
+um like if I look at at this program
+that does this even if I don't tell you
+what kind of program was I looking at in
+the first place it's it's very obvious
+that like the previous problem not
+useful for anything right
+um but it's obvious for you not through
+a synthesizer necessarily that's trying
+to do
+to find a program
+um so for example what program am I
+specifying here with these two examples
+Jan uh transform to January and fabric
+transforms through February
+any human guess is about what this
+should do
+name from nothing expensive yeah exactly
+it should obviously do that but for a
+while I think maybe not EX
+I'm not sure if this fix was released or
+is going to be released but for a while
+this is what flash would do
+um
+it would complete Feb with February
+March with Maria Maria
+and so on right so it guessed from one
+example oh what you're doing is just
+concatenating your area on the string
+that you had right so
+clear the extrapolation
+any other possible strings that you
+might want so
+how
+do we do we deal with this right with
+this ambiguity we'll talk a little bit
+about that but just to summarize what we
+we've seen so far a synthesizer is this
+program that takes some form of
+specification of what a program should
+do and then generates a program
+and if we get this to work this would
+actually have massive impact in a number
+of ways right it can lower the barrier
+to to access programming through a lot
+of
+of people that maybe don't want you
+should be spent four years taking CS
+classes so for example people can
+automate a lot of things just by using
+flashfree on XL things that would take a
+lot more time
+and even programmers ourselves can
+benefit from much higher productivity we
+can program it higher level ways so this
+is quite an interesting goal but it of
+course has many challenges right it has
+this Infinite Space of programs a lot of
+them are unreasonable unreasonable in
+this human way
+and here we're talking about at least
+for now right searching in the in a
+space of programs in a very specific
+language where you can do search but
+it's of course impractical you do search
+in any real world languages like python
+uh and we we have this ambiguity problem
+right like how do you capture human
+preferences
+um so we'll talk here about the
+connection between this problem of
+ambiguity in program synthesis and
+natural language which is extremely
+common
+so human languages are extremely
+ambiguous and if you stop to look at it
+more closely it's actually quite
+surprising that we managed to
+communicate so well and so easily
+um even though if you look up almost any
+word in the dictionary it'll have like a
+large number of meanings that it might
+have even sentences out of context
+generally have multiple interpretations
+but we somehow do just fine talking in
+English in this very ambiguous
+um medium and in fact ambiguity is not
+even a bug of human languages it's a
+feature and it's a feature for
+efficiency so actually there's this this
+paper here that's really cool that
+provides true arguments based on
+information theory that any
+communication Channel where
+basically the meaning of
+words can be disintegrated in context
+we'll make those words at some point
+Collide to make them both short so for
+example if I have uh Bear the animal and
+bear the verb they usually appear in
+very different contexts right so it
+would actually be very inefficient to
+create your word to separate those uh
+with because at some point I would be
+adding both more and longer words to my
+vocabulary right so if they can be
+disembly graded a
+true to be often when a formal
+communication perspective I'll actually
+get an ambiguity at some point
+um and there's one very interesting
+uh challenge for computers to to resolve
+this kind of ambiguity called the
+winogram renograd schema challenge
+and if you read the examples they're
+quite entertaining because you read them
+it's very obvious what's going on but
+it's also obvious what's the challenge
+so so here we have these two sentences
+the city councilman refused the
+demonstrators a permit because they
+feared violence and the obvious
+ambiguity here is that they could refer
+to the city councilman or the
+demonstrators right but when you're here
+they feared violence
+what's the obvious candidate here for
+what they refer to
+yeah exactly
+um and when you say the advocated
+violence then you suddenly process the
+sentence in a different way right and
+syntax the senses are exactly the same
+right but just because of your your
+prior knowledge about how these actors
+behave in the world yeah you use that to
+disintegrate the two different means
+um yeah so this is very easy for us
+right handling this kind of ambiguity
+and how do you do it it's it's an
+interesting question how do humans do
+this
+and the the linguistic uh
+term for the kind of reasoning that we
+do in this in this setting it's called
+pragmatic reasoning right so in
+linguistics we have this distinction
+between semantics and pragmatics of how
+do we attribute meaning to things right
+like semantics talks about
+like the intrinsic meaning of words in a
+certain sense in pragmatics how does
+that change in context
+um
+and to do this kind of resolution of
+ambiguity we
+we have to operate with some sort of
+assumption that helps us get off the
+ground and one important assumption here
+is this Assumption of cooperativity so
+when we're talking to someone we assume
+that they're trying to help us
+understand what they're saying right so
+they want the adverse area as the
+program synthesizer uh was in those
+examples
+and wheels we can use that assumption to
+do reasoning context and perform
+pragmatic reason
+so I'll show here one model
+uh of
+pragmatic reasoning called the RSA or
+rational speech acts which is a based on
+what of how this could work in simple
+scenarios so here we have uh we assume
+that we have two people like a speaker
+and a listener right the speaker
+wants to refer to a certain
+object or a person and it's going to
+choose an utterance for that like a word
+or a sentence to refer to that object
+right and then the listener on the other
+side is receiving those utterance and
+trying to infer okay what does the
+speaker
+mean what what do they what are they
+referring to what objects or what person
+so one really quick example here on the
+right is this where you have
+these two people and then the person on
+the right has my friend has glasses and
+there are three people here there is one
+person wearing no glasses and no hat
+there's a person just wearing glasses
+and a person wearing a glass and a hat
+when you
+hear that this person saying my friend
+has glasses well it's of course
+ambiguous in this case because there are
+two people wearing glasses but
+does anyone have an intuition of who
+would you guess they're talking about
+yes
+like the most distinguished or the only
+distinguishing Factor of the past yeah
+the middle one is the one you go to
+because if you wanted
+exactly
+describe the receipt basically so we do
+this kind of recursive reasoning
+apparently right where we think okay so
+if they wanted to refer to the person
+with the hat they could have said hat
+and that would have not been a big use
+but they did not say hat
+which probably means something about
+what they what they intended to to refer
+to right
+um so RSA is a very simple Bayesian
+model
+of exactly this this process so just to
+work through an example let's say that
+we have these three objects of a blue
+square a circle which is also blue and
+then a green square and we have these
+four utterances that we can use a very
+small vocabulary like blue green circle
+and square
+so in RSA we will bootstrap this process
+from a literal listener which is a
+listener that can only understand letter
+meaning so
+um
+the if you give this listener some
+whether it's you
+The Listener will the literal listener
+which we'll call it l0 will put uniform
+probability on all the objects that
+satisfy you so if you say blue will put
+Okay so
+uniform over all the blue objects if you
+say squares will put uniform probability
+over the squares and that's
+the distribution of beliefs that the
+literal listener puts
+um so assuming that you're talking to
+that lateral listener now you can create
+a pragmatic speaker which will choose
+some utterance to refer to an object
+based on the probability that the
+literal listener will understand what
+they're saying
+so basically for each of the words in
+our or utterances that I could say maybe
+it could be extremely specific like I
+could write a text exactly describing
+that object but that would be very
+costly right so I want to be concise but
+at the same time I can't be true concise
+because otherwise I might not specify
+what I want to say like I will not be
+understood right so I can imagine this
+pragmatic speaker S1 which is trying to
+maximize this balance between the
+probability that the the lesson the
+literal listener will guess the the
+intended object minus some cost which in
+this case could be uniform probably
+and then
+from that pragmatic listener now I can
+create a pragmatic speaker that will
+choose an audience based on the
+probability that the pragmatic speaker
+would have chosen that order to refer to
+that object
+sorry the the the the the listener L1
+would choose an object we'll guess a
+belief over the object based on the
+probability that the speaker S1 would
+have chosen data to refer to each of the
+objects
+and here I could recourse right I could
+create a listener L2 which reasons about
+the the speaker
+sorry I could choose a speaker as S2
+which is
+if talking with the listener L1 in in
+their head and then a lesson or true and
+so on
+um but usually this listener speaker
+bear S1 L1
+is often enough to model human judgments
+in these settings
+this doesn't make sense what
+how this recursive process is happening
+okay
+um
+yeah so assuming these three objects and
+a speaker says blue
+um again following the same example of
+the glasses and hats what we do
+yes or what's your first intuition about
+what object they would refer to
+yeah the square is typically what people
+what people do so a little listener
+would say okay it's completely ambiguous
+right like 50 on the Square and on the
+circle but if you set up a human
+experiment where people are receiving
+these utterances and saying how much
+they believe each of the objects is the
+intended object they will put around 40
+probability on the the circle in 60 on
+the Square which is very close to what
+RSA predicts
+um
+okay so this gives a mechanism for
+resolving ambiguity in this listener
+speaker setting
+and
+one way to see fragrance synthesis is
+a setting where we are the speakers
+right we're talking to the synthesizer
+and we are speaking for example input
+output examples
+um
+and I we want to refer to a certain
+program like from a set of programs and
+we're we're speaking uh examples and the
+synthesizer is our listener which is
+trying to ring for what program are we
+referring to
+and
+we the the examples that we were seeing
+the synthesize was being extremely
+literal right
+so like oh if you say
+that given a it should return B could be
+n of the programs that exist at return b
+um
+but
+now we have a process that can maybe
+refine this reasoning a little bit right
+we have RSA and we can almost directly
+apply it in the setting where we can
+build a
+this meaning Matrix where in one
+dimension we have all the programs so
+let's
+assume for Simplicity that we have like
+a finite set of programs and also a
+finite set of of examples that can be
+given to the synthesizer
+so in that setting we can make this
+Matrix where
+each entry corresponds to a program
+being ran on one example and we have one
+if the program satisfies that example
+like returns true or another example for
+example and zero otherwise right
+so this Matrix directly gives us a
+literal listener for this setting like
+if I say if I give an example and a
+little synthesizer could just look at
+this table and say okay these are all
+the programs that set aside those
+examples maybe I'll sample one of those
+at random
+um but I could use the RSA recursion to
+derive L1 and now true right and those
+would be uh
+like pragmatic synthesizers and in a
+human experience ran into this paper
+which I won't get in a lot of the thing
+in their setting but
+they they ran this
+um this experience where people were
+trying to specify a program that draws a
+pattern on a
+like a grid and the the specification
+was through examples by basically saying
+okay like the pattern contains the
+square or does not contain the square
+and people had a much easier time
+communicating
+the pattern that they wanted with the
+pragmatic synthesizer
+um
+which is a quite cool result I think
+um yeah so of course the assumptions
+here are that the set of programs and of
+examples is finite which is quite
+restrictive it is it's not true of real
+programming languages but
+it does present an interesting challenge
+right like can we extend this this kind
+of approach to during
+the infinite set of programs like real
+programming languages and also maybe
+also we want richer kinds of
+specifications really instead of just
+saying
+um the behavior the program in specific
+examples we could try to handle natural
+language
+um any questions about
+this connection between
+yes
+consider in this whole program synthesis
+just generally how we would typically
+want like a simple like with this sorted
+example like how we had different like
+edge cases
+would do we have do we account for the
+fact that would we penalize a like
+longer program or more complicated
+program when trying to consider
+something like that yeah so so the
+question was
+in Perkins synthesis do we
+do people use biases like find the
+shortest program for example where like
+the simplest perfume that satisfies the
+specification and
+the question is both yes and no
+um
+it's yes in the sense that
+most search-based synthesizers both
+usually find very short programs
+but not because people
+use that as a bias necessarily for for
+this ambigrating but just because it's
+much easier to find Trader programs so
+like if you're doing
+if you're doing search in a space of
+programs like the chance that you find
+like 100 line program that satisfies the
+specification is naturally much smaller
+than you finding a short one
+um
+now to be able to do search in the first
+time a lot of research in this area in
+the last decades has been true exactly
+how to design
+like specific languages and search
+spaces so that this can be this can be
+done
+does that make sense
+any other questions
+okay um
+so
+we've been talking a lot about language
+models in the class
+and as you know
+if I give a prefix of
+anything that can show up in the
+internet right language model gives me a
+distribution of what can come next so
+for example if I say Stanford University
+is located in the state of
+the model having been trained on
+Wikipedia and other sources would put
+much higher probability on the centers
+continued with California rather than
+another U.S state
+um
+language model is quite hard uh it's
+like a really really hard problem
+because as John talked about in his
+lecture a lot of things can be reduced
+to language modeling right so if I say
+theater Landon streleski a former grad
+student
+in mathematics at Stanford for example
+when I asked u53 to give plausible
+completions it gives became known for
+his advocacy of the use of psychedelic
+drugs or homeless Advocate
+um and I mean this sound
+plasma maybe the ground truth in this
+case from Wikipedia is he murdered his
+former advisor
+which might be quite hard to predict
+given this prefix
+um
+and it turns out that a
+if I give gpt3
+a prefix such as the follow is a python
+function that when given the list 132
+returns one two three it'll complete
+exactly with this program deaf short
+list
+lsd.sort return list
+um which
+depending on what year you were born is
+quite surprising right like it's it's
+quite amazing that a model that
+can predict California from Stanford
+University is located in
+with the exact same mechanism can
+generate valid python code
+um so this was a realization that
+people made very quickly after gpt3 came
+out right like given simple Python block
+strings it was able to generate
+python functions that implemented those
+dark strings even without having been
+trained explicitly for that or even code
+was not like a large part of Jupiter 3's
+training set anyway
+um so
+the natural question was like how how
+far I'm going to push that capability
+right so code is massively available
+available on the internet GitHub has
+tens of millions of
+open source repositories like actually
+over 120 million uh
+as as of I think end of last year so
+what happens if you just train a
+language model on a lot of code
+right so that was basically the idea
+behind open air codecs
+which is the name of the language model
+that backs GitHub co-pilot just out of
+curiosity how many of you have used
+Copilot
+okay less than I then I would have
+thought maybe 30 percent
+um
+yeah so
+co-pilot is this
+basically auto complete on steroids that
+runs uh
+this language model called codex on the
+back end great and
+as a lot of papers in in this age we
+live in the technical the technical
+description of what was done was we took
+the architecture of gpt3 maybe change
+the number of parameters and trained on
+this data uh yes
+models would you just be looking
+um kind of for um similarity to Gold
+Standard code or are you also checking
+for like
+yeah that's a great question we'll talk
+a lot about
+how these these models are evaluated in
+in some settings
+the
+the answer just joking ahead a little
+bit would be that we'll mostly execute
+the code and see what it does rather
+than just comparing to reference
+Solutions
+um
+there is a literature on how to evaluate
+when you can't do that but
+um s happens with natural language
+people realize that blue scores and
+adaptations are not actually very good
+for functional correctness espec
+especially in code where you can change
+one token and not change the blue score
+by much but completely change the the
+semantics of the program
+yes
+in the training data did we include
+natural language like uh for like it
+like if we have like a function in
+Python just like natural language like
+describing what the function does like
+in a comment or something
+uh yeah so the question was did they
+includes natural language in the
+training data and yes in true forms so
+code already has a lot of natural
+language like comments and strings and
+this was all kept like none of them none
+of it was stripped um
+so that's one form of natural language
+that that codex got and the other one
+was just a subset of the training side
+of vp3 so it was not training 100 just
+code it also had like so fun in it when
+you get over there examples of Life a
+natural language description of a
+function and then the corresponding
+python
+uh so the question was was there a
+description like were there examples in
+the training date of a description and
+then the function yeah
+um
+yes
+um so that there are some examples of
+that form that naturally if you're on
+GitHub uh they're not
+a lot compared to all all code that
+exists
+we'll talk a little bit about
+dude yes yes
+yeah so the web has a lot of of that
+kind of thing in general right
+um
+one of we'll be talking about one
+experiment that they did on fine tune it
+exactly that format and then has an
+impact because most
+code is not written like that on the
+internet although some fraction
+definitely is
+um
+the answer
+um yes so
+the version one of codex was essentially
+the same architecture as gpd3 which is a
+decoder only transformed model
+but with 12 billion parameters and then
+train on a training set that was
+constructed mostly from GitHub but also
+natural language sources
+um
+yeah so how to evaluate a model right
+like we trained it and we can prompt it
+with a few examples and see that it does
+interesting things but how do we we get
+a better sense of of its capability
+um so the
+the author is in the paper uh in the
+Codex paper they set up this challenge
+of given a python lock string just
+generate a function that implements that
+dot string and where the doc string all
+always had input output examples in the
+form of assertions so
+in this example here on the right
+which is one from the paper right
+um
+so the first one uh the the goal is to
+return a list with all the elements
+increased by one so you would infer that
+the elements or numbers and then they
+give two examples which are like Pi dog
+tests you can actually run these tests
+uh automatically right so if I call it
+with one two three it should return two
+three four and they give one more
+example and besides those examples
+because if you
+as machine learning people uh you should
+know if you just give all the examples
+that are evaluating on you're subject to
+the program just working on those
+examples but not on held out examples so
+for each of these problems they of
+course also had held out inputs that the
+mod was evaluated on
+but since this father has seen a lot
+more code than any person has any chance
+of ever looking at in their lifespan how
+do you even know that the problems that
+you're giving have not been seen before
+so this becomes an increasingly
+difficult challenge with these large
+models so they did a best attempt which
+was to create a data set of their own
+since the goal here
+is not to train on that data set you
+don't need that many examples
+as as you would need to to train a model
+from scratch so they came up with these
+164
+problems of this form
+that they basically manually author it
+so that's
+a way of
+of saying that okay the model at least
+hasn't seen these problems in this exact
+form right
+um
+and for each one they had a set of
+hidden tests so here the evaluation will
+be does the generated program run
+correctly on all the tests the the scene
+and unseen ones and
+the main metric that we'll be looking at
+is what they call Passat K which is the
+probability that out of case samples of
+programs that I take from the model at
+least one of them passes all of the the
+tests
+and the main result here is that
+gpt3 which is also a quite large model
+trained and a lot of code uh relatively
+speaking
+thus exactly
+uh at zero in this Baseline in this
+Benchmark that they came up with so it
+doesn't solve any of the problems which
+is good they're at least not trivial
+trivia problems right and all of the
+Codex models have some non-trivial
+performance so codex alone
+looking at pass at one which is like
+just sample one program from the model
+that's above 20 percent
+and of course we have to take all these
+numbers relative like 20 in general
+doesn't mean much but it solves some
+problems that gpt3 alone doesn't solve
+right and
+and
+um
+if they generated a set
+of problems with this exact format of
+python.string another function
+to evaluate if this format was kind of
+unusual for the model right so they
+are kind of synthetically generated uh
+like a training center fine tune and
+called the resulting model called Xs and
+yes codex that's a little bit better
+well so it seems like
+there's something to be
+uh there's there's a little bit of
+benefit of
+design training date exactly with this
+format
+and
+besides just sampling one
+program and
+returning that as your answer one theme
+that we'll see here is that it's usually
+worth your sample a lot more programs
+and somehow choose which one is your
+best bet one simple way to do that is
+just by taking the model's load
+probability over the sample right so
+this is the
+the the red line here which improves on
+both of the others and if you look at
+the the examples that sir
+oh yes so the purple line is the Oracle
+re-ranking which is basically like if I
+take all the programs that are generated
+and actually run them on the on the the
+hidden tests and take the ones that pass
+the hidden tests then
+so what the purple line is saying is
+that it's often the case that codex
+generates some program that satisfies
+all the tests but it might be hard to
+identify without actually running the
+program which one is it
+um
+so we'll look if you look at the
+examples of samples from the model it's
+it's quite non-trivial right so if I
+describe a function like
+def is prime uh returns true if a number
+is prime which is
+of course a problem that the model has
+seen before in some form
+um
+it will
+fail a lot of times but most of the
+times it will do something reasonable so
+here we will try to you see that it's
+trying to
+test for divisors of the number in this
+case it's just missing the corner case
+that's true I think or no that one is
+returning as a prime number
+it often returns
+the same program so by resampling you
+don't have any guarantees
+it's Illustrated on GitHub so it it's
+also seen a lot of incomplete code so it
+might say to do pass do it later
+um but yeah sometimes it works sometimes
+it'll do exactly
+the the primary test with all the corner
+cases and all
+and
+if you specify a more complicated
+function with maybe some more coordinate
+cases
+error again in this case it will not
+solve it completely with any of the the
+samples
+but a lot of the samples are
+surprisingly reasonable right like it
+will often at least partially do what uh
+the specification is asking you yes
+how difficult are those tests and
+they're like the store that made by
+humans to specify even some tasks are
+more difficult than others
+yeah so uh so the question is how hard
+are the tasks in general and these
+problems are not hard for
+human programmers
+um in general so
+they test basically
+like basic capabilities of coding in
+Python
+um
+so
+there's
+this is maybe a problem of like median
+difficulty in the the training set in
+the data set right like a functional
+like counts vowels but has a special
+case for why why should only be about if
+it's at the end for example so this is
+the general flavor of these problems
+in the Codex paper we'll talk about
+different data sets that makes sense
+um yeah so the finding here oh yes so
+like
+it fails in a lot of cases but
+many times producing is reasonable
+guesses of what the function should do
+and
+one
+thing to notice is that
+one thing that they noticed was which
+was an important observation for
+many of the works that came after is
+that there seems to be quite a large
+benefit in just sampling more programs
+and trying more so the space of
+fragrance that the model can
+can generate usually contains some
+correct programs
+and when simply more
+there is a trade-off between
+the sampling temperature and How likely
+it is that the program is correct right
+so if I sample with a temperature zero
+then I basically get deterministic
+Behavior I don't get any benefit from
+from Recently but if I sample with too
+high of a temperature then I I get more
+and more random outputs right
+um
+uh yeah so
+but of course just uh sampling more
+programs
+is maybe fine for this kind of
+evaluation with the Benchmark but
+when interacting with a user I of course
+don't want to give the user 100 options
+to choose from for instance like there's
+a hyper I believe that one of these many
+programs satisfies what you want but I
+don't know which one it would not be
+very usable
+um
+so of course I could just sample a small
+number of programs but knowing that it's
+usually the case that
+in a large number of samples
+one of them will be correct
+it a lot of times makes sense to sample
+a large number of programs and then try
+to re-rank them in some way and then
+only show maybe my top guesses
+so the Oracle here would be
+I ran all the programs in a test but a
+lot of times I don't have that like if
+I'm in the middle of writing function
+writing I want some
+some guess for how to write a certain
+line of the function and might not have
+tests for for that specific line
+um but I can for example use the models
+on log probability distribink
+and
+yeah what they found was that
+basically taking the average token block
+probability
+among a number of
+slightly more fancy ways of trying to
+rank
+was was the best that they could get
+um
+and here we were trying to sample code
+given box string but one of the Magics
+of language models is that
+I can just condition them anything to
+try to get anything I'm not guaranteed
+to get good things but I can always try
+um
+so what if you try to use the model to
+give me a doc string given the code so
+basically describe what a function does
+so that's a very natural version of the
+problem that that we had before
+and
+that kind of data is
+certainly way less frequent in the in
+the training set although it certainly
+exists in some cases because naturally
+in python.strings comes before the code
+but
+this is
+also very common thing with code data I
+can usually manufacture synthetic data
+sets that change the structuring in some
+ways right so I can
+basically write a deterministic program
+that takes python functions and inverts
+the the code in the dark string and make
+a training set for this task
+and in this case I lose the ability to
+automatically evaluate if a dog string
+actually describes the code
+um that's well like I get a problem with
+natural language generation where Lisa
+talked about evaluations quite hard in
+the Codex paper they evaluated this by
+hand so basically pass that k
+of where fastest a human said that the
+doctrine describes the function and
+surprisingly this task seems to be
+harder than generating code from Doc
+strings
+itself
+so even a fine-tuned model like so here
+codex
+s
+is the the Codex that we saw that was
+fine to intro to solve the tasks and
+codex D was fine-tuned on this data set
+of generating blocksprings given code
+and in this case they didn't get any
+benefits from fine tuning or any
+improvement from the base model that
+they started with
+um so it seems like maybe describing
+code is not that easy compared to
+writing
+um
+so
+sorry I have a question
+ensure that the programs that are
+generated compiled like we take
+advantage of like parts
+yeah so direction is how do you know
+that they compile in this case they just
+literally save the code and ran with the
+python
+so if it through an exception it failed
+basically if it ran and produced the
+exact output then it succeeded
+um
+curious because to other people we just
+think of it as like a reading
+comprehension gymnastics and like
+because I couldn't actually think of a
+measurement there but like is there any
+similarity between that has been the
+evaluate that path and the specific uh
+has to describe
+yeah so the question was can we see it
+as like a reading comprehension task of
+sorts
+um for code and and yes basically it's
+it's a waiter probe how well can the
+model
+understand quote-unquote what the code
+does
+that is one task
+that is like of code understanding you
+know so to speak another one is code
+execution like given this code in this
+input
+what output does it produce which I'll
+talk a little bit about but it's it's
+also quite a hard task for for these
+models so they're often able to produce
+code that works
+but if you give it the code then the
+input it's
+hard to predict what the code does from
+the one
+that makes sense
+um
+yeah so how how is code a different core
+position is it more difficult
+um
+yeah I think more or less difficult to
+depends your home right like an average
+human
+certainly can't describe what a python
+function does but not necessarily
+because like it's inherently more
+complex task
+um so I guess it depends on who who you
+ask
+um
+yeah
+the examples of the model got wrong is
+there a way to do an analysis of the
+source of the error like if there was an
+error with the algorithm versus just
+like a syntax error yeah so the question
+is what kind of Errors does the model do
+make and
+can we evaluate it automatically yes I
+didn't include this here but one of the
+papers
+that I'll talk a little bit about did
+this analysis of what
+what kind of of error does the model
+make at different scales and the result
+there was that
+as the models grow in in number of
+parameters they tend to make less
+syntactic
+errors and less compilation areas and
+have more semantic errors like program
+still runs but fails on some tests
+um and at the
+the smaller size is it's way more common
+to get like syntax errors like didn't
+close the parenthesis
+um okay
+so
+as you've noticed the base technology
+here was still just transformed right
+we're sampling
+from a Transformer and running the code
+and maybe sampling more and re-ranking
+using log probabilities but not nothing
+extremely specific true
+to code besides the fact that we can
+execute the output deepmind
+came up with Alpha code which was
+very talked about I'm sure at least some
+of you have heard of it which was
+basically a system that expanded on
+these ideas of training language models
+to generate code
+and in this case their target was to
+solve programming competition problems
+which
+some of you might heard about these are
+compositions just like math competitions
+but where
+the challenges to come up with
+algorithms then then write code that
+that solve a computational problem
+um
+and
+the base
+the foundation of alpha code was still
+sampling from Transformers a lot of
+their technical design choices was were
+basically targeted allowing faster
+sampling right so
+they came up with
+a cheaper version of attention where
+you you share the
+the key value has but have multiple
+query heads because that was a an
+engineering bottleneck in their sampling
+and
+the user encoded decoder Transformer
+because was faster to just encode the
+problem once
+but aside from that very similar ideas
+so they pre-trained
+their Transformer on
+basically in this case mostly code
+I think from their description it was
+basically just a data set composed of
+GitHub code where the encoder was
+additionally trained with mass language
+modeling laws
+and they fine-tuned
+the model then on a much smaller data
+set of Human Solutions to programming
+competition problems which are much
+sparser than like arbitrary GitHub code
+um they used one variant of
+reinforcement learning fine tuning
+called gold not oral HF but
+kind of similar idea just
+in the the spirit that you don't want to
+penalize the model for not being able to
+produce all valid Solutions you just
+wanted to be able to Output some
+solution so if it's if assembly from the
+model is giving you some solution then
+it should be getting the reward
+and one interesting trick that they they
+did was value conditioning so basically
+since we don't have that many
+submissions to these competitive
+programming problems
+it's it's a little bit bad to Simply
+discard all of the wrong Solutions which
+we have a lot more wrong Solutions than
+correct Solutions
+um so we want to train on them somehow
+but we don't want true
+make the model generate wrong Solutions
+right so but but there are still some
+interesting statistics to be learned
+there so
+to train on those solutions they
+basically
+designed their training set so that the
+code starts with a comment that says
+whether it's correct or incorrect
+right so I can make training examples
+where the correct Solutions start with
+that's the correct solution and the
+incorrect one say this is an incorrect
+solution and then at test time of course
+when generating a program that I want to
+be corrective start with a comment this
+is a correct solution but that lets the
+model and somehow in some way benefit
+from from seeing correct Solutions as
+well
+and the thing that they really pushed in
+this paper was simply right so
+in in the Codex paper we're talking of
+up to 100 samples per problem which is
+already a lot
+like it's something that's just using
+the Codex API you will have a lot of
+trouble doing in Alpha code they
+massively paralyzed this into 100
+000 samples per problem
+and
+as we're talking
+in if you are to participate in a
+programming competition and they
+actually did run Alpha code on on a real
+one
+you
+can't afford at all just submit 100 000
+attempts of solving a problem so in some
+way you have to narrow that down to a
+very small sets right and in this case
+they set the limit of making up to 10
+submissions which is kind of the range
+of what a human participant would would
+do
+um
+so how do we do that well the first
+obvious step is filtering so each of
+these problems comes with
+some examples of inputs and outputs so I
+can immediately discard all the programs
+that don't satisfy even those example
+inputs that's
+already removed like 90 of these 100K
+samples so
+um then we still have
+a quite significant number of programs
+that work at least on the basic tests so
+what do we do
+so what they did was they trained a
+separate model that generates inputs for
+a program
+and
+for these generated inputs we don't
+really know the
+what's the expected output right unless
+we are really good at interpreting the
+problem statement but even without
+knowing what's the expected output I can
+use those generated inputs to basically
+group The the programs that I have by
+Behavior right so so if I generate a
+string and I run all the programs on
+that input string some of them produce
+this result and some of that produce
+that result
+then I I'm I can't infer that maybe
+these programs are semantically the same
+right so if I if I had true submissions
+to make maybe I would do one of each
+instead of true in the same cluster so
+this was basically what they did they
+generated a lot of inputs clustered the
+programs based on their behavior on
+those inputs and then picked one
+submission from each of the largest
+clusters
+all right
+permissions to like augment training
+like how does that help the market
+the model better yeah so the question is
+how did
+how do the wrong Solutions help the
+model in any way
+um so they didn't really do an ablation
+of not training the model on the
+incorrect solutions to to measure the
+benefit of that specifically but the
+intuition is that
+even the incorrect Solutions have some
+uh interest information for you to learn
+from right so you might learn that they
+are incorrect for example you might
+learn learn bug patterns so you might
+learn that if somewhere in the codes
+I
+forget to close the parenthesis for
+example this is probably incorrect
+um and since in this case we don't
+really have that much training data
+any way that you can get to use the
+training data that you have probably
+helped that makes sense
+uh yeah but that's a good question like
+it's not it's not exactly clear what the
+model
+learns from the wrong solution
+for your submissions before the time is
+up was this the best use of that
+information by not looking at that at
+all since you submit though 10 you get
+the extra students look trying to
+incorporate
+the feedback you get from The Grater
+yeah so in the combinations that they
+tried was just basically called forces
+you only get like a binary response did
+it was it accepted or not
+um
+yes it's a harsher
+than ioi for example
+um yeah so the result
+uh in offline experiments of basically
+solving these problems from a benchmark
+that they they collected
+was basically that if your sample more
+you solve more problems
+um so they get this log linear scaling
+with how many programs they sample at
+all of the the models case that they
+tried it's which essentially means that
+if you sample 10 times more problems uh
+more programs your self rate increases
+in this lender rate of six percent
+approximately
+uh and also with compute so with
+how many TPU days they took to train the
+model it has
+also roughly log Learners KO
+um and also TPU seconds span sampling
+for each Pro
+and
+so that was in a like an offline
+evaluation written a set of problems
+that they they collected but they also
+tried this model live on competitions on
+this website called code forces and
+their model did get non-trivial
+performance in a bunch of uh contests so
+they they actually ran this in past
+context did they run it live
+but
+they tried to simulate as much as
+possible the the setting where you would
+be in the competition
+and yeah in some of the contests they
+would place in the top 30 top 50 percent
+or like a medium uh coder in uh and
+division two which is important to know
+this so so as as they described in the
+paper this is like approximately
+a few months straight year of training
+programming which is
+not
+to say that they're like wearing these
+competitions anytime soon but it's at
+the same time not trivia
+um
+and the main
+uh
+the main component of getting the
+performance that they did was sampling
+sampling more programs right so these
+they did all this engineering to make
+sure that they could sample
+100K programs uh
+per problem
+and
+they had
+like an accumulation of techniques like
+uh the mlm3 trainer on the encoder
+um like trying with random assembling
+with a random problem tags and the gold
+fine tune and all that and none of them
+would have helped if at test time they
+were just doing a thousand samples so
+the effects of all of basically all of
+those techniques only showed up when
+they scaled it up
+200k to a million samples
+so
+on one hand this shows the potential of
+like very simple set of techniques that
+you've seen in this class of just
+sampling things from Transformers
+but taken at this extreme scale
+but
+of course this also shows a limit right
+so
+at this rate of having to take 10x more
+samples you got six percent more problem
+solved this won't get to division one
+and anytime soon so we have to do
+something different if that's the goal
+um
+and one kind of problem that
+seems to be inherent to these models
+if all you're doing is just like
+sampling complete programs is this
+challenge that humans don't really have
+with compositionality
+um so this is back to result that was
+presented in in the Codex paper
+um and if you ask a person that knows
+basic Python programming how to solve
+problemax and they say it's trivial like
+reverse a string for example
+and if you separately ask them how do
+you compute the length of a string and
+they also think that's trivial
+if if you give them the problem can you
+reverse the string and then take the
+length they'll say okay of course like
+that's a very simple composition of two
+things that are true
+um but that does not seem to be the case
+with this code language models so the
+the Codex author is
+did the experiment where they
+manufactured tasks by basically chaining
+these very simple tasks
+and the result was that as the number of
+these components grow the probability
+that the samples from the model solves
+the the composite problem Decay is kind
+of explanation
+even if the model knows how to do each
+of the components individually
+so this is
+something
+which is a challenge to these models and
+not to people yet
+um
+yeah so just some quick takeaways
+uh
+it seems like Transformers just trained
+that scale on code have non-trivial
+performance in this task
+and these results
+maybe for people that
+You Know download copilot and just test
+it and it sort of works don't seem that
+surprising
+but for the Perkins synthesis field that
+had been for decades working on these
+very specific very constrained
+domain-specific languages
+these results were just unimaginable a
+few years ago
+and it seems like sampling and testing
+and filtering can get quite far
+but it also gets expensive quite fast
+right so the alpha code for example
+just training and evaluating their
+largest model
+used the equivalent energy of
+like 16 American households a year for
+example like we can't also have everyone
+using these models at this scale all the
+time
+um
+and
+the other caveat here of course is that
+this setting where you get the extremely
+well specified problem
+uh which has tests and you can run the
+program and determine exactly when it
+passes all the tests is very different
+from Real World programming right when
+where most of the time is spent
+uh understanding what's the problem
+deciding what to do revising the tests a
+lot of time spent editing code and so on
+so there's a lot of progress being made
+but this of course
+still has a lot to do yes
+one one question is is it similar to a
+question as earlier if we can do error
+analysis is it possible because one
+thing when we're doing this type of code
+generation is if we just assume it to be
+right it's a lot harder for us to debug
+our code because we didn't provide it
+ourselves are there any kind of
+like ideas of like things people are
+considering in the field for how to go
+about like debugging code that was
+written by an AI other like AI debuggers
+as well yeah
+um so the question was about uh
+debugging I think they're
+true things so one of them is yeah I had
+a lot more things that I didn't get true
+but one of them was this
+um
+this notion of automation bias which
+people have which is
+we have a general tendency to believe
+things that are automated and this is
+quite a problem for example there was
+this study run here at Stanford even
+where
+it seemed like codex introduces security
+bugs at a non-trivial rate for example
+and
+it's
+yeah it's still hard to use these models
+without understanding what they're doing
+and
+the problem of kind of doing this
+process more interactively of like
+writing the program and then
+look at what it does and
+then maybe revising the code
+is still much harder than just trying to
+write the program from scratch exactly
+because
+well one of the reasons is certain that
+we don't have that much data on that
+process happening with people right we
+we see GitHub which is kind of the
+the published version of the code but
+all the processes you get from like an
+empty file to that
+still not recorded
+but yeah that's a very active area of
+research as well like uh
+mothers to revise and edit and debug
+yes so our real time
+550 oh okay so we do have time to talk
+about something okay awesome
+um
+yes uh
+so I'll try to
+cover a little bit so
+one
+a fun thing connecting to to what we
+talked about uh back is that codex can
+do some simple pragmatic reasoning
+so for example if I if I give you these
+inputs uh list 132 returns one two three
+you'd probably say sorting right it
+sorts the list
+but what about one two three returns one
+two three
+probably just identity but it could also
+be sorting right it's consistent with
+sorting as well
+but you would reason that if I wanted to
+specify the Sorting function I would
+probably give a different input and if I
+give these inputs to codecs it does
+predict that the first one is sorting
+but the second one is identity
+just an interesting thing to come out of
+just regular language modeling training
+um there are also experiments with using
+these models in a dialogue style which
+is a little bit more about
+like the question asked so if I can
+actually try to function and then
+a model comes up with some
+implementation but maybe it has an error
+right they can
+sometimes describe the change like oh
+but can you do it in starting reverse or
+only return the top four results and can
+often revise what it did
+which is quite interesting
+um
+yes so last
+topic here is using programs not as the
+output that you have that you want from
+the model directly but rather as a
+representation for for other things so
+one
+uh General thing about humans is that
+we're our efficacy in a lot of tasks
+depends on using external tools right so
+if I ask you to multiply these two
+numbers one two three four five six
+um you can do it but you probably won't
+just do it in your head right you use a
+calculator or if I ask you what time is
+it well you don't keep track of time
+that precisely right so you use a clock
+or what are the five largest airports in
+the world you do some Google search you
+figure it out but if you want just
+take it out of your head
+and when we are training language model
+to just give us answers condition on the
+question or maybe
+on on some context
+we're basically asking its truth
+come up with the answer all by itself
+and
+a lot of these problems
+aren't reasonably solved in that manner
+the problem with just telling what time
+is it for example is one that you
+fundamentally can't get out of a model
+that was trained and Frozen and it has
+to produce an output now
+and for example
+you know
+those this language models that came out
+last year called Minerva which was
+trained on mathematical problems
+and and solutions
+and it a lot of times got the strategy
+right in solving these problems but
+still makes a lot of
+arithmetic errors so it says okay the
+solution would be this number plus this
+number equals something wrong for
+example
+um so
+that seems it seems limiting that we're
+asking the model to do all these things
+by itself
+so this open AI paper
+from 2021 had this very simple idea of
+solving math word problems
+uh using language models but providing
+them with a calculator
+and the way to let the model use a
+calculator is basically to assign
+a
+special input token a special token in
+the input such that when the model
+generates that token your decoder
+instead of keeping conditioning on on
+the model's probabilities
+will then deterministically do something
+with input like call a calculator and
+paste the output in in the model's
+output sequence right
+so they generated this training set
+kind of semi-automatically where
+solutions for mathwork problems would
+have these annotations in angle brackets
+and by seeing those annotations at
+in the training set and for training you
+don't really need to do anything special
+at test time you can give the model a
+calculator by basically watching until
+the moment where adult puts an equal
+sign and then once it does instead of
+generating from the model you can take
+the numbers that come before the call
+calculator and then just paste the the
+exact output after right
+and
+this as you can imagine gives a quite
+significant boost in solving these
+problems because you kind of isolate one
+kind of of air like the model what make
+arithmetic areas anymore
+um
+this same idea but taken a little bit
+for their
+was used to self-worth problems but
+instead of the model outputting the
+solution in natural language it kind of
+interspersed natural language with
+python code and the final answer was not
+given by the model but by running the
+python code that is provided so here's
+an example you can look at it in more
+detail later
+and this also gives a big benefit over
+just having the model
+try to figure out what's the answer in
+its own
+um
+and more generally there was this paper
+that came up on archive
+called two former where they basically
+extended this idea a little bit farther
+um
+with a self-supervised approach of let's
+say you come up with a list of tools and
+you want
+to kind of teach them all how to use
+those tools
+um and in this case they they tried
+quite a few
+um
+two so one of them was a calculator
+another was a machine translation system
+so when the model output in its
+when decoding from the one that was like
+empty and a string you go and call
+another newer Network which is a
+translation and do the translation that
+pastes that back
+um another one was doing search on
+Wikipedia so for example and or or
+calling a question answering system
+and
+with
+the right set of techniques to teach the
+model how to Output these sequences you
+can get a very interesting behavior of
+the model kind of deciding on the Fly
+which which tool to use
+and
+yeah so so this is basically the program
+here is not
+the final result that you want but it's
+really just a way for to represent this
+usage of external tools
+um
+yes
+um so we talked a little bit about this
+before so I guess one natural question
+for people graduating Computer Sciences
+will I have a job after I graduate or
+will codex replace me
+and as it turns out
+in software engineering a lot of time is
+not spent writing code in the real world
+right so there's there's one study but
+there are a lot more that that show that
+uh when you track developers time they
+spent a lot of time just reading code
+um a lot of time outside of the IDE this
+is just ID time right navigating and
+five percent is actually added in code
+and even editing code a lot of time is
+not write a new code but rather like
+fixing bugs and
+and maintain it
+so there's quite a lot of time that's
+not spent writing code for people that
+are paid to write code
+and
+yeah and like there's this whole process
+of deciding what tribute which is
+usually more important than just writing
+just muting the thing right in
+this is
+yeah this still
+quite far from from what codex can do
+and
+yeah there's this notion we talked a
+little bit about that debugging is very
+interactive we run go back revise and
+this is this process is mostly lost by
+just sampling more from the model and
+trying again basically from scratch
+and there's active research even here at
+Stanford done using model is also true
+to fix bugs automatically read the red
+a program has some syntax error how to
+go back and maybe change but still very
+different from the more open-ended kind
+of debugging that people can do
+um
+yeah of course even all the code on
+GitHub is still not all the code that
+you can imagine right like there are new
+libraries all the time there's internal
+libraries for companies that will just
+not be on GitHub at any point so there
+are challenges in teaching models to use
+those as well
+um and as we mentioned even if models
+can generate code they still fail a lot
+of code understanding challenges like
+just executing code for example like
+asking what this code outputs
+um and even fine-tuning doesn't seem
+true to solve that problem
+and yeah and the other thing is that
+public code also has a lot of bugs as
+you can imagine and they're being fixed
+all the time so training on called
+will also mean that sometimes they
+generate buggy code and
+so you still have to understand what the
+model outputs
+and their security uh
+books that can be introduced by language
+models as well
+and yes so
+just to conclude a little bit past time
+a lot of these capabilities were
+completely out of reach even a few years
+ago this is a really exciting time to be
+watching this happen
+um and I think there's there's a
+fascinating intersection here between
+natural language which is extremely
+ambiguous and flexible and contextual
+and we do it so easily and programming
+languages are there these extremely
+rigid languages you forget a parenthesis
+and compiler has no idea what they're
+trying to do anymore
+um and we can bridge between these two
+words very easily written Now language
+models are also starting to
+um and besides models that write
+programs programs are also just a
+general interesting representation for
+reasoning for you can represent
+mathematics legal contracts this notion
+of
+calling and combining different tools
+um yeah so all of these are very active
+topics of research
+so
+hope you guys enjoy
+yes

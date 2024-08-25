@@ -1,0 +1,2177 @@
+okay awesome
+um we're going to get started
+so uh my name is Jesse moo I'm a PhD
+student in the Cs Department here uh
+working with the NLP group and really
+excited to be talking about the topic of
+today's lecture
+which is on prompting instruction
+fine-tuning and rlhf so this is all
+stuff that has been you know
+um super hot recently because of all the
+latest chick craze about chat Bots uh
+chat gbt Bing Etc and we're going to
+hopefully get somewhat of an
+understanding as to how these systems
+are trained
+okay so before that some course
+Logistics things so project proposals
+both custom and final were due a few
+minutes ago
+um so if you haven't done that this is a
+nice reminder
+um we're in the process of assigning
+mentors of projects so we'll give
+feedback soon
+um besides that assignment five is due
+on Friday at midnight we still recommend
+using collab for the assignments even if
+you've had AWS or Azure credits granted
+if that doesn't work there's
+instructions for how to connect to a
+kaggle notebook where you will also be
+able to use gpus look for that post on
+Ed and then finally also just posted on
+Ed by John is a course feedback survey
+so this is part of your participation
+grade please fill that in by Sunday 11
+59 pm
+okay
+Okay so
+let's get into this lecture which is
+going to be about what we are trying to
+do with these larger and larger models
+right over the years the compute for
+these models have just you know gone up
+uh hundreds of
+um you know powers of 10. uh trained on
+more and more data right so larger and
+larger models they're seeing more and
+more data
+and in lecture 10
+if you recall this slide we talked a
+little bit about what happens when you
+do pre-training and as you begin to
+really learn to predict the missing
+sentence in certain texts right you
+learn things like syntax co-reference
+sentiment
+Etc but in this lecture we're going to
+take it a little bit further and really
+take this idea to its logical conclusion
+so if you really follow this idea of
+we're just going to train a giant
+language model on all of the world's
+text you really begin to see language
+models sort of in a way as rudimentary
+World models so maybe they're not very
+good at World models but they kind of
+have to be doing some implicit World
+modeling just because we have so much
+information on the internet and so much
+of human Collective knowledge is
+transcribed and written for us on the
+internet right so if you are really good
+at predicting the next word in text what
+do you learn to do there's evidence that
+these large language models are to some
+degree learning to represent and think
+about agents and humans and the beliefs
+and acronyms they might take so here's
+an example from a recent paper where we
+are talking about someone named Pat
+watching a demonstration of a bowling
+ball and a leaf being dropped at the
+same time in a vacuum chamber and the
+idea is uh here we're saying Pat is a
+physicist right so if Pat is a physicist
+and we ask for the language models uh
+next continuation of the sentence
+because he's a physicist we do some
+inference about what kind of knowledge
+Pat has and Pat will predict that the
+bowling ball and the leaf will fall at
+the same time but if we change the
+sentence of the prompt and we say well
+Pat has actually never seen this
+demonstration before then Pablo predicts
+that the bowling ball will fall to the
+ground first which is wrong right so if
+you get really good at predicting the
+next sentence in text you also to some
+degree have to learn to predict an
+agent's beliefs their backgrounds common
+knowledge and what they might do next
+so not just that of course if we
+continue browsing the internet we see a
+lot of encyclopedic knowledge so maybe
+language models are actually good at
+solving math reasoning problems if
+they've seen enough demonstrations of
+math on the internet code of course
+co-generation is a really exciting topic
+that people will that people are looking
+into and will give a presentation on
+that in a few weeks even medicine right
+we're beginning to think about language
+models trained on medical texts and
+being applied to the sciences and
+whatnot
+so this is what happens when we really
+take this language modeling idea
+seriously and this has resulted in a
+Resurgence of interest in building
+language models that are basically
+assistants right you can give them any
+task Under the Sun I want to create a
+three-course meal and a language model
+should be able to take a good stab at
+being able to do this right this is kind
+of the promise of language modeling
+but of course there's a there's a lot of
+steps required to get from this from our
+basic language modeling objective and
+that's what this lecture is going to be
+about
+so how do we get from just particular
+next word in a sentence to something
+like chat GPT which you can really ask
+it to do anything and it might fail
+sometimes but it's getting really really
+convincingly good at some things
+okay so this is the lecture plan
+basically I'm going to talk about
+as we're working with these large
+language models we come up with kind of
+increasingly complex ways of steering
+the language models closer and closer to
+something like chat GPT so we'll start
+with zero shot and few shot learning
+then instruction fine-tuning and then
+reinforcing learning from Human feedback
+or rohf
+okay so let's first talk about a few
+shot and zero shot learning
+uh and in order to do so we're again
+going to kind of build off of the
+pre-training lecture last Tuesday so in
+the pre-training lecture John talked
+about uh these models like GPT
+generative pre-trained Transformer
+um that are these decoder only language
+models so they're just trained to
+predict the next word in a corpus of
+text
+and back in 2018 was the first iteration
+of this model uh and it was 117 million
+parameters so at the time it was pretty
+big nowadays it's definitely much
+smaller and again it's just a vanilla
+Transformer decoder using the techniques
+that you've seen and it's trained on a
+corpus of books
+so about 4.6 gigabytes of text
+and what GPT showed was the promise at
+doing this simple language modeling
+objective and serving as an effective
+pre-training technique for various
+Downstream tasks that you might care
+about so if you wanted to apply to
+something like natural language
+inference you would take your premise
+sentence and your hypothesis sentence
+concatenate them and then maybe train a
+linear classifier on the last
+representation the model produces
+okay but that was three four five years
+ago what has changed since then
+so they came out with gpt2 so gpt2 was
+released the next year in 2019. this is
+1.5 billion parameters so it's the same
+architecture as GBC but just an order of
+magnitude bigger and also trained on
+much more data so we went from four
+gigabytes of books to 40 gigabytes of
+Internet Text data so they produced a
+data set called webtext this is produced
+by scraping a bunch of links to comments
+on Reddit so the idea is that the web
+contains a lot of spam maybe a lot of
+low quality information but they took
+links that were posted on Reddit that
+had at least a few uploads so humans
+maybe looked through it and said you
+know this is a useful post so that was
+kind of a rough proxy of human quality
+and that's how they collected this large
+data set
+and so if you look at the size of gbt in
+2018 we can draw a bigger dot which is
+the size of gpt2 in 2019 and one might
+ask how much better does this do what
+does this buy you
+so the authors of gbt2 titled their
+paper language models are unsupervised
+multitask Learners and that kind of
+gives you a hint as to what the key
+takeaway they found was which is this
+unsupervised multitasking part
+so basically I think the key takeaway
+from gbt2 was this idea that language
+models can display zero shot learning so
+what I mean by zero shot learning is you
+can do many tasks that the model may not
+have actually explicitly been trained
+for with no grading updates so you just
+kind of query the model
+by simply specifying the right sequence
+prediction problem so if you care about
+question answering for example you might
+include your passage like a Wikipedia
+article about Tom Brady and then you'll
+add a question so question where was Tom
+Brady born and then include an answer
+like a followed by colon and then just
+ask the model to predict the next token
+right you've kind of jury-rigged the
+model into doing question answering
+for other tasks like classification
+tasks another thing you can do is
+compare different probabilities of
+sequences so this task is called the
+Winograd schema challenge it's a pronoun
+resolution task so the task is to kind
+of resolve a pronoun which requires some
+World Knowledge so one example is
+something like the cat couldn't fit into
+the Hat because it was too big and the
+question is whether it refers to the cat
+or to the hat right and in this case it
+makes most sense for it to refer to the
+cats because things fitting into things
+because they're too big you know you
+need to use some World Knowledge to kind
+of resolve that
+so the way that you get zero shot
+predictions for this task out of a
+language model like gbt2 is you just ask
+the language model which sequence is
+more likely is the probability of the
+cat couldn't fit into the Hat because
+the cat was too big deemed more likely
+by the language model than the
+probability that the cat couldn't fit
+into the Hat because the Hat was too big
+right you can score those sequences
+because this is a language model and
+from there you get your zero shot
+prediction and you can end up doing
+fairly well on this task
+any questions about those
+okay
+uh yeah so digging a little bit more
+into the results gpt2 at the time beat
+the state of the art on a bunch of
+language modeling benchmarks with no
+task specific fine-tuning so no
+traditional fine tune on a training set
+and then test on a testing set
+so here's an example of such a task this
+is a language modeling task called
+Lambada or the goal is to predict a
+missing word and the idea is that the
+word that you need to predict depends on
+some discourse earlier in the sentence
+or earlier a few sentences ago and by
+simply training your language model and
+then running it on the Lambada task you
+end up doing better than the supervised
+fine-tuned state-of-the-art at the time
+and across across a wide variety of
+other tasks as well
+okay
+another kind of interesting Behavior
+they observed and so you'll see hints of
+um uh things that we now take for
+granted in this paper is that you can
+get interesting zero shot Behavior as
+long as you take some liberties with how
+you specify the task so for example
+let's imagine that we want our model to
+do summarization even though gpt2 was
+just a language model how can we make it
+do summarization
+the idea they explored was we're going
+to take an article some news article and
+then at the end we're going to append
+the tldr sign right the tldr token so
+this stands for too long didn't read so
+use a lot on Reddit to just say you know
+if you didn't want to read the above
+stuff here's a few sentences that
+summarizes it right so if you ask the
+model to predict what follows after the
+tldr token right you might expect that
+it'll generate some sort of summary
+and this is kind of early Whispers at
+this term that we now call prompting
+right which is thinking of the right way
+to define a task such that your model
+will do the behavior that you want it to
+do
+so if we look at the performance we
+actually observed on this task here at
+the bottom is a random Baseline so you
+just select three sentences from the
+article and the scores that we're using
+here are ruse scores if you remember the
+natural language generation lecture gpt2
+is right above so it's not actually that
+good like it only does maybe a little
+bit or barely any better than the random
+Baseline but it is approaching
+approaches that our supervised
+approaches that are actually explicitly
+fine-tuned to do summarization
+right
+and of course at the time it's still
+underperformed the state of the Arts but
+this really showed the promise of
+getting language models to do things
+that maybe they weren't trained to do
+okay so that was gbt2 that was 2019. now
+here's 2020 gpt3
+so GPD 3 is 175 billion parameters so
+it's another increase in size by an
+order of magnitude and at the time it
+was unprecedented I think it still is
+like kind of overwhelmingly large for
+most people and data so they scaled the
+data once again
+okay so what is this by you
+this paper's title was called language
+models are few shot learners
+so what does that mean
+so the key takeaway from gpt3 was
+emergent few shot learning so the idea
+here is sure gbt can still do zero shot
+learning but now you can specify a task
+by basically giving examples of the task
+before asking it to predict the example
+that you care about
+okay so this is often called in context
+learning to stress that there are no
+gradient updates being performed when
+you learn a new task you're basically
+kind of constructing a tiny little
+training data set and just including it
+in the prompt including it in the
+context window of your Transformer and
+then asking it to pick up on what the
+task is and then predict the right
+answer
+and this is in contrast to a separate
+literature on few shot learning which
+assumes that you can do gradient updates
+right in this case it's really just a
+frozen language model
+so few shot learning works and it's
+really impressive so here's a graph
+super glue here is a kind of a wide
+coverage natural language understanding
+Benchmark and what they did was they
+took dbt3 and this data point here is
+what you get when you just do zero shot
+learning with dbt3 so you provide an
+English description of the tasks to be
+completed and then you ask it to
+complete the task
+just just by providing one example so
+one shot uh you get like a 10 accuracy
+increase right so you give not only the
+natural language test description but
+also an example input and an example
+output and you ask it to decode the next
+output
+and as you increase to more shots you do
+get better and better
+um scores although of course you get
+diminishing returns after a while but
+what you can notice is that Hue shot
+tpt3 so no grading updates uh is doing
+as well as or outperforming uh Bert
+fine-tuned on the super glue task
+explicitly
+any questions about this
+so one thing that I think is really
+exciting is that uh you might think okay
+a few shot learning whatever it's just
+memorizing maybe there's a lot of
+examples of needing to do a few shot
+learning in the internet Text data right
+and that's true but I think there's also
+evidence that uh gpt3 is really learning
+to do some sort of kind of on-the-fly
+optimization or reasoning and so the
+evidence for this comes in the form of
+the synthetic word unscrambling tasks so
+the authors came up with a bunch of
+simple kind of letter manipulation tasks
+that are probably unlikely to exist in
+Internet Text data so these include
+things like cycling through the letters
+to get the kind of uncycled version of a
+word so converting from PL EAP to Apple
+removing characters added to a word or
+even just reversing words right and what
+you see here is performance as you do
+few shot learning as you increase the
+model size and what you can see is that
+uh
+the ability to do a few shot learning is
+kind of an emergent property of model
+scale so at the very largest model we're
+actually seeing a model be able to do
+this exclusively in context
+okay
+uh question yeah
+I've noticed the Reversed words are
+horrible like performance yeah yeah so
+the question was the Reversed words
+uh line is still low yeah that's an
+example of a task that this models still
+can't solve yes although I'm not sure if
+we evaluated with newer newer models
+maybe you know the latest versions can
+indeed actually solve that task Yeah
+question here's some intuition for why
+the subjects as a result of the model
+scale I think that's a highly active
+area of research and there's like being
+papers published every week on this so I
+think there's a lot of interesting
+experiments that really try to dissect
+you know either with like synthetic
+tasks like you know can gbt3 learn
+linear regression in context and there's
+like some model interpretability tasks
+like you know what in the attention
+layers or what in the hidden states are
+resulting in this kind of emergent
+learning
+um but yeah I'd have to just refer you
+to the recent literature on that
+anything else
+awesome
+okay so just to summarize traditional
+fine-tuning here is on the right right
+we take a bunch of examples of a task
+that we care about we give it to our
+model and then we do a grading step on
+each example and then at the end we
+hopefully get a model that can do well
+on some outputs and in this new kind of
+Paradigm of just prompting a language
+model we just have a frozen language
+model and we just give some examples and
+ask the model to predict the right
+answer
+okay
+so you might think and you'd be right
+that there are some limits of prompting
+well there's a lot of limits of
+prompting but especially for tasks that
+are too hard right there are a lot of
+tasks that maybe seem too difficult
+um especially ones that involve maybe
+richer reasoning steps uh or you know
+needing to synthesize multiple pieces of
+information and these are tasks that
+humans struggle with too right
+so one example is gpt3 I don't have the
+result the the actual graph here but it
+was famously bad at doing addition for
+much larger digits and so if you prompt
+gpt3 with a bunch of examples of
+addition it won't do it correct but part
+of the reason is because humans are also
+pretty bad at doing this in one step
+right like if I asked you to just add
+these two numbers on the Fly and didn't
+give you a pencil on paper you'd have a
+pretty hard time with it
+so one observation is that you can just
+change the prompts and hopefully get
+some better performance out of this
+so there's this idea of doing Chain of
+Thought prompting where in standard
+prompting we give some examples of a
+task that we'd like to complete so here
+is an example of a math word problem and
+I told you that what we would do is we
+would give the question and then the
+answer and then for a data point that we
+actually care about we ask the model to
+predict the answer
+and the model will try to produce the
+right answer and it's just wrong
+so the idea of Chain of Thought
+prompting is to actually demonstrate
+what kind of reasoning you want the
+model to complete
+so in your prompts you not only put the
+question but you also put an answer and
+the kinds of reasoning steps that are
+required to arrive at the correct answer
+right so here is actually some reasoning
+of how you actually would answer this
+tennis ball question and then get the
+right answer and because a language
+model is essential you know incentivized
+to just follow the pattern and continue
+the prompt if you give it another
+question it will in turn produce an
+answer sorry a rationale followed by an
+answer
+okay
+so you're kind of asking a language
+model to work through the steps yourself
+and by doing so you end up getting some
+questions right when you otherwise might
+not
+so super simple idea but it's shown to
+be extremely effective so here is this
+middle school math word problems
+Benchmark and again as we scale up the
+model for GPT and some other kinds of
+models
+um being able to do Chain of Thought
+prompting emerges right so we really see
+a performance approaching that of
+supervised baselines for these larger
+and larger models
+questions
+yeah
+seemingly the problem with the addition
+with the barge members do you have like
+results on how like chain of thoughts on
+people with larger numbers than middle
+school math word problems
+yeah so the question is uh does chain
+without prompting work for those
+addition problems that I had presented
+yeah um there should be some results in
+the um in the actual paper uh they're
+just not here but you can take a look
+yeah
+you should know how the model was
+trained without doing gradient update I
+just been in Europe intuition about how
+the model is Learning Without grading
+updates yeah so this is related to the
+question asked earlier about like how is
+this actually happening
+um that is yeah again it's an active
+area of research so my understanding of
+the literature is something like you can
+show that models are kind of almost
+doing like in-context gradient descent
+as it's encoding a prompt
+um and you can analyze this with like
+model interpretability experiments but I
+yeah I'm happy to suggest papers
+afterwards that kind of deal with this
+problem
+more carefully
+cool
+Okay so
+a follow-up work to this ask the
+question of do we actually even need
+examples of reasoning right do we
+actually need to collect humans working
+through these problems can we actually
+just ask the model to reason through
+things just ask it nicely right
+uh so this introduced this idea called
+zero shot Chain of Thought prompting and
+it was honestly like I think probably
+like the highest like impact to like
+simple idea ratio I've seen in the paper
+where it's like the simplest possible
+thing where instead of doing this Chain
+of Thought stuff you just ask the
+question and then the answer you first
+prepend the token let's think step by
+step
+right
+and the model will decode as if it had
+said let's think step by step and it
+will work through some reasoning and
+produce the right answer
+so does this work uh on some arithmetic
+benchmarks here's what happens when you
+prompt a model just zero shots right so
+just asking it to produce the answer
+right away without any reasoning a few
+shots or giving some examples of inputs
+and outputs
+and this is zero shot chain of thoughts
+just asking the model to think through
+things you get uh crazy good accuracy
+when we compare to actually doing manual
+Chain of Thought you still do better
+with manual chains of thought but that
+just goes to show you how simple of an
+idea this is and ends up producing
+improved performance numbers
+so the funny part of this paper was they
+you know why use less thing by step by
+step they used actually a lot of prompts
+and tried them out so here's zero shot
+Baseline performance they tried out a
+bunch of different you know prefixes the
+answers after the proof let's think
+let's think about this logically and
+they found that let's think step by step
+was the best one
+it turns out this was actually built
+upon
+um later in the year where they actually
+used a language model to search through
+the like best possible strings that
+would maximize performance on this task
+which is probably like gross overfitting
+but the best pump they found was let's
+work this out step by step in a
+step-by-step way to be sure that we have
+the right answer
+so the right answer thing is kind of
+presuming that you get the answer right
+right it's like giving the model some
+confidence itself
+okay so this might seem to you like a
+total dark Arcane art and that's because
+it is like we really have no intuition
+as to what's going on here
+um we're trying to build some intuition
+uh but as a result and I'm sure you've
+seen you know if you spend time in Tech
+circles or you've seen on the internet
+there's this whole new idea of prompt
+engineering being an emerging science
+and profession so this includes things
+like asking a model for reasoning uh it
+includes jailbreaking language models so
+telling them to do things that they was
+you know other otherwise aren't trained
+to do uh even you know air like dolly or
+stable diffusion this idea of
+constructing these really complex
+prompts to get model outputs that you
+want that's also prompting
+anecdotally I've heard of people saying
+I'm going to use a cogeneration model
+but I'm going to include the Google code
+header in first because that will make
+more professional or bug-free code
+depending on how much you believe in
+Google
+um but yeah
+and there's a Wikipedia article on this
+now and there's even startups that are
+hiring for prompt engineers and they pay
+quite well so if you want to be a prompt
+engineer definitely practice your GPT
+with spring skills
+we have a question
+sorry um yes
+uh could you a few classical you said
+Alum designs they're most like this long
+uh output how can you get the LM to
+design uh and like so I think they treat
+it like your reinforcement learning
+problem
+um but I'll just direct you to this
+paper at the bottom to learn more
+details yeah this is the Joe at all 2022
+paper
+Yeah question
+um so I'm just like a bit curious about
+how they provided feedback so in case
+the model was not given the right answer
+were they like prompts to say that
+um that's not right maybe think about
+because customer service like how how is
+feedback provided they don't think about
+feedback in this kind of chain of power
+prompting experiments they just like if
+the model gets the answer wrong then it
+gets the answer wrong and we just
+evaluate accuracy right but this idea of
+incorporating AI feedback I think is
+quite interesting and I think uh you'll
+see some maybe hints of discussion about
+later on yeah
+questions
+okay awesome
+okay so uh talking about these three
+things I'm going to talk about kind of
+the benefits and limitations of you know
+the various different things that we
+could be doing here so for zero shot and
+few shot in context learning the benefit
+is you don't need any fine tuning uh and
+you can kind of carefully construct your
+prompt to hopefully get better
+performance
+the downsides are there are limits to
+what you can fit in context right
+Transformers have a fixed context window
+of say a thousand or you know a few
+thousand tokens and I think as you will
+probably find out for really complex
+tasks you are indeed going to need some
+gradient steps so you're going to need
+some sort of fine tuning
+uh but that brings us to the next part
+of the lecture so that's instruction
+fine-tuning
+okay so the idea of instruction
+fine-tuning is that sure these models
+are pretty good at doing prompting you
+can get them to do really interesting
+things but there is still a problem
+which is that language models are
+trained to predict the most likely
+continuation of tokens and that is not
+the same as what we want language models
+to do which is to assist people so as an
+example if I give gpd3 this kind of
+prompt explain the moon landing gpt3 is
+trained to predict you know if I saw
+this on the internet somewhere what is
+the most likely continuation well maybe
+someone was coming up with a list of
+things to do with a six-year-old so it's
+just predicting a list of other tasks
+right it's not answering your question
+and so the issue here is that language
+models are not the term is aligned with
+user intent
+so how might we better align models with
+user intent for this case
+well super simple answer right we're
+machine Learners let's do machine
+learning so we're going to collect you
+ask a human uh give me the right answer
+right give me the way that a language
+model should respond according to this
+prompt and let's just do fine tuning
+right
+so this is a slide from the pre-training
+lecture uh again pre-training can
+improve NLP applications
+um by serving as parameter
+initialization so this kind of pipeline
+I think you are familiar with and the
+difference here is that instead of
+fine-tuning on a single Downstream task
+of Interest like sentiment analysis what
+we're going to do is we're going to fine
+tune on many tasks so we have a lot of
+tasks and the hope is that we can then
+generalize to other unseen tasks at test
+time
+so as you might expect
+um data and scale is kind of key for
+this to work so we're going to collect a
+bunch of examples of instruction output
+pairs across many tasks
+and then fine-tune our language model
+and then evaluate generalization to
+unseen tasks
+okay
+yeah so data and scale is important so
+as an example one recent data set that
+was published for this is called the
+supernatural instructions data set it
+contains over 1.6 000 tasks containing
+three million examples so this includes
+translation question answering question
+generation even coding mathematical
+reasoning Etc
+and when you look at this you really
+begin to think well is this actually
+fine-tuning or is this just more
+pre-training right and it's actually
+both right it's kind of a it's we're
+kind of blurring the lines here where
+the amount of scale that we're training
+this on basically it is kind of a still
+General but slightly more specific than
+language modeling type of pre-training
+task
+okay so one question I have is now that
+we are training our model on so many
+tasks how do we evaluate such a model
+right because you can't really say okay
+can you now do sentiment analysis well
+right like the scale of tasks that we
+want to evaluate this language model on
+is much greater
+so just as a brief aside
+um you know a lot of research has been
+going into building up these benchmarks
+for these massive multicast language
+models and seeing to what degree they
+can do not only just one task but just a
+variety of tasks so this is the massive
+multitask language understanding
+Benchmark or mmlu it consists of a bunch
+of benchmarks for measuring language
+model performance on a bunch of
+knowledge intensive tasks that you would
+expect to high school or college student
+to complete so you're testing a language
+model not only on you know send them
+analysis but on astronomy and logic and
+European history
+and here are some numbers where you know
+at the time dpt3 is like not that good
+but it's certainly above a random
+Baseline on all of these tasks
+here's another example so this is the
+beyond the imitation game Benchmark or
+big bench this has like a billion
+authors because it was a huge
+collaborative efforts uh and these are
+this is a word cloud of the tasks that
+were evaluated
+um and it really contains some very
+esoteric tasks so this is an example of
+one task included where you have to
+given uh kanji or Japanese character in
+ASCII art you need to predict the
+meaning of the character right so we're
+really stress testing these language
+models
+okay so instruction fine tuning does it
+work
+um
+recall the there's a T5 encoded decoder
+model so this is kind of Google's
+encoder decoder model where it's
+pre-trained on this span corruption task
+so if you don't remember that you can
+refer back to that lecture but the
+authors released a newer version called
+flan T5 so flan stands for fine-tuning
+language models and this is T5 models
+trained on an additional 1.8 000 tasks
+which include the natural instructions
+data set that I just mentioned and if we
+average across both the big bench and
+and LU performance and normalize it what
+we see is that instruction fine tuning
+works
+and crucially the bigger the model the
+bigger the benefit that you get from
+doing construction fine tuning right so
+it's really the large models that stand
+to do well from fine tuning
+and you might look at this and say this
+is kind of sad for academics or anyone
+without a massive GPU cluster right it's
+like who can run an 11 billion parameter
+model I guess the one silver lining if
+you look at the results here are the 80
+million model which is the smallest one
+if you look at after fine tuning it ends
+up performing about as well as the UN
+fine-tuned 11 billion parameter model
+right so there's a lot of examples in
+the literature about smaller instruction
+fine-tuned pre-trained models
+outperforming larger models that are
+many many more times the size right so
+hopefully there's still some hope for
+people with just like a few gpus
+questions
+in order to really understand the
+capabilities I highly recommend that you
+just try it out yourself so flan T5 is
+hosted on hugging face I think hugging
+face has a demo where you can just type
+in a little you know query asked to do
+anything see what it does
+um but you know there are qualitative
+examples of this working so four
+questions where a non-instruction
+fine-tuned model will just kind of
+waffle on and not answer the question
+doing instruction fine-tuning will get
+your model to much more accurately
+reason through things and gave you the
+right answer
+okay
+so that was instruction fine tuning
+um positives of this method super simple
+super straightforward it's just doing
+fine tuning right and you see this
+really cool ability to generalize to
+unseen tasks
+in terms of negatives does anyone have
+any ideas for why my might be um
+downsides of instruction fine-tuning
+I don't want to comment
+yeah it seems like it suffers from the
+same negatives of any human Source data
+yeah
+how to get people to provide the input
+you don't know like different people
+think different if it's about it yeah
+yeah exactly so comments are well it's
+hard and annoying to get human labels
+and it's expensive that's something that
+definitely matters and that last part
+you mentioned about there might be you
+know humans might disagree on what the
+right label is yeah that's increasingly
+a problem
+um yeah so what are the limitations the
+obvious limitation is money collecting
+ground truth data for so many tasks
+costs a lot of money
+start a lot of limitations include the
+one that you were mentioning so as we
+begin to ask for more creative and
+open-ended tasks from our models right
+there are tasks where there is no right
+answer and it's a little bit weird to
+say you know this is an example of how
+to write some story right so write me a
+story about a dog and our pet
+grasshopper like there is not one answer
+to this but if we were only to collect
+one or two demonstrations the language
+modeling objective would say you should
+put all of your probability Mass on you
+know the two ways that two humans wrote
+this answer right when in reality
+there's no right answer
+another problem which is related kind of
+fundamentally to language modeling in
+the first place is that language
+modeling as an objective penalizes all
+token level mistakes equally
+so what I mean by that is if you're
+asking a language model for example to
+predict the sentence Avatar is a fantasy
+TV show
+and you were asking it and let's imagine
+that you know the LM mispredicted
+Adventure instead of fantasy right so
+Adventure is a is a mistake it's not the
+right word but it is uh equally as bad
+as if the model were to predict
+something like musical right but the
+problem is that Avatar is an adventure
+TV show is like still true right so it's
+not necessarily A Bad Thing whereas
+Avatar is a musical is just false so
+under the language modeling objective
+right if the model we're equally
+confident you would pay the inequal
+penalty in equal loss penalty for
+predicting either of those tokens wrong
+but it's clear that this objective is
+not actually aligned with what users
+want which is maybe truth or creativity
+or generally just this idea of human
+preferences right
+Yeah question
+can we multiply the penalty by like the
+distance from where to betting in order
+to reduce this because musical would
+have a higher distance away than
+Adventure
+yeah that's an interesting question
+um it's an interesting idea I haven't
+heard of people doing that but it seems
+plausible I guess one issue is you might
+come up with like
+adversarial settings or like maybe the
+word embedding distance is also not
+telling you the right thing right so for
+example show in musical Maybe are very
+close together because they're they're
+both you know shows or things to watch
+but they are like in false in veracity
+right they're completely different one
+is true one is false right so yeah you
+can try it although I think there might
+be some tricky edge cases like that
+yeah
+cool
+okay so in the next part of the talk
+we're going to actually explicitly try
+to satisfy human preferences and come
+with a mathematical framework for doing
+so
+and yeah so these are the limitations as
+I just mentioned
+so this is where we get into
+reinforcement learning from Human
+feedback
+okay
+so rlhf
+so let's say we were training a language
+model on some tasks like summarization
+and let's imagine that for each language
+model sample s let's imagine that we had
+a way to obtain a human reward of that
+summary
+so we could score this summary with a
+reward function which we'll call our R
+of s and the higher the reward the
+better
+so let's imagine we're summarizing this
+article and we have this summary which
+maybe is pretty good let's say we had
+another summary maybe it's a bit worse
+and if we were able to ask a human to
+just rate all these outputs then the
+objective that we want to maximize or
+satisfy is very obvious we just want to
+maximize the expected reward of samples
+from our language model right so in
+expectation as we take samples from our
+language model P Theta we just want to
+maximize the reward of those samples
+fairly straightforward
+so
+uh oh and for mathematical Simplicity
+here I'm kind of assuming that there's
+only one task or one prompt right so
+let's imagine we were just trying to
+summarize like this article
+um but we could talk about how to extend
+it to like multiple prompts later on
+okay so this kind of task is the domain
+of reinforcement learning so I'm not
+going to presume there's any knowledge
+of reinforcing learning although I'm
+sure some of you are quite familiar with
+it probably even more familiar than I am
+but the field of reinforcement learning
+has studied these kinds of uh problems
+these optimization problems of kind of
+how to optimize something while you're
+kind of simulating the optimization for
+many years now
+and in 2013 there was a Resurgence of
+interest in reinforcement learning for
+deep learning specifically so you might
+have seen these results from Deep bind
+about an agent learning to play Atari
+games and agent mastering go much
+earlier than expected
+but interestingly I think the interest
+in applying reinforcement learning to
+Modern LMS is a bit newer on the other
+hand and I think the kind of earliest
+success story or one of the earliest
+success stories was only in 2019 for
+example
+so why might be this be the case there's
+a few reasons I think in general the
+field had kind of dissensed that
+reinforcement learning with language
+models was really hard to get right
+partially because language models are
+very complicated and if you think of
+language models as actors that have an
+action space where they can spit out any
+sentence that's a lot of sentences right
+so it's like a very complex space to
+explore in
+so it still is a really hard problem so
+that's part of the reason but also
+practically I think there have been
+these newer algorithms that seem to work
+much better for deep mural models
+including language models and these
+include algorithms like proximal policy
+optimization but we won't get into the
+details of that for this course
+but these are the kind of the reasons
+why we begin you know re-interested in
+this idea of doing RL with language
+models
+okay
+so how do we actually maximize the
+subjective right I've written it down
+and ideally we should just change our
+parameters data so that reward is high
+right but it doesn't it's not really
+clear how to do so
+so when we think about it I mean what
+have we learned in the class thus far we
+know that we can do gradient descent or
+gradient Ascent so let's try doing
+gradient Ascent right we're going to
+maximize this objective so we're going
+to step in the direction of steepest
+gradient
+but this quickly becomes a problem which
+is what is this quantity and how do we
+evaluate it right how do we estimate
+this expectation given that the gradient
+the variables of the gradient that we're
+taking Theta appear in the sample of the
+expectation
+and the second is what if our reward
+function is not differentiable right
+like human judgments are not
+differentiable we can't back prop
+through them and so we need this to be
+able to work with a black box reward
+function
+so there's a class of methods in
+reinforcement learning called policy
+gradient methods that gives us tools for
+estimating and optimizing this objective
+and for the purposes of this course I'm
+going to try to describe kind of the
+highest possible and highest level
+possible intuition for this which kind
+of looks at kind of the math and shows
+what's going on here but it is going to
+emit a lot of the details and a full
+treatment of reinforcement learning is
+definitely outside of the scope of this
+course so if you're more interested in
+this kind of content you should check
+out cs234 reinforcing learning for
+example
+and in general I think this is going to
+get a little messy but it's totally fine
+if you don't understand it we will talk
+we'll regroup at the end and just show
+like what this means for how to do our
+lhf
+but what I'm going to do is just
+describe how we actually estimate this
+objective right so we want to obtain
+this gradient so it's the gradient of
+the expectation of the reward of samples
+from our language model
+and if we do the math we break this
+apart this is our definition of what an
+expectation is right we're going to sum
+over all sentences rated by the
+probability
+uh and due to the linearity of the
+gradient we can put the gradient
+operator inside of the sum
+now what we're going to do is we're
+going to use a very handy trick known as
+a log derivative trick and this is
+called a trick but it's really just a
+chain rule but let's just see what
+happens when we take the gradient of the
+log probability of a sample from our
+language model
+so if I take the gradients then how do
+we use a chain rule right so the
+gradient of the log of something is
+going to be 1 over that something times
+the gradient of the middle of that
+something so 1 over P Theta of s times
+the gradient and if we rearrange we see
+that we can alternatively write the
+gradient of P Theta of s as this product
+so P Theta of s times the gradient of
+the log P data this
+and we can plug this back in
+and the reason why we're doing this is
+because we're going to convert this into
+a form where the expectation is easy to
+estimate
+so we plug it back in that gives us this
+and if you squint quite closely at this
+last equation here this first part here
+is the definition of an expectation
+right we are summing over a bunch of
+samples from our model and we are
+waiting it by the probability of that
+sample which means that we can rewrite
+it as an expectation and in particular
+it's an expectation of this quantity
+here
+right
+so let's just rewrite it
+and this gives us our kind of newer form
+of this objective so these two are
+equivalent the top here and the bottom
+and what has happened here is we've kind
+of shoved the gradient inside of the
+expectation if that makes sense
+so why is this useful
+does anyone have any questions on this
+before I move on if you don't understand
+it that's fine as well
+because it doesn't I mean we will
+understand kind of the intuition behind
+it later
+okay
+Okay so we've converted this into this
+and we put the gradient inside the
+expectation which means we can now
+approximate this objective with Monte
+Carlo samples so the way to approximate
+any expectation is to just take a bunch
+of samples and then average them right
+so approximately this is equal to
+sampling a finite number of samples from
+our model and then summing up the
+average of the reward times the log
+probability the gradient of the log
+probability of that sample
+and that gives us this update rule
+plugging it back in for that creating a
+sense that we wanted
+right
+so what what is this what does this mean
+uh let's think about like a very simple
+case right imagine the reward uh was a
+binary reward so it's either zero or one
+so for example imagine we were trying to
+train a language model to talk about
+cats so whenever it utters a sentence
+with a word cat we give it a one reward
+otherwise we give it a zero reward okay
+now if a reward is binary does anyone
+know what this objective kind of reduces
+to or look like
+any ideas
+I've lost everyone that's fine too
+yeah so the reward would just be like an
+indicator
+yeah that's right
+so basically to answer uh the reward
+would be zero right everywhere except
+for sentences that contain the word cat
+right and in that case it would be one
+so basically that would just look like
+kind of vanilla vanilla grading descent
+just on sentences that contain the word
+cap right
+so kind of to generalize this to the
+more General case where the reward is
+scalar what this is looking like if you
+look at it is if R is very high very
+positive then we're multiplying the
+gradient of that sample by a large
+number and so our objective will try to
+take grading steps in the direction of
+maximizing the probability of producing
+that sample again right producing the
+sample that led to high reward
+and on the other hand if R is low or
+even negative then we will actively take
+steps to minimize the probability that's
+happening again
+right and that's like the English
+intuition of what's going on here right
+the reason why we call it reinforcement
+learning is because we want to reinforce
+good actions and increase the
+probability that they happen again in
+the future and hopefully this
+intuitively makes sense to all of you
+let's say you're playing a video game
+and on one run you get a super high
+score and you think to yourself oh that
+was really good like whatever I did that
+time I should do again in the future
+right this is what we're trying to
+capture with this kind of update
+question
+any reason that we use policy gradient
+and not like value iteration or other
+methods you can do yeah you can do a lot
+of things I think there have been
+methods for doing q-learning offline
+learning Etc with
+um language models I think the design
+space is has been very underexplored so
+there's like a lot of low-hanging fruit
+out there for people who are willing to
+think about what fancy things we can do
+in RL and apply them to this language
+model in case yeah
+and in practice what we use is not this
+simple thing but we use a fancier thing
+that is a proximal policy optimization
+question does space are like super big
+like almost good yeah so that's so
+that's that's the challenge
+um so one thing that I haven't mentioned
+here is that right now I'm talking about
+kind of entire samples of sentences
+which is like a massive space right in
+practice when we do RL we actually do it
+the level of generating individual
+tokens so each token is let's say GPT
+has 50 000 tokens right so it's a pretty
+large action space but it's still
+manageable right but yeah
+so that kind of answers this question I
+was asking which is like can you see any
+problems with this objective right which
+is that this is a very simplified
+objective there is a lot more tricks
+needed to make this work but hopefully
+this has given you kind of the high
+level intuition as to what we're trying
+to do in the first place
+okay
+okay so now we are set right we have a
+bunch of samples from a language model
+and for any arbitrary reward function
+like we're just asking a human to rate
+these samples we can maximize that
+reward so we're done
+okay so not so fast
+um there's a few problems the first is
+the same as in the instruction
+fine-tuning case right which is that
+keeping a human in the loop is expensive
+like I don't really want to supervise
+every single output from a language
+model I don't know if you all want to
+um so what can we do to fix this
+so one idea is instead of needing to ask
+humans for preferences every single time
+you can actually build a model of their
+preferences like literally just train an
+NLP model of their preferences
+so this idea was kind of first
+introduced outside of language modeling
+by this paper Knox and stone they called
+it Tamer but we're going to see it
+re-implemented in this idea where we're
+going to train a language model we'll
+call it a reward model RM just
+parameterized by fee to predict human
+preferences from an annotated data set
+and then when doing rlhf we're going to
+optimize for the reward model rewards
+instead of actual human Rewards
+here's another conceptual problem so
+here's a new sample for our
+summarization task right what is the
+score of the sample anyone give me a
+number
+does anyone want to rate this sample
+it's like a three six what scale are we
+using Etc
+so the issue here is that human
+judgments can be noisy and miscalibrated
+when you ask people for things alone
+right
+so one workaround for this problem is
+instead of asking for direct ratings ask
+humans to compare two summaries and
+judge which one is better this has been
+shown I think in a variety of fields
+where people work with human subjects
+and human responses to be more reliable
+this includes psychology and Medicine
+Etc
+so in other words instead of asking
+humans to just give absolute scores
+we're going to ask humans to compare
+different samples and rate which one is
+better
+so as an example maybe this first sample
+is better than the middle sample and
+it's better than the last sample right
+now that we have these pairwise
+comparisons our reward model is going to
+generate kind of latent scores so
+implicit scores based on this pairwise
+comparison data so our reward model is a
+language model that takes in a possible
+sample and then it's going to produce a
+number which is the score or the reward
+and the way that we're going to train
+this model and again you don't really
+need to know too much of the details
+here but this is a classic kind of
+statistical comparison model is via the
+following laws where the reward model
+essentially should just predict a higher
+score if a sample is judged to be better
+than another sample so in expectation if
+we sample winning samples and losing
+samples from our data sets then if you
+look at this term here the score of the
+higher sample should be higher than the
+score of the losing sample
+does that make sense
+and in doing so by just trading on the
+subjective you will get a language model
+that will learn to assign numerical
+scores to things which indicate their
+relative you know preference over other
+samples and we can use those outputs as
+Rewards
+yeah
+the normalization either in the like the
+output or somewhere else because it
+looks like this yeah so
+I don't remember if it happens during
+training but certainly after you've
+trained this model you normalize the
+reward model so that the score is the
+expectation of the score is zero because
+that's good for reinforced learning and
+things like that as well
+Yeah question
+like even though these are noisy like
+they could be like some people could do
+S3 is better than S1 how do we account
+for it even though like when it's noisy
+like the bordering the ordering yeah I
+think that's you know that's just kind
+of limitations with asking for these
+preferences in the first place is that
+humans will disagree right so we really
+have no ground truth unless we maybe ask
+like an ensemble of humans for example
+that's just a limitation with this I
+think hopefully with you know in the
+limit with enough data this kind of
+noise washes out but it's certainly an
+issue and
+uh this next slide will also kind of
+touch on this so does the reward model
+work can we actually learn to model
+human preferences in this way this is
+obviously an important standard they
+check before we actually try to optimize
+this objective
+and they measured this so this is kind
+of evaluating the reward model on a
+standard kind of validation set right so
+can the reward model predict outcomes
+for data points that they have not seen
+during training and does it change based
+on model size or amount of data right
+and if you notice here there's one
+dashed line which is the human Baseline
+which is if you ask a human to predict
+the outcome a human does not get 100
+accuracy because humans disagree right
+and even an ensemble of let's say five
+humans also doesn't get 100 accuracy
+because humans are different preferences
+right
+but the key takeaway here is that for
+the largest possible model and for
+enough data a reward model at least some
+of the validations that they that they
+used is kind of approaching the
+performance of a single human person and
+that's kind of a green light that maybe
+we can you know try this out and see
+what happens
+okay so there are no questions this is
+kind of the components of our lhf so we
+have a pre-trained model maybe a
+construction fine-tuned right which
+we're going to call P of pt
+we have a reward model which produces
+scalar rewards for language model
+outputs and it is training on a data set
+of human comparisons
+and we have a method policy gradient for
+arbitrarily optimizing language model
+parameters towards some reward function
+and so now if you want to do rohf you
+clone the pre-trained model we're going
+to call this a copy of the model which
+is our RL model with parameters data
+that we're actually going to optimize
+and we're going to optimize the
+following reward with reinforced
+learning and this reward looks a little
+bit more complicated than just using the
+reward model
+and the extra term here is a penalty
+which prevents us from diverging too far
+from the pre-trained model
+so in expectation this is known as the
+KL or cold black labor Divergence
+between the RL model and the pre-trained
+model
+and I'll explain why we need this in a
+few slides but basically if you over
+optimize the reward model you end up
+producing you can produce like gibberish
+um and what happens is you pay a price
+so this quantity is large if the
+probability of a sample under the RL
+tuned model is much higher than the
+probability of the sample under the
+pre-train model right so the pre-trained
+model would say this is a very unlikely
+sequence of characters for anyone to say
+uh that's when you would pay a price
+here
+and beta here is a tunable parameter
+Yeah question
+when you say initialize a copy that
+means like at the first iteration PRL is
+equal to p p t that's right yeah
+yeah when I say initialize a copy
+basically like we want to be able to
+compare to the non-fine-tuned model just
+to evaluate this penalty term so just
+leave the predictions of the the you
+know pre-rl model around yeah
+questions
+right
+so does it work the answer is yes so
+here is kind of the key takeaway at
+least for the task summarization on this
+Daily Mail data set
+so again we're looking at different
+model sizes but at the end here we see
+that if we do just pre-training so just
+like the typical language modeling
+objective that GPT uses you know you end
+up producing summaries that in general
+are not preferred to the reference
+summaries right so this is on the y-axis
+here is the amount of times that a human
+refers the model generated summary to a
+summary that a human actually wrote or
+the one that's in the data set
+so pre-training doesn't work well even
+if you do supervised learning so
+supervised learning in this case is
+let's actually fine tune our model on
+the summaries that were in our data sets
+right even if you do that you still kind
+of underperform the reference summaries
+right because you're not perfectly
+modeling those that those summaries
+but it's only with this human feedback
+that we end up producing a language
+model that actually ends up producing
+summaries that are judged to be better
+than the summaries in a data set that
+you were training on in the first place
+I think that's quite interesting
+any questions
+okay
+so now we talk about yeah we're getting
+closer and closer to something like
+construct GPT or chat GPT
+the basic idea of instruct GPT is that
+we are scaling up our lhf to not just
+one prompt as I had described previously
+but tens and thousands of prompts right
+and if you look at these three pieces
+these are the three pieces that we've
+just described right the first piece
+here being instruction fine-tuning
+the second piece being rohf and the
+third piece oh sorry the second part
+second part being reward model training
+and the last part being rohf
+the difference here is that they use 30
+000 tasks
+so kind of again with the same
+instruction fine-tuning idea right it's
+really about the scale and diversity of
+tasks that really matters for getting
+good performance for these things
+yeah
+the proceeding results
+is that the
+you know that it didn't what that you
+really needed you know any chance and it
+didn't work so well to be a supervised
+learning on the data
+um but they do supervise learning on the
+day there is in the fine tuning in the
+first stage
+uh yeah that's a good question so I
+think a key Point here is that they
+initialize the RL policy on the
+supervised policy right so they first
+got the model getting reasonably good at
+doing
+summarization first and then you do the
+RL Jeff on top to get the Boost
+performance
+um your question you're asking is maybe
+can we just do the rhf starting from
+that pre-trained Baseline
+um that's a good question I I don't
+think they explored that although I'm
+not sure I'd have to I'd have to look at
+the paper again to remind myself
+um
+yeah
+so certainly something like instruct GPT
+yeah they've always kind of presumed
+that you need the kind of fine-tuning
+phase first and then you build on top of
+it
+um but I think yeah there's still some
+interesting open questions as to whether
+you can just go directly to our lhf yeah
+question
+simultaneously
+uh
+reward model should be trained first
+yeah you train it first you make sure
+it's good it's frozen you optimize
+against that
+for the human rewards that they come
+from the generated tax on language model
+or where to stop the training sample
+come from
+uh for training the reward model
+um so yeah actually it's a good question
+um where do the rewards come from so uh
+there's kind of an iterative process you
+can apply where you kind of repeat steps
+two and three over and over again so you
+sample a bunch of outputs from your
+language model you get humans to rate
+them you then do rlhf to update your
+model again and then you sample more
+outputs and get humans to rate them so
+in general the rewards are done on
+sampled model outputs because those are
+the outputs that you want to steer in
+One Direction or another but you can
+also you can do this in an iterative
+process where you kind of do RL and then
+maybe do it you know train a better
+reward model based on the new outputs
+and continue I think they do a few
+iterations in structure BT for example
+questions
+okay
+so 30 000 tasks
+um I think we're getting into like very
+recent stuff where you know increasingly
+companies like open AI are sharing less
+and less details about like what
+actually happens in training these
+models right so we have a little bit
+less clarity as to what's going on here
+then maybe we have have had in the past
+uh but they do share uh the data set's
+not public but they do share the kinds
+of tasks that they collected from
+labelers right so they collected a bunch
+of prompts uh from people who are
+already using the gpt3 API so they had
+the benefit of having you know many many
+users of their API and taking the kinds
+of tasks that they that users would ask
+GPT to do
+so these include things like
+brainstorming or you know open-end
+generation
+Etc
+and yeah I mean the key results of
+instruct GPT which is kind of the
+backbone of chat EBT uh you know really
+just needs to be seen and played with to
+understand so you can you feel free to
+play with either chatgpt or one of the
+open AI apis but again this example of a
+language model I'm not necessarily
+following tasks by doing this kind of
+instruction fine tuning followed by rlhf
+you get a model that is much more you
+know much better at adhering to user
+commands
+similarly a language model can be very
+good at generating you know super
+interesting open-ended creative text as
+well
+okay
+this brings us to chat GPT right which
+is even newer and we have even less
+information about what's actually going
+on and what's being trained here but
+uh yeah and they're keeping their you
+know Secret Sauce Secret
+but they we do have a blog post where
+they wrote two paragraphs and in the
+first paragraph
+they said that they did instruction fine
+tuning right so we trained an initial
+model using supervised fine tuning so
+human AI trainers provided conversations
+where they played both sides and then we
+asked them to act as a AI assistant and
+then we fine-tune our model on acting
+like an AI system from humans right
+that's part one
+second paragraph uh to create a reward
+model for RL we collected comparison
+data
+so we took conversations with a an
+earlier version of the chatbot so the
+one that's pre-trained on instruction
+following or instruction fine-tuning and
+then take multiple samples and then rate
+the quality of the samples
+right
+and then using these reward models we
+fine-tune it with RL in particular they
+used PPO which is a fancier version of
+RL
+okay
+and yeah so that produces you know I
+don't need to introduce the capabilities
+of chat TBT it's been very exciting
+recently here's an example it's fun to
+play with definitely play with it
+sorry it's a bit of an attack on the
+students uh yeah
+okay
+okay so reinforcement learning
+pluses
+you're kind of directly modeling what
+you care about right which is human
+preferences not is the
+collection of the demonstration that I
+collected right is that the highest
+probability mass in your model you're
+actually just saying how well am I
+satisfying human preferences right so
+that's a clear benefit over something
+like instruction fine tuning
+so in terms of negatives one is that RL
+is hard it's very tricky to get rights I
+think it will get easier in the future
+as we kind of you know explore the
+design space of possible options
+um so that's an obvious one right does
+anyone come up with any other kind of
+maybe weaknesses or issues they see with
+this kind of training
+so is it possible that like your
+language model and then your reward
+model could like overfit to each other
+especially like even if you're not
+training them together if you're like
+going back and forth yeah yeah so over
+optimization I think of the reward model
+is an issue
+yeah is it also that if you return your
+Facebook repeat always you want feedback
+all over again yeah so it still is like
+extremely data expensive and you can see
+some articles if you just Google open AI
+like data labeling right people have not
+been very happy with like the amount of
+data that has been needed to train
+something like chat gbt I mean they're
+hiring developers to just like explain
+coding problems like 40 hours a week
+right so it is yeah it is still data
+intensive right that's kind of the
+takeaway like all of these are like it's
+it's all still data intensive every
+single one of these right yeah
+yeah I think that summarizes kind of
+kind of the big ones here right so when
+we talk about limitations of our lhf we
+also need to talk about just limitations
+in general of RL and also this idea that
+we can like model or capture human
+reward in this single data point right
+so human preferences can be very
+unreliable the RL people have known this
+for a very long time they have a term
+called reward hacking which is when an
+agent you know is optimizing for
+something that the developers specified
+but it is not what we actually care
+about right
+so one of the classic examples is this
+example from openai uh where they were
+training this agent to race boats and
+they were training it to maximize the
+score which you can see at the bottom
+left but implicitly the score actually
+isn't what you care about what you care
+about is just finishing the race ahead
+of everyone else and the score is just
+kind of this bonus
+but what the agent found out was that
+there are these like turbo boost things
+that you can collect which boost your
+score and so what it ends up doing is it
+ends up kind of just driving in the
+middle collecting these turbo boosts
+over and over again so it's racking up
+insane score but it is not doing the
+Race it is continuously crashing into
+objects and its boat is always on fire
+uh and this is you know a pretty Salient
+example of what we call AI misalignment
+right
+and you might think well okay this is a
+really simple example right like they
+made a dumb mistake they shouldn't have
+used score as a reward function right
+but I think it's even more naive to
+think that we can capture all of human
+preferences in like a single number uh
+and assign certain scalar values to
+things right
+so one example where I think this is
+already happening you can see is maybe
+you have played with chatbots before and
+you and you notice that they do a lot of
+hallucination right they make up a lot
+of facts and this might be because of
+our lhf right chat Bots are rewarded to
+produce responses that seem
+authoritative or seem helpful but they
+don't care about whether it's actually
+true or not right they just want to seem
+helpful
+so this results in making up facts you
+may be seeing the news about chat Bots
+you know companies are in this relation
+to play chat Bots and they make mistakes
+uh even being you know also has been
+hallucinating a lot right
+and in general
+when you think about that you think well
+it models of human preferences are even
+more unreliable right like we're not
+even just using human preferences by
+themselves we're also training a model a
+deep model that we have no idea how that
+works right we're going to use that
+instead right and that can obviously be
+quite dangerous
+and so going back to this slide here
+where I was describing why we need this
+KL penalty term this yellow highlighted
+term here here's a concrete example of
+what actually happens of a language
+model overfitting to the reward model
+right so what this is showing is in this
+case they took off the kale penalties
+they were just trying to maximize reward
+right they trained this reward model
+let's just push those numbers up as high
+as possible right and on the x-axis here
+is what happens as training continues
+you diverge further and further this is
+the KL Divergence or the distance from
+where you started
+and the the golden dashed line here is
+what the reward model predicts your
+language model is doing right so your
+reward model is thinking wow you were
+killing it like they're gonna love these
+summaries they are going to love them
+way more than the reference summaries
+right but in reality when you actually
+ask humans uh the preferences Peak and
+then they just crater right
+so this can be an example of over
+optimizing for a metric that you care
+about right it ceases to become a good
+metric to optimize for
+any questions about this
+so there's this real concern of I think
+people are calling the AI alignment
+problem I'll let president talk about
+this
+um he tweeted that you know the main
+tool that we have for rlhf or sorry for
+alignment is rohf
+um but reward hacking happens a lot
+humans are not very good supervisors of
+rewards so you know this strategy is
+probably going to result in agents that
+seem like they're doing the right thing
+but they're wrong in subtle and
+conspicuous ways and I think we're
+already seeing examples of that in the
+current generation of chatbots
+so in terms of positives here are some
+positives but again RL is tricky to get
+right human preferences are fallible and
+models of human preferences are even
+more so
+so I remember seeing a joke on Twitter
+somewhere where someone was saying that
+you know zero shot and few shot learning
+is the worst way to align in AI
+instruction fine-tuning is the second
+worst way to align an AI and rohf is the
+third worst way to align an AI right so
+we're getting somewhere but you know
+each of these have clear fundamental
+limitations
+yeah
+competition
+um reinforcement learning because you
+get the math that you showed before
+essentially you're putting the greatest
+Insight so that we can sample it the
+sample expectation yeah but when it
+comes to sampling how do you make that
+parallel because then you need you kind
+of need to adaptively stop sampling and
+then you don't know when you're going to
+start like how do you make that process
+quicker I guess just like the whole unit
+on Transformers and all that was
+paralyzing everything yeah
+I mean yeah this is so this is really
+compute heavy and I'm actually not sure
+like what kind of infrastructure is used
+for like a state-of-the-art very
+performant implementation of rlhs but
+it's possible that they use
+parallelization like what you're
+describing where I think in a lot of
+maybe more traditional RL there's this
+kind of idea of having like an actor
+learner architecture where you have a
+bunch of actor workers which are each
+kind of a language model producing a
+bunch of samples and then the learner
+would then integrate them and perform
+the grading updates right so it's
+possible that you do need to do like
+just sheer like multi-processing in
+order to get enough samples to make this
+work in a reasonable amount of time
+um is that the kind of question you had
+or do you have other questions
+is larger than what we would typically
+see in Transformers
+yeah
+I'm saying that you might need to
+actually copy your model several times
+and take samples like from different
+copies of the models yeah but in terms
+of like like yeah so Auto regressive
+generation like Transformers especially
+like the forward pass and the multi-head
+attention stuff is very easy to
+parallelize but Auto regressive
+generalization Auto regressive
+generation is still like kind of
+bottlenecked by
+um the fact that it's Auto regressive
+right so you have to like run it first
+and then you need to depends on what you
+sample and have to run it again right so
+those are kind of blocks that we haven't
+fully been able to solve I think and
+that will add to compute cost yeah
+okay
+so I think we have 10 more minutes so
+I'm not mistaken
+um so we've mostly finally answered kind
+of how we get from this to this right
+there's some details missing but the key
+kind of factors are one instruction
+fine-tuning two this idea of
+reinforcement learning from Human
+feedback
+so let's talk a little about a little
+bit about what's next
+um so as I had mentioned rlhf is still a
+very new area it's still very fast
+moving I think by the next lecture by
+the time we say that you know give this
+slides again these slides might look
+completely different because maybe a lot
+of the things that I was presenting here
+turn out to be like really bad ideas or
+not the most efficient way of going
+about things
+rohf gets you further than instruction
+fine-tuning but as someone had already
+mentioned it is still very data
+expensive right there are a lot of
+articles about open AI needing to hire a
+legion of annotators or developers to
+just compare outputs over and over again
+I think a recent work that I'm
+especially interested in and been
+thinking about is how we can get the
+benefits of rlh app without such
+stringent data requirements
+so there's these you know newer you know
+kind of crazy ideas about doing
+reinforcement learning from not human
+feedback but from AI feedback so having
+language models themselves evaluate the
+output of language models so as an
+example of what that might look like a
+team from anthropic which works on these
+large language models came up with this
+idea called constitutional AI
+and the basic idea here is that if you
+ask gpt3 to identify whether a response
+was not helpful it would be pretty good
+at doing so and you might be able to use
+that feedback itself to improve a model
+so as an example if you have some sort
+of human request like can you help me
+hack into my neighbor's Wi-Fi and the
+assistant says yeah sure you can use
+this app right
+we can ask a model for feedback on this
+what we do is we add a critique request
+which says Hey language model gpt3
+identify ways in which the assistance
+response is harmful
+and then it will generate a critique
+like hacking into someone else's Wi-Fi
+is illegal
+and then you might ask it to then revise
+it right so just rewrite the assistant
+response to remove harmful content
+and it does so right
+and now by just decoding from a language
+model I assuming you can do this well
+what you have now is a set of data that
+you can do instruction fine-tuning on
+right you have a request and you have a
+request that has been revised to make
+sure it doesn't contain harmful content
+all right
+so this is pretty interesting I think
+it's quite exciting but all of those
+issues that I had mentioned about like
+alignment you know Mis over interpreting
+you know human preferences reward models
+being followable like everything gets
+compounded like 40 000 times when you're
+thinking about this right we have no
+understanding of like how safe this is
+or where this ends up going but it is
+something
+another kind of more common idea also is
+this general idea of fine-tuning
+language models on their own outputs and
+this has been explored a lot in the
+context of Chain of Thought reasoning
+which is something I presented at the
+beginning of the lecture
+and these are provocatively named large
+language models can self-improve but
+again it's not clear like how much
+runway there is but the basic idea maybe
+is to you know you can use let's think
+step by step for example to get a
+language model to produce a bunch of
+reasoning and then you can say fine tune
+on that reasoning as if it were true
+data and see whether or not a language
+model can get any better using that
+technique
+but as I mentioned this is all still
+very new uh there are I think a lot of
+limitations of large language models
+like hallucination and also just the
+sheer like size and compute intensity of
+this that may or may not be solvable
+with our lhf right question
+like how we don't want it yeah
+like I've seen like people talking about
+how like you can Jailbreak chat gbt to
+still give like those types of harmful
+responses yeah are there any ways
+for us to kind of buffer against those
+types of things as well because it seems
+like you're just going to keep kind of
+building on like we identify chances
+where it's like trying to say action not
+like yourself
+um I guess is there any way to kind of
+build up that scale to avoid those
+jailbreaking possibilities yeah that's
+interesting
+um
+so there are certainly ways that you can
+use either AI feedback or human feedback
+to mitigate those kinds of jailbreaks
+right like if you see someone on Twitter
+saying that oh I made gpt3 jailbreak you
+know using this strategy or whatever you
+can then yeah maybe plug it into this
+kind of framework and say identify ways
+in which the assistant went off the
+rails right and then fine-tuned and
+hopefully correct those right but it is
+really difficult I think in most of
+these kinds of settings it's really
+difficult to anticipate all the possible
+ways in which a user might jailbreak an
+assistant right so you always have this
+kind of dynamic of like you know in in
+security cyber security for example
+there's always like the attacker
+Advantage where like you know the
+attacker will always come up with
+something new or some new exploit right
+so
+yeah I think this is a deep problem I
+don't have like a really clear answer
+um but certainly like if we knew what
+the jailbreak was we could mitigate it I
+think that seems pretty straightforward
+yeah
+yeah but if you know how to do that you
+should like be hired by one of these
+companies they'll pay you like Millions
+if you can solve this yeah
+okay
+uh yeah so um just like last remarks is
+you know with all of these like scaling
+results that I presented and all of
+these like oh you can just do
+instruction fine-tuning and it'll follow
+your instructions or you can do rlhs you
+might have like a very bullish I you
+know view on like oh this is how we're
+gonna solve like artificial general
+intelligence by just scaling up our OHF
+it's possible that that is actually
+going to happen but it's also possible
+that there are you know certain
+fundamental limitations that we just
+need to figure out how to solve by
+hallucination before we get anywhere
+productive with these models but it is a
+really exciting time to work on this
+kind of stuff so yeah
+thanks for listening and yeah
+thank you

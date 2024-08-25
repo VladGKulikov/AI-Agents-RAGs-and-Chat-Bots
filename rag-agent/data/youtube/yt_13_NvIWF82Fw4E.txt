@@ -1,0 +1,2402 @@
+cool hi everyone
+um hi
+um I'm Isabelle I'm a PhD student in the
+NLP group uh it's uh about connecting
+insights between NLP and Linguistics uh
+yeah so hopefully we're going to learn
+some some Linguistics and think about
+some cool things about language uh some
+Logistics uh we're in the project part
+of the class which is cool uh we're so
+excited to see everything you guys do uh
+you should have a mentor greater
+assigned
+um uh through your project proposal uh
+the person whoever graded your project
+proposal uh you especially if you're in
+a custom project you know we recommend
+that you go to your graders office hours
+it's uh they'll know the most and like
+be most into your project uh and project
+Milestones are due next Thursday so
+that's in one week from now so hopefully
+you guys are all getting uh
+warm warmed up doing some some things
+for the project and we'd love to hear
+where you are next week
+cool
+so
+um the main thing that I'm going to talk
+about today is is that there there's
+been kind of a paradigm shift uh for the
+role of linguistics uh in NLP do due to
+large language models right so it used
+to be that uh you know there was just
+human language we created all the time
+we're literally constantly creating it
+and then we would like analyze it in all
+these ways you know maybe we want to
+make trees out of it maybe want to make
+different types of trees out of it uh
+and and then with all that would would
+kind of go into making some kind of
+computer system that can use language
+right and and now we've we kind of we've
+cut out this middle part right so so we
+have human language and we can just like
+immediately train uh um uh a system
+that's like very competent in human
+language and so now we have all this
+like analysis stuff from before uh and
+and from and and and we're still
+producing more and more of it right
+there's still all the structure all this
+knowledge that we know about language
+and the question is you know is this
+relevant at all to and healthy and today
+I'm gonna show how like it's useful for
+looking at these models understanding
+the these models understanding how how
+things work what we can expect what we
+can't expect uh from from uh large large
+language models so in this lecture we'll
+you know learn learn some some
+Linguistics hopefully language is you
+know an amazing thing it's like so fun
+to think about language and hopefully we
+can instill some of that in you maybe
+you'll go take like link one or
+something after this
+um and and we'll discuss some some
+questions about NLP and Linguistics
+right where does Linguistics fit in for
+today's NLP and what and what does NLP
+have to gain from knowing and analyzing
+human language you know what is like a
+224n student have have to gain from from
+knowing all this stuff about human
+language
+so so the for the lecture today we're
+going to start off
+um
+uh talking about structure in human
+language doing thing thinking about like
+the Linguistics of syntax and how
+structure works in language we're gonna
+um then move on to like a linguistic
+structure in NLP in language models the
+kind of analysis that people have done
+uh for for for understanding structure
+in NLP and then we're going to think of
+going Beyond pure structure so so beyond
+thinking about syntax thinking about how
+like meaning and um yeah how like
+meaning and discourse and all of that
+play into making language and how you
+know and how we can think of this both
+from a linguistic side and from a deep
+learning side uh and then lastly we're
+going to look at multilinguality and
+language diversity in in NLP
+cool
+so Stars starting off a structure in
+human language
+um you know just just like a small
+primer in language in general right uh
+it's it's a kind of if you've taken any
+Android Linguistics class you only know
+all of this but you know I think it's
+fun to get kind of situated in the
+amazingness of this stuff right so like
+all all humans have language and no
+other animal communication is similar
+it's this thing which is like incredibly
+just like
+um easy for any baby to pick up in any
+situation and um and it's just this like
+remarkably calm complex system very
+famously you know linguist uh like to to
+talk about the case of Nicaragua and
+sign language because it um it uh
+uh it kind of emerged like while people
+were watching in a great way right so
+like after the sentiment used to
+Revolution
+um you know they they started uh there's
+there's like kind of large public
+education in Nicaragua and they made a
+school for for uh for Deaf children and
+and there was no Central Nicaraguan sign
+language people had like isolated
+language and then you see this like full
+language emerge in this school very very
+autonomous autonomously very naturally I
+hope this is this is common knowledge
+maybe it's not you know signed languages
+are like full languages with like more
+morphology and and like things like
+pronouns and tenses and like all the
+things it's not like how I would talk to
+you across the room uh yeah and so and
+what's cool about language is that it
+can be manipulated to say infinite
+things right and and the brain is finite
+so it's either we have some kind of set
+of rules that were like
+that we like tend to be able to pick up
+from from from hearing them as a baby
+and then be able to say infinite things
+and we can manipulate these rules to
+really say anything right we can talk
+about things that don't exist things
+that can't exist this is very different
+from like the kind of animal
+communication we see like a squirrel
+like alarm call or something you know
+it's like watch out there's the cat
+um
+uh things are like totally abstract you
+know that have like no no grounding in
+anything we can express like some subtle
+differences between similar things I
+always when I'm thinking about like the
+this point in like um things called yeah
+like this featured languages think of
+like the stack exchange World building
+uh thing I don't know if you ever looked
+at the sidebar where there's then
+there's like thing where like science
+fiction authors kind of pitch uh like
+their ideas for like their science
+fiction world and it's like the wackiest
+like and you can really create any world
+with like with within English with a
+language that that we're given it's it's
+like amazing and so there's structure
+underlying language right this is I said
+recap here because we've done like the
+dependency parsing lectures we thought
+about this right but you know if if we
+have some some sentence like you know
+Isabel broke the window the window was
+broken by Isabel right we have these two
+sentences or some kind of relation
+between them and then and then we have
+another two sentences they have like the
+similar relation between them right this
+kind of passive alternation it's kind of
+something which exists for both of these
+sentences you know and then we can even
+use like made up words and uh it's still
+you can still see that it's a passive
+alternation right and so it seems like
+we have some knowledge of structure
+that's separate from from the words we
+use and the things we say that's kind of
+above it
+and then what's interesting about
+structure is that it dictates how we can
+use language right so you know if if I
+have a sentence like the cat sat on the
+mat and it's and it looks uh
+uh you know and and then someone tells
+you like well this is you know if you
+make a tree if it's going to look like
+this according to my type of tree Theory
+um you would say well why should I care
+about that and the reason that this
+stuff is relevant is because
+um it kind of influences what you could
+do right so like any subtree or like you
+know in this specific case any subtree
+in other cases like many sub trees it
+can kind of be real real replaced with
+like one item right because like he sat
+on the mat or he sat on it or he sat
+there right or he did so
+it's those two words but you know
+there's a lot of ink spilled overdue in
+English especially in like early
+Linguistics teaching so we're not going
+to spill anything it's kind of like one
+word um but then when something is not a
+sub tree you like can't really replace
+it with one thing right so you so you
+can't express like the cat's sat and
+they kind of like have the mat as a
+different thing right and one you could
+feel like he did so on the mat right
+you'd have to kind of do to do things
+and like and and one way you could think
+about this is that well it's not a sub
+tree right it's kind of like you kind of
+have have to go up a level uh to to to
+do this and so you can't really separate
+the cat from on the mat in this way
+and so and we implicitly know like so
+many complex rules about structure right
+we're like processing the these like
+streams of sound or like streams of
+letters all the time and yet we like
+have these like the ways that we use
+them show that we have all these like
+complex ideas like the tree I just
+showed or like for for example these are
+like I'm just gonna give some examples
+for like a a taste of like the kinds of
+things people are thinking about now but
+there's like so many right so like what
+can we pull out to make a question right
+so like if we form a former question we
+we form it by like we we're kind of
+referring to some part of like you know
+there might be another sentence which
+like is the statement version right and
+we've kind of pulled pulled pulled out
+some some part to make the question
+they're not necessarily like fully
+related but you know so it's like Leon
+is a doctor we can kind of pull pull
+that out to make a question right like
+what is Leon and if we have like my cat
+likes tuna we could pull that out what
+does my cat like again do ignore the do
+um if we have something like Leon is a
+doctor and an activist we actually we
+can't pull out this the this last thing
+right so if something's like in this if
+something's like conjoined with an and
+we it can't like be be taken out of that
+and right so you you could only say what
+is Leon think he's like oh a doctor and
+an activist but you can't really say
+what is the on a doctor and this is like
+not how question formation works and you
+know this is like some something that we
+all know it's I think something any of
+us have been taught right even people
+who've been taught English as a second
+language I don't think this is something
+which you're ever
+um which whichever really taught
+explicitly right but but but most of us
+probably know this very well
+um
+uh another such rule right is like when
+is like this is like when can we kind of
+shovel things around right so if we have
+something like I dictated the letter to
+my secretary right uh we can make like a
+longer version of that right I dictated
+the letter that I had been
+procrastinating writing for weeks and
+weeks to my secretary
+um this character is like both a grad
+student and like a high ranking
+executive
+um and and then we can we can move the
+uh we we can move that that long thing
+to the end right it's like I dictated it
+to my secretary of the letter that I've
+been procrastinating writing for weeks
+and weeks and that's like fine you know
+maybe it's like slightly awkwardly
+phrased but it's not like I think like
+this firm for me at least everyone
+varies right could could appear in like
+natural productive speech but then
+something like this is like much worse
+right so somehow the fact that it
+becomes weighty is good and you we can
+move it to the end but when it doesn't
+become weighty we can't right and we
+like this sounds kind of more like Yoda
+e than like real language and so and so
+like and we have this rule like this
+one's not that easy to explain actually
+like people have tried many ways like to
+like make sense of this in linguistics
+and it's just like but it's a thing we
+all know right and and so when I say
+rules of grammar these are not the kind
+of rules that we're usually taught as
+rules of grammar right so a a community
+of speakers you know for example like
+standard American English speakers they
+share this rough consensus of like the
+implicit rules they all have these are
+not the same you know like people have
+like gradations and disagree on things
+but you know and then kind of like a
+grammar is an attempt to describe all
+all these rules right and you can like
+kind of linguist might write out like a
+big thing called like you know the like
+grammar of the English language where
+they're trying to just describe all of
+them it's like really not going to be
+um large enough ever like this is a
+really Hefty book and it's like not
+still not describing all of them right
+like language is so complex but so what
+so what we are told is rules of grammar
+you know these kind of like prescriptive
+rules where they tell us what what we
+can and can't do you know they often
+have other purposes in describing the
+English language right so for example
+when they've told us things like oh you
+should never start a sentence with and
+you know that's like not true you know
+we start tennis we land all the time in
+English and it's fine uh uh you know
+what they probably mean you know there's
+some probably like
+reason that they're saying this right
+like especially if you're like trying to
+teach a high schooler to like write you
+know you're probably when you want them
+to focus their thoughts you probably
+don't want them to be like oh and this
+oh and this again you know like you want
+them to like and so you tell them like
+oh a rule of writing you know is like
+it's like you can never start sentence
+with and right and when they say
+something like oh it's incorrect to say
+I don't want nothing this is like bad
+grammar you know well this is you know
+in in standard American English you
+probably wouldn't have nothing there
+right because uh you you would have
+anything right but but in many dialects
+of English you know any many languages
+across the world when you have a
+negation right like the not and don't
+then like everything it kind of Scopes
+over also has to be negative has to
+agree and many dialects of English are
+like this and so what they're really
+telling you is you know the dialect with
+the most power in the United States
+doesn't do negation this way and so you
+should neither in school right and
+and and so you know and so the way that
+we can maybe Define grammaticality right
+rather than like what they tell us is
+wrong or right is that you know if we
+choose a community of speakers to look
+into they share this rough consensus of
+their implicit rules and so like the
+utterances that we can generate from
+these rules you know are grammatical uh
+roughly you know everyone has these like
+gradations of what they can accept and
+if we can't produce an utterance using
+these rules you know it's ungrammatical
+and that's where like this is like the
+descriptive way of thinking about
+grammar where we're where we're thinking
+about uh what people actually saying
+what people actually like and don't like
+and so for an example you know in in
+English largely we have a pretty strict
+rule that like the subject the verb and
+the object appear in this like SVO order
+there's exceptions to this like there's
+acceptance everything right expression
+things like says I and some dialects but
+you know it is like largely if something
+is before the verb it's a subject
+something is after the verb it's an
+object and you can't move that around
+too much and uh you know we also have
+these subject pronouns you know like I I
+shahide that have to be the subject and
+these object pronouns you know me me her
+him them that have to be the object and
+uh
+and you know and so if we follow the
+these rules we get a sense that we think
+is is good right like I love her and if
+we don't then we get a sentence that we
+think is is ungrammatical right
+something like me love she it's like we
+don't know who is who
+um you know who's doing the loving and
+and who is being loved in in this one
+right and it's
+doesn't exactly parse and this is like
+also true you know like even when
+there's ambiguity this continues to be
+true right so for a sentence like me a
+cupcake eight which is like the meaning
+is perfectly clear uh our rules of
+grammaticality don't seem to cut to cut
+as much slack right we're like oh this
+is wrong I understand what you mean but
+in my head I I know it's like not you
+know correct even not not by the like
+prescriptive notion of what I think is
+correct you know by the descriptive
+notion like my I just don't don't like
+it right
+and uh you can also you know sentences
+can be grammatical without any meaning
+so you can have meaning with that
+grammaticality right like me a cupcake
+eight and you could also have it's like
+classic uh
+uh example from from Chomsky in 1957
+um I introduced it earlier uh but yeah
+classically from 1957 uh you know
+colorless green ideas sleep sleep
+furiously right which like this has no
+meaning because you can't really make
+any sense out of this sentence as a
+whole but you know you know it's
+grammatical and you know it's
+grammatical right because you can make
+an ungrammatical version of it right
+like color screen ideas sleeps Furious
+right which does make sense because
+there's no agreement even though you
+don't have any meaning for any of this
+and then lastly
+um you know people don't fully agree you
+know everyone has their own idiotic
+right people like usually speak like
+more than one dialect and they kind of
+move between them and they have a
+mixture and those have like their own
+way of thinking of things they also have
+these like those have different opinions
+at the margins people like like some
+things more uh others don't right so an
+example of this is like not everyone is
+as strict for some wh constraints right
+so if you're trying to pull out
+something like I saw who Emma doubted
+report that would capture in the
+Nationwide FBI Manhunt was from a paper
+by uh Hofmeister knives and sag from
+Stanford uh this is like some people
+like it some people don't you know it's
+kind of some people can like clearly see
+it's like oh it's the who that we had
+captured and Emma doubted the reports
+that we had captured them you know and
+some people are like this is as bad as
+like
+uh what is the other doctor and I don't
+like it right
+so yeah
+so that's grammaticality and the
+question is like why do we even need
+this right it's like we we like we like
+accept these useless utterances and we
+block out these perfectly communicative
+utterances right and and this is like I
+started off saying that this is like a
+fundamental facet of human intelligence
+like it seems kind of you know a strange
+thing to have
+and so I think one thing I keep
+returning on when I think about
+Linguistics is that a basic fact about
+language is that is that we can say
+anything right there's like really
+every language you know can express
+anything you know and it's like there's
+no word for something people will
+develop it if they want to talk about it
+right and so if we ignore the rules
+because we know what it's probably
+intended right uh you know and then
+we'll be limiting possibilities right so
+in my kitchen horror novel where the
+ingredients become sentient I want to
+say the onion chop the chef and if
+people if if people just assumed I meant
+the chef chopped the onion because like
+SVO order doesn't really matter then uh
+I can't I can't say that
+so then yeah to
+to like to
+conclude you know a fact about language
+that that's like
+very cool is that it's compositional
+right we have the set of rules that
+defines grammaticality and then this
+like
+um and then this lexicon right this like
+dictionary of words that that relate the
+world want to talk to them and kind of
+combine them in these Limitless ways to
+say anything we want to say
+cool any questions about all this I've
+like tried to bring a lot of like
+linguistic fun facts like top of mind
+for this lecture so I'll hopefully
+hopefully have answers for things you
+want to ask
+cool
+cool yeah
+um
+cool so so now you know that was a nice
+foray into like a lot of like 60s
+Linguistics
+um you know how how does that relate to
+us like today
+right in NLP and
+um so we said that in humans you know
+like we can think about languages it's
+like there's a system for producing
+language you know that can be described
+by these discrete rules you know so it's
+not like it's smaller than all the
+things that we can say they're just kind
+of like rules that we can kind of put
+together to say things
+and so do NLP systems work work like
+that and one answer is like well they
+definitely used to right because as you
+said in the beginning before self
+supervised learning uh the way to
+approach doing NLP was through
+um
+understanding the human language system
+right and then trying to imitate it
+trying to see if you think really really
+hard about how humans do something then
+you kind of like code up a computer to
+to do it right and so for for one
+example is like you know parsing used to
+be like super important in in in in NLP
+right so and this is because you know as
+an example if I want my sentiment
+analysis system to classify a movie
+review correctly right something like my
+uncultured roommate hated this movie but
+I absolutely loved it right How would
+how would we do this before we had like
+cha gbt
+um we we we we you know we might have
+some semantic representation of words
+like hate and uncultured you know it's
+not looking good for the movies but you
+know how how does everything relate well
+you know we we might ask how would human
+structure this word you know so many
+linguists you know there's many theories
+of how to make you know of how syntax
+might work but they would tell you some
+some something like this so it's like
+okay I know I'm interested in the eye
+right because that's like probably what
+what the review relates to they're just
+worrying stuff about uncultured and
+hated but it seems like those are
+related like syntactically together
+right it's like the roommate hated and
+that can't really connect to the eye
+right so the eye can can't really
+um be related to the hated right because
+there's kind of separated they're like
+separate Sub sub trees separated by this
+like conjunction by this but relation
+um and and so and so it seems that I
+goes with love which is looking good for
+the movie let me know we have loved it
+and so then we have to move beyond the
+rules of of syntax right the rules of
+like discourse how how would this kind
+of you know like what could it mean you
+know there's like a bunch of rules of
+discourse and if you say it you're
+probably referring to like the latest
+kind of salient thing that's you know
+matches and like you know it is probably
+non-sentient right and so you know in
+this case it would be movie right
+so so so then you know like
+linguistic Theory you know they helped
+NLP uh it helped NLP reverse engineer
+language so you had something like input
+you know get like syntax from it you get
+semantics from from the syntax right so
+you would take the tree and then from
+the tree kind of build up all these like
+little you know like you you you you can
+build up these little functions of like
+how how how things how things like
+relate to each other then and then you
+you could go to discourse right so so so
+so what refers to what what what nouns
+are being talked about what things are
+being talked about and you know and and
+then whatever else was interesting for
+your specific uh
+uh uh uh use case
+now we don't need all that right
+language models just seem to catch on to
+a lot of these things right so so this
+whole thing that I did with the tree is
+like Chachi bitty know this I know it's
+much harder things than this right this
+was like this isn't even like slightly
+prompt engineer that just like woke up
+one morning was like gotta do the rest
+of the lecture gonna put that into chat
+GPT and this exactly you know I didn't
+even get some like yeah stop well I
+guess I got a bit of moralizing but I
+just like immediately uh immediately
+just told told me you know who likes it
+who doesn't like it and why I'm doing
+something like slightly uh wrong uh
+which is How It Ends everything right
+um
+and so and so you know NLP systems
+definitely used to uh this is where we
+were you uh work in this kind of
+structured discrete way but now NLP
+works better than it ever has before and
+we're not constraining our systems to
+know any sense syntax right so what what
+about structure in modern language
+models uh and so
+um this question is like do the
+questions like a lot of analysis work
+has has has been focused on you know I
+think we'll have more analysis lectures
+later also so this is going to be you
+know looked in more detail right is how
+could you get from training data you
+know which is just kind of like a loose
+set of just things that have appeared on
+the Internet or sometimes not on the
+internet rarely right to rules about
+language right to to to to the idea that
+there's this like structure underlying
+language that we all seem to know even
+though we do just talk in streams of
+things
+and sometimes up here on the internet
+and one way to think about this is like
+testing
+um you know is testing how novel words
+and old structures work right so humans
+can easily integrate new words into our
+old sense and tactic structures I
+remember like
+I had lived in Greece for a few years
+for Middle School just speak not
+speaking English too much and I came
+back for high school and uh
+and um
+yeah and and this is like in in Berkeley
+in this way and there was like there was
+literally like 10 new vocabulary words
+I'd like never heard of before and they
+all had like a very similar role to like
+dank or like sick you know but they were
+like the ones that were being tested out
+and did not pass and within like one you
+know one day I immediately knew how to
+use all of them right it was not it was
+not like a hard thing for me I didn't
+have to like get a bunch of training
+data uh about how how to use you know
+all these words right and so this kind
+of like is is one way of arguing that
+you know the thing I was arguing for the
+whole first part of the lecture that
+syntactic structures they exist
+independently of the words that they
+have appeared with right uh a famous
+example of this is um is Lewis Lewis
+Carroll's poem Jabra walking right I was
+going to quote from it but I can't
+actually see it there right where they
+uh where they uh you know where he just
+like made up a bunch of new words and he
+just made this poem which is all new
+open class words open class words what
+we call you know kind of like nouns
+verbs adjectives adverbs classes of
+words that like we add new things to all
+the time while while things like
+conjunctions you know like and or but
+are closed class of there's been a new
+conjunction added late added recently I
+just remembered after I said that who
+does anyone know like of a contraction
+that's in the past like 30 years or
+something maybe 40. all right spoken
+slash like now we say slash and it kind
+of has a meaning that's like not and or
+but or or or or but it's a new one but
+it's closed Clash generally this happens
+rarely
+anyway and and so you know you you you
+you have like twist brilliant and the
+slightly toes did guyron Gimbal and the
+wave right toves is a noun we all know
+that we've never heard it before and in
+fact you know one word for from from
+Jabberwocky Turtle actually entered the
+English vocabulary right it kind of
+means like a like a little chuckle
+that's maybe slightly suppressed or
+something right so so so it shows like
+you know there was one literally like
+one example of this word and then people
+picked it up and started using it as if
+it was a real word right so and so one
+one way of asking um a do language
+models have structures like do they have
+this ability
+and you know and I always think it would
+be cool to go over like a benchmark
+about this right so like the kind of
+things so people like make things where
+you could test your language models to
+to see if it does this
+um yeah are there any questions until
+now if I go into just like this new
+benchmark
+cool so yeah the cogs Benchmark is a
+compositional generalization from
+semantics uh Benchmark or something
+right it kind of checks if if language
+models can uh can can do new words
+structure combinations right so so the
+the task at hand is semantic
+interpretation this is I kind of glossed
+over it before but it's like if you have
+if you have a sentence right like the
+girls saw the Hedgehog you have this
+idea that like and you've seen what like
+saw is a function that takes in two
+arguments and it outputs that the first
+one saw the second one you know this is
+like a bit of like you know
+um this is like one way of thinking
+about semantics there's many more as
+we'll see but you know this is one and
+so like and so and so you can make a
+little like kind of Lambda expression
+about uh you know about uh how how
+how you know what the sentence means and
+to get that you kind of have to use the
+the the tree to get it correct but
+um anyway the the specific mechanism is
+not very important but it's like the
+semantic interpretation where you take
+the girl saw the Hedgehog and you and
+you add put this like function of like
+you know C takes two two arguments you
+know first is a girl second is the head
+job and then and then the training of
+the test set they have distinct words
+and structures in in different roles
+right so so so for example you know you
+you have things like Paula right or the
+Hedgehog is like always an object in the
+in the training data so when you're
+fine-tuning to do this task but then in
+the test data it's a subject right so
+it's like can can can you like can you
+can you use this uh word that you've
+seen you know in in a new kind in in a
+new place because in English anything
+that that that that's an object can be a
+subject you know with like some there's
+some subtlety around like some things
+are more likely to be subjects but yeah
+and then similarly you know if if you
+have something like the cat on the mat
+you know and it always appears so so
+this idea that that like a noun can go
+with like a prepositional phrase right
+but that's always always in the subject
+whether Emma saw the cat in the mat and
+then like can can you do something like
+you know the cat on the mat saw Mary
+right so it's like move that kind of
+structure to subject position which
+something that in English we can do
+right like any type of noun phrase that
+can be in an object position can be in
+subject position and so that and so
+that's the the cogs Benchmark you know
+large language models have an Asus yet I
+wrote This and like I was looking over
+the slide and I was like well we haven't
+checked the largest ones you know they
+never do check the largest ones for
+because it's really hard to like do this
+kind of more more like analysis work you
+know and things move so far it has like
+the really large one let's go T5 3
+billion you know three billions like a
+large number it's maybe not a large
+language model anymore but um you know
+they don't Ace this right they're
+they're getting like 80 well like when
+they don't have to do the structural
+generalization when they can just like
+do like a test set which which like
+things appear in the same role as they
+did in training set they get like 100
+easy it's not a very hard task and so
+you know this is like
+but still still pretty good you know and
+it's probably like
+if a human had never ever seen something
+in subject position I'm not sure that it
+would be like 100 as easy as if they had
+you know like I think that you know we
+don't want to fully idealize how how
+things were were working humans right
+similarly you can take literal
+Jabberwocky sentences right so uh so so
+build building on some some work that
+John did then I'm just gonna talk about
+later so I'm not going to go in but
+maybe I'm wrong on that assumption right
+we can like kind of test the models like
+embedding space right so if we go high
+up in the layers and test the embedding
+space we can test it to see if it
+encodes structural information right and
+and so we can test you like okay is
+there like a a rough representation of
+like
+syntactic tree relations in this uh
+latent space and uh and and then these
+um yeah and then a recent paper asked
+does this work when we introduce new
+words right so if we so if we take uh
+you know if we take like Jabberwocky
+style sentences and then ask can the
+model find out these the the trees and
+these in its latent space does it like
+uh
+uh encode them and and and and the
+answer is you know like it's kind of
+worse you know in in this graph the uh
+the hatched bars or the ones on the
+right are the Jabberwocky sentences and
+the um and the and the clear ones or the
+not hatch ones I guess are are the ones
+are are the normal sentences in which
+you know performance is worse you know
+so this is like unlabeled attachment
+score on the y-axis it is like you know
+first probably worse in humans right
+it's easier to read a normal poem than
+to read Jabberwocky so you know the
+extent to which this is like damning or
+something you know is that I think very
+very small I think the paper is I have
+linked it there but you know I think the
+paper is maybe a bit more um
+um
+uh sure about this being a big deal
+maybe then it is but yeah you know it it
+does show that that this kind of process
+isn't um trivial yeah
+it's like applies for walking
+substitutions oh so this is um this is
+uh something called like phono tactics
+right so so in uh I think like this is
+probably around kind of what you're
+asking is that it's like you want a word
+which sounds like it could be in English
+right like Pro like provocated right
+it's not that can't be in English you
+know classical example you're like Blick
+it could be an English word you know
+Nick can't right we can't start sentence
+with bien and that's not like an
+impossibility of like the mouth right
+it's like you know uh similar things
+like you know pterodactyl pneumonia you
+know like these come from like Greek
+Greek words like
+I can say them I'm a Greek native
+speaker like PN and PT I can put them at
+the beginning of a syllable you know but
+like in English they they they don't go
+and so like if you kind of follow these
+rules you know and like kind of also add
+like the correct like suffixes and stuff
+right so like proud Paul vacated we know
+is like past tense and stuff then
+then yeah then you can make kind of
+words that that don't
+um exist but could exist and so they
+don't like throw people off this is
+important for the tokenizers right you
+don't want to do something like totally
+wacky to to to to to test the models but
+um yeah
+so when you generate
+um like this test set like with these
+Java Rock substitutions are these words
+generated by like a computer or like is
+there a human like coming up with words
+that sound like English but all the time
+there's some like uh there's some like
+databases that you know people have like
+thought of these and like the I think
+they get theirs from some like there's
+some list of them you know because if
+you have like 200 that's like enough to
+run this test because it's like a test
+but uh but
+um
+yeah I mean I think that you know the
+phonotactic rules of English can be
+actually laid out kind of Simply you
+know it's like you you know like PTU
+like can't really have like two stops to
+get you know it's like they're both like
+the same you can't really put them
+together you know it's like you you can
+probably make like a short program or
+like a long-ish program but not like a
+very super complex one to like make good
+Jabberwocky words in English yeah
+yeah wondering how the model would
+tokenize these Java Rocky sentences like
+would it not just Mount all these words
+like publicated just like the unknown
+difference so um
+um so so these are largely models that
+have like uh word wordpiece tokenizers
+right so they like kind of so if they
+don't know where they're like okay
+what's like the largest bit of it that I
+know and then like that's like a sub
+token right and this is how like most
+models work now it's like back in the
+day and this is like back in the day
+meeting like until like maybe like six
+or seven years ago it was like very
+normal to have tokens like unknown
+tokens but now generally there is no
+such thing as an unknown right you put
+like kind of at a bare minimum you have
+like the alphabet in your vocabulary so
+I got a bare minimum you're splitting
+everything up into like you know like
+letter by letter tokens character by
+character tokens but um if you're not
+then um yeah it's
+it should
+um yeah it should find kind of like and
+this is why like the phonotactic stuff
+is is kind of is kind of important for
+this right that it's it tokenizes like
+hopefully in like slight slightly bigger
+chunks that have some meaning and like
+because of how attention works and how
+contextualization works you can like
+even if you have like a little bit of a
+word you can like give you know uh the
+the correct kind of attention to it once
+it figures out what's going on a few
+layers in you know for like a real
+unknown word for like a fake unknown
+word then you know
+cool
+I went back but I want to go forward
+cool any more questions about anything
+yeah
+it was uh like 80 20 scores that you
+were saying these are not
+um like this isn't myself probably yet
+I'm just trying to get a sense of what
+80 means that context is like 80 of
+exact
+ly yeah it was it was exact I think like
+the relevant comparison is that what you
+didn't have this kind of structural
+difference you know where where like
+something that was sometimes a subject
+was like then like was like something
+which was like never an object was that
+an object you know the the like the the
+the the the accuracy on the on that test
+set is like 100 like easy and so and so
+and so it kind of there was no good
+graph which showed these next to each
+other they kind of mentioned it but uh
+yeah and so I think like that's like the
+relevant
+um piece of information that like
+somehow this like SWA swapping around of
+roles like kind of slightly trips it up
+that being said you're right like exact
+match of semantic Parts is kind of a
+hard metric you know and so and so it's
+not this is yeah none of this stuff and
+I think this is important none of this
+stuff is damning none of this stuff is
+like they do not have the kind of rules
+human have this is also I was like well
+there's a bit of confusion there's a bit
+of fusion in humans it actually gets
+quite a bit it gets quite subtle with
+humans and I'm gonna go into that in the
+next section too
+yeah overall
+uh sorry what is it yeah overall like I
+think the results are like surprisingly
+not damning I would say yeah this is the
+there's like clear clearly like you know
+maybe not the fully like programmed
+discrete kind of rules but yeah
+I would say cool uh another thing we
+could do uh yeah test how syntactic
+structure kind of maps onto like meaning
+and role right and so like uh as we said
+before right like in English a syntax of
+word order it gives us the who did what
+to whom meaning and so you know if we
+have if we have like you know for for
+any combinations like a verb and B if
+has something like a verb B we know like
+a is a do or B is the patient
+and so he has like is this kind of uh
+relationship you know um strictly
+represented in English language models
+as it is like in the English language
+and and so and so what we could do is
+that we could take a bunch of things
+which like you know appear in subject
+position a person would appearance
+object position and uh um and and put in
+and take their late late in space
+representation and uh and kind of learn
+learn you know learn learn like a little
+classifier you know this should be like
+a pretty clear distinction in latency in
+any like good model right like which
+like these models are good this should
+be a pretty clear distinction because
+it's like a linear classifier to kind of
+separate them right and the more on the
+one side you are you're more subject the
+more the other side you're you're more
+object
+right and and so then we we we can test
+you know does the model know
+um the difference you know be between
+when something is a subject and when
+some something is an object you know
+doesn't know that like you're going to
+go on opposite sides of of this um of
+this uh
+uh dividing line you know even if like
+everything else stays stay stay the same
+and all the clues point to just to
+something else right so it's like this
+index map on to roll in this way you
+might think like well I could just check
+if it's like second or like fifth right
+but you know we've actually we we yeah
+this is a period that I wrote you know
+we did like compare you know we like try
+to control for like
+position stuff in in various ways and
+these are like yeah and and so it's
+hopefully we claim we're kind of showing
+like the like syntax to roll mapping
+and what we see is that it does right so
+so so if we kind of graph the uh the the
+the
+distance from that dividing line you
+know on the y-axis which is like the the
+like the original subjects when we swap
+them and
+put them in object position they do like
+diverge as we go up layers in that um in
+that Dimension and we tried this again
+you know all this analysis experience
+isn't kind of small models with some
+bird would so gpt2 you know it's like a
+bigger version of gpt2 and it worked out
+but but it's like you know none of this
+is like you know
+um none of this is like the big big
+stuff I think now we're starting to see
+more analysis on the big big stuff I
+think it's really cool
+yeah uh so then where are we with like
+structure and language models right we
+know that uh we know that language
+models are not aren't they're not
+engineered around discrete linguistic
+rules but the pre-training process you
+know it isn't just a bunch of surface
+level memorization right we have seen
+this there is some kind of like the uh
+discrete
+rule-based system kind of coming out of
+this you know maybe it's not the perfect
+kind of thing you would like write down
+in a syntax class but you know there is
+some syntactic knowledge you know and
+it's complicated in various ways and
+humans are also complicated and that's
+what we're going to get to next right
+there's no ground Truth for how language
+Works yet right like if we knew how to
+fully describe English right with a
+bunch of good discrete rules we would
+just like make an old pipe Pi pipeline
+system and it would be amazing right if
+we could like take the Cambridge grammar
+of English but like it was truly truly
+complete if we just knew who knew how
+English worked we would do that and so
+we're working in this case where there's
+no really no ground truth cool any
+questions about this probably move
+Beyond syntactic structure
+cool
+so uh moving beyond this kind of like
+very structure-based uh idea of language
+and I think it's very cool to learn
+about structure in this way and like at
+least how I was taught Linguistics it
+was like a lot of it the first like many
+semesters uh
+uh was like this kind of stuff
+um but then but but I think there's like
+so much more and and and like very
+important I think that meaning plays a
+role in in linguistics
+structure right like there's a lot of
+Rich information in words that that
+affects like the final way that like the
+the syntax works and of course what like
+end up meaning and like what like the
+words influence each other to mean right
+and so like the the semantics of words
+right the meaning it's like always
+playing a role in forming and applying
+the the rules of language right and so
+you know for example like a classic
+example is like you know verbs they like
+have kind of like selectional
+restrictions like eight can like take
+kind of any food and it can also take
+nothing I was like I ate it means that
+I've just like I've eaten right devoured
+right the word devoured actually can't
+can't be used in transitively right it
+sounds weird you you need to to devour
+something right there's verbs like
+elapsed that only take like you know a
+very certain type of noun right like
+elapsed only takes Downs that that uh
+that uh for the time you know so maybe
+like Harvest can refer to time Moon can
+refer to time some somewhere you know
+it's trees it cannot take over like
+trees right there's even verbs that only
+ever take one specific noun as their
+argument right it's like classic example
+um I think yeah my advisor Dan dendroski
+told me this one to put it in
+um and and what's cool is that like that
+that's how we train models these days if
+you see this uh this um diagram I
+screenshotted from John's Transformers
+lecture right we start with a rich
+semantic input right we start with these
+like a thousand on the order of like a
+thousand you know depending on the model
+size embeddings right which it's like
+think of how much information you can
+express like on a plane right on two
+Dimensions it's like the kind of
+richness that you can fit into a
+thousand Dimensions you know it's huge
+and we start with these word word
+embeddings and then move on right it's
+like the attention block and and
+everything
+and so yeah I'm just going to go through
+some examples of the ways that that
+languages you know the ways that like
+meaning kind of plays a role in forming
+syntax hopefully it's like fun a tour
+through like the cool things that happen
+in language
+right so as we said you know anything
+can be an object anything can be a
+subject we want to be able to say
+anything language can like Express
+anything this is like kind of a basic
+part of language but you know many
+languages they have a special syntactic
+way of dealing with this right so they
+want to tell you like if there's an
+object that you wouldn't expect right
+like in this case someone tell you hey
+watch out you know the be careful we're
+dealing with with a weird object here
+right so this is like kind of in the
+syntax of languages mode you know if
+you're if you're if you're a native
+speaker or or you've learned Spanish
+right you know this like ah constraint
+right so if you say like you know so if
+something is a um is an object but it's
+inanimate you don't need the ah because
+you're like yeah I found a problem but
+then if you're putting something adamant
+in the object position you need to kind
+of Mark it you need like hey watch out
+you know there's an object here and it's
+like a rule of the grammar right like if
+you don't do this it's wrong and they
+tell you this in Spanish class
+um
+similarly like Hindi has a kind of a
+more subtle one but I think it's cool
+right so you uh
+um to if if you put an object that is
+definite you have to mark it with a
+little like this is an object marker
+right like a little accusative marker
+right and like you might ask okay I
+understand why like animacy is uh is uh
+is is
+um is a big deal right like you know
+maybe animate things more often do
+things than have things done to them but
+like why why why definiteness right like
+why why would you need this little like
+call Marker just like the goat versus a
+goat and it's like well if something is
+definite it means that it's like it
+means that that it's like in the kind of
+in we've like kind of probably been
+talking about it or we're all thinking
+about it you know for example like oh I
+ate the apple right this means that
+either like we had one apple left and I
+ate it or like it was like really rotten
+or something you can't believe I ate it
+right or something like that and so like
+then things that we're already talking
+about they're probably more likely to be
+subjects right like if we're all you
+know you know if I was like oh Rosa you
+know
+yeah I feel like Rosa did this and Rosa
+did did that and runs then and then and
+and and then like Leon kiss Rose are you
+like no you probably want to be like
+Rosa kissing on right you probably want
+to put you know it's not straight but if
+you're talking about something you're
+probably it's probably going to be the
+subject of the next sentence so then if
+it's you have to put a little accusative
+marker on it so this is like how like
+the uh marking in the language works and
+it's kind of all influenced by this like
+interesting semantic uh relationship
+um and language models are also aware of
+these gradations and it's you know in a
+similar like classifying some subjects
+an object uh paper that that that that
+we wrote we see that language models
+also have these gradations right so if
+you like again if you like map the
+probability of being from that
+classifier on the y-axis right we see
+that there's a high accuracy right
+there's over many languages and all of
+them you know on the left we have the
+subjects they're classified above on the
+right we have the object are classified
+below but you know animacy kind of
+influences this grammatical distinction
+right so like if you're animate and a
+subject you're very sure if you're
+inanimate and an object you're very sure
+anything else you're kind of close to
+50. you know and so it's like this this
+kind of uh
+this kind of um
+relation where
+the meaning plays into the
+um structure is it is reflected in
+language models you know and that's not
+bad it's good because it's how humans
+are or you know it kind of we should
+like you know temper our expectations
+maybe away from the like fully fully
+syntactic things that we're talking
+about
+um another kind of cool cool example of
+like uh
+of how meaning can influence you know
+what we can say what we can say I've
+said from the beginning many times that
+all kind of combinations of structures
+and words are possible but that's not
+strictly true
+right so in many cases if something is
+like too outlandish we often do just
+assume the more plausible interpretation
+right it's like there's these
+psycholinguistics experiments
+um where they kind of test this what's
+you know like these kind of these kind
+of like giving uh verbs is like you know
+the mother gave the daughter the candle
+and you could actually like switch that
+around you know you could do like so
+it's like the date of alternation but
+you can switch it around to make them
+the mother give the candle to the
+daughter
+and and then if if you if you switch
+around who's actually being given right
+so if you actually saying the mother
+gave the candle the daughter
+um people don't really
+um
+p p people don't interpret that like in
+its literal sense they usually interpret
+it as like the mother gave the the
+daughter the candle and like of course
+Outlanders me meanings you know they're
+never impossible to express right
+because nothing is
+right and so you you can like kind of
+spell it out you know it could be like
+well the mother they should pick up her
+daughter and she handed her to the
+candle you know who who is sentient and
+then you you could say this but you like
+can't you you like can do it simply with
+with the give word like like people tend
+to interpret it the other way it's like
+marking these like less prominent things
+and marking them sorry these less
+plausible things and marking them more
+prominently there's like pervasive
+feature that we say like across language
+in in all these ways and all these ways
+it's like you know also like very like
+embedded in the grammar as we saw
+earlier in Spanish and Hindi
+cool so
+another way that uh you know in where
+how we see meaning kind of play playing
+to to to you know and kind of break
+apart this like full compositionality
+you know syntax picture right is that
+meaning can't always be composed from
+Individual words right language is full
+of idioms you know sometimes we talk
+about idioms you you know you might
+think okay there's maybe like 20 of them
+you know things like my grandfather
+would say you know things about like
+chickens and donkeys in Greece they're
+all donkeys uh you know we're actually
+constantly using constructions that that
+you know that we couldn't actually get
+from like you know they're kind of like
+idiomatic in their little sense right
+that we couldn't actually get from like
+composing the words right things like I
+wouldn't put it past him he's getting to
+me these days that won't go down well
+with the boss you know there's like so
+so so many of these and it's kind of
+like a basic part of uh of communication
+to kind of use the these little like
+canned idiomatic phrases
+um you know and like linguist love love
+love saying that like oh any string of
+words you say is like totally novel you
+know and it's like probably true and
+I've been speaking for like
+50 minutes you know and like probably no
+one has said this exact thing like ever
+before I just used the compositional
+rules of things to make it but actually
+most of my real letters is like oh yeah
+no totally right like something like
+that which is actually people say that
+all the time right most of my real
+utterances are like people uh say that
+all the time you know we have these
+little cat things that we love reusing
+and that and that you know we reuse them
+so much that like they stop making sense
+if you break them apart into individual
+words right and we even also even have
+these constructions that can like take
+arguments but like don't really
+uh you know so so they're not like
+canned words they're kind of like a
+canned way of saying something that you
+know doesn't really work if you build up
+from the syntax right it's like oh he
+won't he won't eat shrimp let alone like
+oyster right and what does that mean
+well it means like I'm defining some
+axis of like
+you know of like moreness right in this
+case probably like selfish and like
+shellfish and like weird or something
+you know and so it's like well shrimp is
+that sweet Source there's more you know
+and if I say like okay let alone beef
+right the axis like vegetarianism right
+so it's like this construction does like
+kind of like a a complex thing right
+where you're saying like he won't do one
+thing let alone the one that's worse
+than the dimension you know like it's
+like oh she slept after in the way he uh
+knitted the night away they drank the
+night away right it's like oh this is
+like time away thing doesn't actually
+you know you like can't really so
+otherwise you know like these like this
+er er construction like like the the the
+bigger they are the more expensive they
+are right like the
+and I forgot how it goes the bigger they
+come the harder they fall right like so
+it doesn't even have have to be a yeah
+and it was like you know that travesty
+of a theory right right like that other
+construction there's so many of these
+right like so much of how we speak if
+you actually try to like do like the
+three parts new like semantic Parts up
+up from it it won't really make sense
+and and so there there's there's been
+this work this is more more recent uh
+recently kind of come coming to light
+and I've been really excited by it
+there's texting constructions and large
+language models there was just this year
+uh paper by Kyle mahalwald uh who was a
+postdoc here
+um
+uh testing the like the a beautiful five
+days in Austin Construction right so
+it's like the a adjective numeral
+um noun construction where it's like
+it's like doesn't really work right
+because it's like it wouldn't really
+work right because so you have uh days
+right and there's like many ways
+you know and like anything kind of
+similar to it right like it's like a
+five beautiful days that that doesn't
+work right so somehow like this specific
+construction is like grammatically
+correct to us but like you know you like
+you can't say oh five days in Austin
+right because like uh five beautiful
+days you know you have to like this and
+they showed like gp3 is actually like
+largely concurrent concurs with humans
+on on these things right so on the uh on
+the left here the the gray bars we have
+a
+the the the the things that are
+acceptable to humans right so those are
+like uh a beautiful five five days in
+Austin and five beautiful days in Austin
+right those are both acceptable to
+humans they do this over like many many
+instances of this construction not just
+Austin obviously but uh yeah and we say
+like GB3 like accepts these you know
+those are the gray bars and humans also
+accept these though those are the green
+triangles and like every other iteration
+the human triangles are very low and gp3
+is like lower but but but does get
+tricked by some things right so it seems
+to have this knowledge of this
+construction but not as like starkly as
+humans do right so the especially like
+if you see if you see that that that
+third one over there right the five
+beautiful days humans don't don't accept
+it as much
+it's funny to me it sounds almost better
+than those rest of them but I guess
+these green triangles were uh computed
+very uh
+uh robustly so
+I'm an outlier yeah and GB3 is like
+better you know like think thinks those
+are better than maybe humans do but
+there's this like difference there's
+like significant difference between the
+gray bars and the orange bars
+and then similarly some people tested
+the the x or the wire construction right
+and so it's like they took examples of
+sentences that that were like the x or
+the wire construction and then like they
+they they took um example centers which
+had like an ER followed by an ER but
+they weren't or but they weren't
+actually the actual the one right it's
+like oh the older guys how about the
+younger guys right so but so that's not
+an extra wire construction and uh and
+and you know and then they were like
+right if we Mark the ones that are as
+positive ones that aren't as negative it
+does the latent space of models kind of
+like encode this difference right that
+that like all this construction kind of
+clustered together in a way and they
+find that it does
+and then the last thing I want to talk
+about in this like semantic spacing
+after like constructions and all that is
+like the meaning of words is like
+actually very subtle and sensitive and
+it's like influenced by context and all
+these like crazy ways right and the
+Erica Peterson and Chris Potts from from
+the Linguistics Department here did this
+like great investigation on a uh you
+know uh on the on the ver on the verb
+break you know um and it's like that
+break can have all these meanings right
+like we we think it's like yeah break is
+like a word you know like words are
+things like table and dog and break that
+have like one sense but you know
+actually there aren't even senses that
+you can enumerate you know like
+Riverbank and financial bank and just
+like yeah you know break the horse means
+tame well like break a 10 bill it means
+like spread sweaters like smaller bits
+of money right and there's like so many
+ways right right like break free and
+break even they're just like so so many
+ways in which Break
+um
+you know like its meaning is just so
+subtle and influences like kind of Truth
+like every word you know or like many
+words maybe like table and dog it's like
+yeah there's like a set of all things
+that are tables or dogs and it's like
+kind of describes that set you know
+there's maybe some more philosophical
+way of going about it but you know so
+it's like pocket you know it's like a
+pocket but then like you can pocket
+something then like it kind of means
+Steel in many cases doesn't just mean
+put something in your pocket literally
+right this is like so
+yeah there's like all these ways in
+which
+um
+in in which like the meaning of words is
+like sadly almost by everything around
+it and and what they do is that don't
+don't worry about like what's actually
+going on here but you know they've kind
+of mapped each sense like a color right
+and then when when you start off in
+layer one they're all
+um I think this is just by like position
+embedding right you start off in layer
+one and it's just like I think that's
+what it is and then you like if you take
+all the words past pass them through
+like a big model like rubber large right
+then then they're kind of all jumbled up
+right because they're all just break
+right they're just like in different
+positions
+and then you know by by the end they've
+all kind of split up you say oh all the
+colors are kind of clustering together
+each color is kind of like one of a one
+of these meanings right and so and so
+they kind of clustered together and
+these like kind of is it constructions
+again or is it just like you know the
+way in which like they kind of isolate
+these like really subtle aspects of
+meaning
+um yeah so then I think a big question
+in NLP right is like how do you strike
+the balance between like syntax and the
+ways that like meaning influences thing
+right so well and I pulled out this
+quote from a book by John byney uh which
+I uh enjoy
+um and and I think it kind of bring
+brings light like a question that we
+should be asking NLP right this book is
+about it's like just like a Linguistics
+book it's not about LP at all but you
+know I think while language is full of
+both broad generalizations and items big
+properties linguists have been dazzled
+by the Quest for General patterns right
+that was the first part of this talk you
+know
+and like of course the actual structures
+and categories of language are
+fascinating but you know I would submit
+or she would submit that what is even
+more fascinating is the way that the
+general structures arise from and
+interact with the more specific items of
+language
+producing a highly conventional set of
+general and specific structures that
+allow the expression of both
+conventional and novel ideas right it's
+kind of like this like Middle Ground
+between abstraction and like specificity
+uh that like we would want you know that
+like humans probably exhibit that would
+want our models to to exhibit
+yeah
+I was wondering you could go back one
+slide and just unpack this diagram a
+little more because I'm fairly new to
+NLP I've never seen a diagram like oh
+sorry yeah what what does this mean how
+should I you know interpret oh so this
+is all like
+um you know so if you take you know the
+way that that that that like uh words
+are you know as you're passing through a
+Transformer through through many layers
+I just wanted to be like look at how the
+colors Cloud cluster but uh yeah and you
+pass them through a Transformer many
+layers at any one point in that
+Transformer you could like say okay how
+are the words organized now you know and
+you think well I'm going to project that
+to two Dimensions from like a thousand
+and that's you know maybe a good idea
+maybe a bad idea I think there's a lot
+of but you know I wouldn't be able to
+show them here if there were a thousand
+so let's like assume that that's like an
+okay thing to be doing
+um then then you know so this is what
+they've done for like for layer one and
+then for layer 24.
+and so we could see that that like they
+they start off where like the colors are
+totally jumbled and they're probably you
+know in before layer one you add in the
+position embedding so I think I think
+that that's what all those clusters are
+right so it's like kind of clustering
+because you don't have anything to go
+off of you know it's like this is break
+and it's in position five it's like okay
+I guess I'll cluster all the bricks in
+position five right but then as you go
+as you as you go uh up up the model
+right and kind of like all this meaning
+is being formed you see these like
+senses kind of like come out uh in the
+um in in how it organizes things right
+so it's like all all these like breaks
+kind of like become they're very
+specific you know they're very like kind
+of subtle versions of breaks now there's
+like this working I think it's different
+from a lot of NLP work because um it has
+like a lot of Labor put into this
+labeling right like this is like some
+something because because uh you know
+the person who this is a linguistic
+student right if you like go through
+Corpus and label every Break by like
+which one of these it means it's like a
+lot of work and it's like yeah and so I
+think it's the kind of thing that you
+wouldn't be able to show otherwise so
+it's often not really shown
+yeah
+cool
+so yeah language is characterized by the
+fact that it's just amazing the abstract
+system right I started off raving about
+that and you know and we want our models
+to capture that that's why we do all
+these compositionality kind of syntax
+tests you know but meaning is so rich
+and multifaceted right so high
+dimensional spaces are much better at
+capturing these these subtleties right
+we started off talking about word
+embeddings in this class right you know
+High dimensional space are so much
+better this than any rules that we would
+come up with being like okay maybe we
+could have like break subscript like
+break money you know and we're going to
+put that into our system and so where do
+deep learned learning models where do
+they stand now right between surface
+level memorization and abstraction you
+know and this is what like a lot of
+analysis and interpretability work is
+trying to understand you know and I
+think that what's important to keep in
+mind when we're reading and kind of
+doing this analysis and interpretability
+work is that this is not even a solved
+question for humans right like we don't
+know exactly where humans stand between
+like having an abstract grammar and
+having these like these like very like
+construction specific and meaning
+specific ways that that like things work
+by
+cool any questions overall on the
+importance of semantics and the richness
+of human language
+yeah
+this is a funny question from quite a
+bit before but
+um he's showing a chart from your
+research but
+um the model was really really well able
+to distinguish anonymous
+given its knowledge of subject or object
+I was just trying to interpret that crap
+and understand what what the sort of
+links between them
+no no it's not that I think it's here
+right yeah yeah so so the main so this
+is similar to the other graph where it
+was um you know where what it's trying
+to to distinguish is a subject from
+object but we've just split the test set
+into these four ways right it's been
+like subject inanimate subject animate
+some you know so we just split the test
+set right and so like what the uh what
+like the two panels and the x-axis are
+showing are like these different splits
+right and so like okay so things that
+are subject and basically the ground
+truths the things on the left should be
+above 15 things on the right should be
+below 50. and that's what's happening
+but if we further split it by animate
+and inanimate we see that there's this
+like influence of of intimacy on the
+probability that was a yeah sorry I
+rushed over these graphs like kind of I
+want to give like a taste of things that
+happen but yeah it's good to also
+understand fully what's going on
+it's cool yeah
+yeah
+so you were talking about acceptability
+so
+um I'm assuming for a judging
+acceptability means you just asked but
+first for like gpt3 like how do you
+determine if it defines a sentence
+acceptable
+I think logic so I think that's what
+Kyle Mahal did in this paper right you
+could just like take like the
+probabilities out put it at the end if
+you like mask you know if you like kind
+of for gp3 right it's like going left to
+right I think there's like other things
+that people do sometimes but like yeah
+especially for these models they don't
+have too much access to apart from like
+the like generation and like the like
+probability of each generation I think
+that you could yeah I think that that
+you might want to do that and there's
+like you know
+you don't want to multiply every larger
+together right because then like if
+you're multiplying many probabilities
+longer longer sentences you know become
+like very unlikely right which is like
+not true exactly for humans or you know
+it's not true in that way for humans so
+you know I think there's like things you
+should do like ways to control it and
+stuff like when you're running an
+experiment like this yeah
+cool
+Okay so
+moving on to
+um
+multilinguality in NLP
+so so far we've been talking about
+English right all this I haven't been
+saying it explicitly all the times but
+most things I've said you know apart
+from some maybe some differential object
+marking examples right they've been kind
+of about English about English models
+but there's so many languages right
+there's like over 7000 languages in the
+world where maybe not over there's
+around
+seven thousand languages in the world
+right like it's it's uh it's hard to to
+to Define right like what a language is
+right it's kind of difficult you know
+like even in the case of English right
+we have things like it's like Scots
+write the language book in Scotland is
+that English is like you know something
+like Jamaican English you know like
+maybe that's a different language right
+there's like the different structures
+but it's still like clearly like much
+more related than anything else right
+than like German or something right and
+so you know how how do you make a kind
+of a multilingual
+model uh well so far a big approach to
+me you know you take a bunch of
+languages this is like all of them and
+maybe you're not gonna take all of them
+you know maybe I think 100 or something
+and you just follow them and just like
+one Transformer language model and
+there's maybe things you could do like
+up sampling sumps they don't have too
+much data of you know or like down
+sampling something they have too much
+data of you know but like this is the
+general approach you know what if we
+just make one you know like one uh
+Transformer language model you know uh
+you know like something like a bird it's
+usually like a bird type model it's hard
+to get a good generation for for like
+too many languages you know but but yeah
+how about you get one from a language
+model for all of these languages
+right and so what's cool about this is
+that multilingual language models right
+they let us they let us share parameters
+between High resource languages and low
+resource languages right there's a lot
+of language in the world really just
+most languages in the world which you
+could not train like even like a bird
+size model for right they're just like
+not enough data and there's yeah there's
+a lot and there's a lot of work being
+done on this and one way to say like
+well you know like you know pre-training
+and transfer learning they brought us so
+much unsuspect uh unexpected success
+right and so like you know and and we
+get this great linguistic capability and
+generality right if we preaching
+something in English that we weren't
+that we weren't asking for so you know
+so will the self-supervised learning
+Paradigm you know can it like deliver
+between languages so it's like maybe I
+can get a lot of the
+um a lot of the like linguistic
+knowledge like the more General stuff
+from like just all the higher resource
+languages and then kind of apply it to
+the low resource languages right like a
+bilingual person doesn't have like two
+totally separate parts of their self
+right that like have learned language
+there's probably some sharing some way
+that like things are like in the same
+space like and Linguistics are broadly
+the same right and so and so and so you
+know we we have this like attempt to
+like bring NLP to like some still very
+small subset of the 7000 language in the
+world we can look at it through two
+lenses right on on the one hand you know
+languages are remarkably diverse so
+we'll go over some some of the cool ways
+the language in the world vary you know
+and so there's multilingual NLP capture
+the specific differences of of different
+languages on the other hand you know
+languages are similar to each other in
+many ways and so does multilingual NLP
+capture the parallel structure between
+languages
+so you know just just to go over some
+ways like you know really understanding
+like how like diverse languages can be
+you know in around this is a a quote
+from a book but um you know in around a
+quarter of the world's languages every
+statement right like every time you use
+a verb must specify the type of Source
+on which it is based right this is kind
+of like a part you know how we have like
+tense in English where we like you know
+kind of everything you say is like kind
+of either in the past or the present or
+the future tense right and so like an
+example in uh in tariana these are again
+from from the book right it's not a
+language I I know any right but it's you
+know you you have this like marker and
+bold at the end right and so and so when
+you say something like uh Jose has
+played football right you if you put
+like the car marker that means that we
+saw it right it's kind of like the
+visual evidential marker right and
+there's uh and there's kind of a
+non-visual market that kind of means we
+heard it right so so if you say you know
+so if you say statement you you could
+say we heard it right there's a like we
+infer it from Visual Evidence right so
+if it's like oh his like cleats are gone
+and he is also gone but like and people
+you know and we see people going to play
+football right or see people coming back
+I guess from playing football because in
+the past right that means like you know
+so so we can infer it and so you can put
+this right and there's like um
+uh you know or like if he plays football
+every Saturday you know and it's
+Saturday we you you would use a a
+different marker right or like um if
+someone has told you if it's here say
+you would use a different marker right
+so this is like a this is like a
+um a part of the grammar right that like
+to to me at least right like I don't
+speak any language that has this it
+seems like it's it it it seems like very
+cool and like different from like
+anything I would ever think would be
+like a part of the grammar right but it
+is
+um
+or like especially like a compulsory
+part of the grammar right but but it is
+right and you can like map out I wanted
+to include some maps from walls the
+world atlasive linguistic structure
+that's always like so fun
+um you know you could like map out all
+the language right like I only speak uh
+white dot languages which are like no
+grammatical evidentials you know if you
+want to say whether you heard something
+or saw it you have to say it like in
+words right but uh but there's many
+languages you know as
+um very yeah especially in uh in in in
+the the Americas right Diana's I think
+uh Brazilian language from like
+up by the border with uh oh yeah but uh
+yeah
+the you know while we're looking at like
+language typology Maps right and so like
+this this like language organization
+like in categorization Maps uh the the
+most like the classic one right is again
+like the the the subject object in verb
+order right so as you said English has
+SVO order but there's just so so many
+orders that uh you know kind of like
+almost all the possible ones are are
+attested you know some languages have no
+dominant order like Greek Greek so like
+a language that I speak natively has a
+dominant order you would say you would
+move things around for emphasis or
+whatever
+um
+um yeah and you see like and here you
+know we're seeing some some like diverse
+using typology we're also seeing some
+Tendencies right like some are just so
+much more common than others right and
+this is like again something which like
+people talk about so much right it's
+it's like a very uh big part yeah it's
+like a huge part of linguistic why are
+some more common where some others like
+a basic fact of language is something
+which happened you know it's just like
+just the fact like how discourse Works
+maybe you know like that's that's more
+preferred for many people to say
+something you know and there's a lot of
+opinions on this
+uh another way though that language is
+there you know it's like the number of
+morphemes they have per word right like
+some languages are like you know like
+Vietnamese classically just like very
+isolating like kind of like each um you
+know like each kind of thing you want to
+express like tense or something is going
+to be in in a different word you know in
+English we actually combine kind of
+tenses we have things like bubble right
+like you know like like throwable or
+something right and then like in in some
+languages they're just like really so
+much stuff is expressed in morphemes
+right and so you can have languages
+especially in like Alaska and Canada uh
+a lot of languages there in like
+Greenland where you have like
+um and these are all like one one
+language family
+um you you can have like kind of whole
+sentences expressed with just like
+things things that get tacked on to uh
+to to the verb right so you have to have
+things things like uh
+the you know like the object and the um
+or I guess in this case you start with
+the object again you have kind of like
+the verb and the like whether it's
+happening or not happening and who said
+it like what they're said in the future
+and all that just kind of all put in you
+know these like quote unquote like
+sentence words right it's like a very
+different way of a language we're
+working than English works like at all
+right
+um I just want to know like what these
+dots mean because like in the U.S the
+top right is gray like in the Northeast
+but in the Pacific Northwest it's yellow
+it's like is that different dialects for
+like the same American English oh no the
+visual indigenous languages oh I see
+yeah yeah so so English is uh just uh
+this one dot uh in here spread uh in
+amongst all the like Cornish and Irish
+and stuff oh yeah so English was like in
+Great Britain yeah
+yeah and that's why yeah that's why like
+all this like really and that's why I
+like all this like evidential stuff is
+happening in uh in like the Americas
+right because there's like a lot of very
+often the indigenous languages the
+Americas are like the classic like very
+evidentially marking uh ones which are
+the pink ones yeah you said that
+normally we use like a bird style model
+for multilingual models because it's
+difficult for natural language
+generation across languages yeah uh I
+mean I guess intuitively that makes
+sense right because of the subtleties
+and the Nuance between the languages
+when you're producing it but is there
+like a reason that
+um like a particular reason that's been
+so much harder to make developments on
+a good generation is just like harder
+right like to get something like you
+know like gpt3 or something it means
+like really like a lot of data and maybe
+like it's kind of like I think there are
+can I think of any are there any
+G sharp newshards encodone yeah I can't
+really think of any like you know like
+encoder decoder as you said you know
+like a kind of big multilingual models
+you know of course like gpd3 has this
+thing where if you're like how do you
+say this in French you'll be like you
+say it like this you know so it's like
+if you've seen all of the data it's
+going to include a lot of languages but
+this kind of like multilingual model
+where you'd be like right you know be as
+good as gpt3 but in this other language
+you know I think it just it's just you
+need a lot more data to get that kind of
+coherence right as opposed to like
+yeah as opposed to something if you do
+like text infilling or something which
+is like how the bridge style models are
+then you get like very good even if the
+text and feeling you know um
+uh performance isn't great for every
+language you can actually get very very
+good embeddings to work with for a lot
+of those languages
+cool now for just like a one last
+language diversity thing I think this is
+interesting interesting the motion event
+because it's like this is actually you
+know it's not it's like languages that
+you know many of us know I'm gonna talk
+about Spanish but uh it's actually
+something which you might not have
+thought about but then once you see
+you're like oh actually that's like
+actually it's like how like everything
+works
+um so in English right the manner of
+motion is usually expressed on the verb
+right so you can say something like the
+bottle floated into the cave right and
+so like the fact that it's floating is
+on the verb and the fact that it's going
+in is kind of on this satellite
+um well like in Spanish the direction of
+motion is usually expressed on the verb
+uh Greek Greek is like this too I feel
+like most Indo-European languages are
+not like this or actually like English
+so like most like language like Europe
+to like North India tend to to not be
+like this right and so you would say
+like
+right so you'd have like so used to so
+the floating has is not usually put on
+the main verb and like in English you
+could actually say like red like the
+bottle entered the cave floating it's
+just like maybe not what you would say
+right and and similar like in Spanish
+you can't say the other way around these
+are called like satellite framing
+language and verb framing languages like
+really affects how you would kind of
+like say most you know like kind of how
+everything works right it's kind of like
+a division that's like you know pretty
+attested of course it's not a full
+division right it's not like this
+exclusive categorization China uh
+Chinese I think off often has you
+structured where there's like two verb
+slots right where where you could have
+both a manner of motion and a direction
+of motion kind of in the in the like the
+one verb verbs thought none of them have
+to go kind of like after playing some
+some some different role right so these
+are like you know there's all these ways
+in which like languages are just
+different you know from like things that
+that maybe we didn't even think could
+like be in a language like things are
+like we do right but we don't realize
+that in some some sometimes you're just
+like so so different in these like
+subtle ways
+and so uh you know and so going to the
+other end your language is so different
+they're also very alike right so like
+you know there's there's like you know
+this idea like is there like a universal
+grammar some like abstract structure
+that all that unite all languages right
+this is like a huge question Linguistics
+and you know the question is can we
+Define an abstraction where we can all
+say like all language or some part
+version of it there's like other ways of
+thinking about universals like all
+languages like tend to be one way or
+tend to be like languages that tend to
+be one way also tend to be some other
+way and there's like a third way of
+thinking about
+um a universals that's like languages
+all deal in similar types of relations
+you know like subjects objects you know
+like types of modifiers right like the
+universal dependencies project was like
+uh
+um
+uh a way of kind of saying like maybe we
+can make dependencies kind of for all
+language the way that doesn't shoehorn
+them into each other you know and uh
+yeah I guess like what was it called rrg
+like relational something grammar you
+know was also kind of this idea that
+maybe one way to think about all
+languages together is like the kind of
+relations they Define you know
+and um and you know ask me ask me about
+kind of like the chomp skin and the
+Greenberg and stuff you want and how it
+relates to NLP I think like there
+there's a lot to to say there it's kind
+of yeah it's it's slightly more
+difficult so maybe it's easier to think
+of the of this third one in terms of NLP
+right and like back to the subject
+object relation stuff if we look at it
+across languages right we see that
+they're kind of encoded in parallel
+because classifiers right those
+classifiers that we're training they're
+like as accurate in their own language
+as they are in other languages right
+their own language being um red and
+other languages being black right it's
+not like wow if I take a multilingual
+model and I train these classified
+induction one classify in one language
+it's like going to be so good at itself
+and like so bad at everything else right
+they're kind of interspersed they're
+clearly like on the top end the red dots
+yeah
+and uh and UD relations right so
+Universal dependencies like the kind of
+like dependency relations they're also
+encoded in parallel ways this is this
+work that uh John John has done right
+again main thing to take from from this
+example is that like the colors
+clustered together right it's like if
+you if you train kind of like a parser
+on or like you know parse uh
+classification on one language and kind
+of transfer it to another you see these
+clusters form for the other language
+right so it's like these ideas of how
+like things relate together right like a
+like kind of noun modifier you know all
+that kind of stuff they they they do um
+clustered together in these parallel
+ways across across languages you know
+and so language specificity is also
+important
+um
+I might skip over this but you know it
+seems with like so maybe sometimes some
+languages are shoehorned into others in
+various ways uh and maybe part of this
+is that data quality it's very variable
+in multilingual corpora right it's like
+so so if you take like all these
+multilingual corporate there's like an
+audit of them and like for like all
+these various like multilingual
+corporate like 20 of languages they're
+less than 50 correct meaning like 50 of
+it was often like just links or like
+just something random I was like yeah
+that might be like some language but but
+it was not at all
+and and like maybe the way maybe we
+don't want too much parameter sharing
+right like uh Africa is a reason uh it's
+a kind of recent Bird model trained like
+only on African language you know maybe
+like having too much too high risks too
+high resources like harming you know and
+there's work here at Stanford being done
+in the same direction you know another
+uh
+uh yeah another a recent cross-lingual
+model xlmv came out which is like why
+should we be doing vocabularies sharing
+you know like you just have like a big
+vocabulary each language gets like its
+own words it's probably going to be
+better and it is it kind of like knocks
+out similar models or smaller
+vocabularies which are like maybe you
+know computers the same in English and
+French it should be shared you know
+maybe it's better to separate out things
+you know it's like hard to like kind of
+find this balance between let's keep
+over this paper too it's very cool and
+there's a link there so look at it but
+yeah we we want language generality but
+we also want to preserve diversity and
+so how is multilingual NLP doing you
+know especially with effects like
+dialects you know there's so many
+complex issues for multilingual NLP to
+be dealing with
+how how can deep learning work for low
+resource languages you know what are the
+ethics of working NLP for low resource
+languages who like wants their language
+in in big models who like wants a
+language to be translated you know these
+are all like very important ethical
+issues in multilingual NLP and so after
+looking at structure Beyond structure
+multilinguality in models
+um
+I hope you've been yeah but I hope you
+know that Linguistics is a way of you
+know investigating what's going on in
+Black Box models uh the subtleties
+linguistic analysis they can help us
+understand what we want or expect from
+the models that we work with and like
+even though we're not reverse
+engineering human language uh linguistic
+insights I hope I've convinced you they
+still have a place in understanding you
+know the models that we're working with
+the models that we're dealing with and
+you know and in so many more ways beyond
+what what we've discussed here you know
+like uh language acquisition language
+and vision and like instructions and
+music uh discourse conversation and
+communication and like so so many other
+ways
+cool thank you if there's any more
+questions you can come ask me time's up
+[Applause]

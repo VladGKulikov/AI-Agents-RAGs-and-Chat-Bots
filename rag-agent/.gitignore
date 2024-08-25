@@ -1,0 +1,6 @@
+/__pycache__
+/venv
+/backend/.env
+/backend/__pycache__
+create_vector_db.py
+async.py
