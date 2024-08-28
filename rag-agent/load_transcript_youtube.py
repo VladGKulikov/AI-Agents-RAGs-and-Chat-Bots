@@ -7,6 +7,13 @@ from pytube import Playlist
 playlist_url = 'https://www.youtube.com/playlist?list=PLoROMvodv4rMFqRtEuo6SGjY4XbRIVRd4'
 
 
+summary_prompt = '''I give you transcription youtube video - summarize it in 1500-2000 symbols, 
+mark main questions and points.
+
+TRANSCRIPTION:
+{transcription}
+'''
+
 def get_yt_transcription(from_yt_video_id, to_txt_file):
     transcript = YouTubeTranscriptApi.get_transcript(from_yt_video_id)
 
