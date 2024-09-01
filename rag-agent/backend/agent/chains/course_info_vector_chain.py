@@ -1,7 +1,5 @@
 import os
 from langchain import hub
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain_community.document_loaders import WebBaseLoader
 from langchain_community.vectorstores import Chroma
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
@@ -11,7 +9,6 @@ from langchain_chroma import Chroma
 from langchain_openai import ChatOpenAI, OpenAIEmbeddings
 from langchain_community.llms import Ollama
 from langchain.prompts import ChatPromptTemplate
-from operator import itemgetter
 from dataclasses import dataclass
 
 load_dotenv()
@@ -24,10 +21,11 @@ class RAGConfig:
 
 ############# REWRITE #############
 
+
 class RAGSystem:
     def __init__(self, config: RAGConfig):
         self.config = config
-        self.llm = self._get_llm()
+        self.llm = self._get_llm()        
         self.embedding = OpenAIEmbeddings(model=self.config.embed_model)
         self.vectorstore = Chroma(persist_directory=self.config.chroma_db_path, 
                                   embedding_function=self.embedding)
@@ -57,3 +55,12 @@ class RAGSystem:
             | StrOutputParser()
         )
         return simple_rag_chain
+    
+    def simple_rag(self, question):
+        return self._create_simple_rag_chain().invoke(question)
+    
+    def course_info_vector_chain(self): #  question):
+        return self._create_simple_rag_chain() #.invoke(question)
+    
+
+    

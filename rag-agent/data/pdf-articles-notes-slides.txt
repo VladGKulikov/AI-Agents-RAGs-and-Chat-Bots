@@ -1,0 +1,50 @@
+Notes
+https://web.stanford.edu/class/cs224n/readings/cs224n_winter2023_lecture1_notes_draft.pdf
+https://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes02-wordvecs2.pdf
+https://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes03-neuralnets.pdf
+https://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes04-dependencyparsing.pdf
+https://web.stanford.edu/class/cs224n/readings/cs224n-2019-notes05-LM_RNN.pdf
+https://web.stanford.edu/class/cs224n/readings/cs224n-self-attention-transformers-2023_draft.pdf
+
+
+
+
+
+Course Materials
+Suggested Readings:
+# original word2vec paper
+http://arxiv.org/pdf/1301.3781.pdf
+# negative sampling paper
+http://papers.nips.cc/paper/5021-distributed-representations-of-words-and-phrases-and-their-compositionality.pdf
+# original GloVe paper
+http://nlp.stanford.edu/pubs/glove.pdf
+
+http://www.aclweb.org/anthology/Q15-1016
+
+http://www.aclweb.org/anthology/D15-1036
+
+Additional Readings:
+http://aclweb.org/anthology/Q16-1028
+
+https://transacl.org/ojs/index.php/tacl/article/viewFile/1346/320
+
+https://papers.nips.cc/paper/7368-on-the-dimensionality-of-word-embedding.pdf
+
+
+
+# Speech and Language Processing (3rd ed. draft)
+https://web.stanford.edu/~jurafsky/slpdraft/
+https://web.stanford.edu/~jurafsky/
+http://www.cs.colorado.edu/~martin/
+
+from:
+https://web.stanford.edu/~jurafsky/slpdraft/2.pdf 
+to
+https://web.stanford.edu/~jurafsky/slpdraft/23.pdf
+without
+https://web.stanford.edu/~jurafsky/slpdraft/12.pdf
+
+
+Slides
+https://web.stanford.edu/class/cs224n/slides/cs224n-spr2024-lecture01-wordvecs1.pdf
+https://web.stanford.edu/class/cs224n/slides/cs224n-spr2024-lecture02-wordvecs2.pdf

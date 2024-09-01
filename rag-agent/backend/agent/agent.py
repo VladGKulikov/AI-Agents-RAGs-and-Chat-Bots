@@ -2,27 +2,38 @@ import os
 from langchain_openai import ChatOpenAI
 from langchain.agents import create_openai_functions_agent, Tool, AgentExecutor
 from langchain import hub
-from chains.course_info_vector_chain import course_info_vector_chain
-from chains.NLP_and_DL_vector_chain import NLP_and_DL_vector_chain
-from chains.You_tube_vector_chain import You_tube_vector_chain
-from backend.agent.tools.factorial_fibonacci import (
+from agent.chains.course_info_vector_chain import RAGSystem, RAGConfig
+#from agent.chains.NLP_and_DL_vector_chain import NLP_and_DL_vector_chain
+#from agent.chains.You_tube_vector_chain import You_tube_vector_chain
+from agent.tools.factorial_fibonacci import (
     get_factorial,
     get_matrix_fibonacci,
 )
+from langchain.tools import StructuredTool
+from pydantic import BaseModel
 
 CS224N_AGENT_MODEL = os.getenv("CS224N_AGENT_MODEL")
+LANGCHAIN_API_KEY =  os.getenv("LANGCHAIN_API_KEY")
 
 CS224N_agent_prompt = hub.pull("hwchase17/openai-functions-agent")
 
-# CS224N_agent_prompt = hub.pull("hwchase17/openai-functions-agent")
-'''
-https://smith.langchain.com/hub/hwchase17/openai-functions-agent
-'''
+# set the LANGCHAIN_API_KEY environment variable (create key in settings)
+from langchain import hub
+prompt = hub.pull("hwchase17/openai-functions-agent")
+# print(f'PROMPT: {prompt}')
 
-tools = [
+config = RAGConfig(
+    model=os.getenv('CS224N_AGENT_MODEL'),
+    embed_model=os.getenv('EMBED_MODEL'),
+    chroma_db_path=os.getenv('CHROMA_DB_PATH')
+)
+
+rag_system = RAGSystem(config)
+
+tools = [    
     Tool(
-        name="Course Info",
-        func=course_info_vector_chain.invoke,
+        name="course_info",
+        func=rag_system.course_info_vector_chain().invoke,
         description="""Useful when you need to answer questions
         about course itself for example Instructors, Course Manager, 
         Teaching Assistants, Logistics, Previous offerings, Schedule, 
@@ -34,42 +45,43 @@ tools = [
         "Is Chris Manning Instructor of CS224N Stanford course?"
         """,
     ),
+
+    # Tool(
+    #     name="NLP and DL materials",
+    #     func=NLP_and_DL_vector_chain.invoke,
+    #     description="""Useful for answering questions about any type of questions about 
+    #     Natural Language Processing(NLP), Deep Learning(DL), Large Language models(LLMs), 
+    #     Mashine Learning(ML). 
+    #     For example questions about bag of words, embedings, word2vec, RNN, LSTM, Transformers, 
+    #     attention, self-attention and any others questions about and around NLP, DL, LLMs, ML. 
+    #     Use the entire prompt as input to the tool.
+    #     For instance, if the prompt is:
+    #     'What is Transformer?"
+    #     the input should be:
+    #     "Is Chris Manning Instructor of CS224N Stanford course?"
+    #     'What is Transformer?"
+    #     """,
+    # ),
+    # Tool(
+    #     name="You tube lectures",
+    #     func=You_tube_vector_chain,
+    #     description="""Use when asked about YouTube lectures... 
+    #     ......
+    #     """,
+    # ),
     Tool(
-        name="NLP and DL materials",
-        func=NLP_and_DL_vector_chain.invoke,
-        description="""Useful for answering questions about any type of questions about 
-        Natural Language Processing(NLP), Deep Learning(DL), Large Language models(LLMs), 
-        Mashine Learning(ML). 
-        For example questions about bag of words, embedings, word2vec, RNN, LSTM, Transformers, 
-        attention, self-attention and any others questions about and around NLP, DL, LLMs, ML. 
-        Use the entire prompt as input to the tool.
-        For instance, if the prompt is:
-        'What is Transformer?"
-        the input should be:
-        "Is Chris Manning Instructor of CS224N Stanford course?"
-        'What is Transformer?"
-        """,
-    ),
-    Tool(
-        name="You tube lectures",
-        func=You_tube_vector_chain,
-        description="""Use when asked about YouTube lectures... 
-        ......
-        """,
-    ),
-    Tool(
-        name="Factorial",
+        name="factorial",
         func=get_factorial,
         description="""
         Purpose: Use this tool to calculate the exact factorial value of a given integer.
         Instructions: 
-        1. Input only the integer for which the factorial needs to be calculated. 
+        1. Input only the number for which the factorial needs to be calculated. 
         Do not include any additional words or phrases like "factorial of."
         2. The tool will return a single number, which is the factorial of the input integer.
         """,
     ),
         Tool(
-        name="Fibonachi",
+        name="fibonachi",
         func=get_matrix_fibonacci,
         description="""
         Use when you need to find out exect value of fibonacci of the integer number.

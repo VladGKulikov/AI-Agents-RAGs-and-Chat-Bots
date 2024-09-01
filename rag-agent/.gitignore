@@ -1,5 +1,5 @@
 .env
-/__pycache__
+**/__pycache__/
 /venv
 /backend/.env
 /backend/__pycache__
@@ -7,3 +7,4 @@ create_vector_db.py
 async.py
 first_glance.py
 /vector_dbs/*
+/Temp
