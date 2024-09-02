@@ -11,9 +11,15 @@ from agent.tools.factorial_fibonacci import (
 )
 from langchain.tools import StructuredTool
 from pydantic import BaseModel
+from langchain.agents import Tool, initialize_agent, AgentType
+from typing import List, Dict, Any, Union
+
+from dotenv import load_dotenv, find_dotenv
+
+_ = load_dotenv(find_dotenv())
 
 CS224N_AGENT_MODEL = os.getenv("CS224N_AGENT_MODEL")
-LANGCHAIN_API_KEY =  os.getenv("LANGCHAIN_API_KEY")
+# LANGCHAIN_API_KEY =  os.getenv("LANGCHAIN_API_KEY")
 
 CS224N_agent_prompt = hub.pull("hwchase17/openai-functions-agent")
 
@@ -30,8 +36,16 @@ config = RAGConfig(
 
 rag_system = RAGSystem(config)
 
+
+class Fib_Fact_Tool_Input(BaseModel):
+    inp1: List[int]    
+    #inp2: Dict
+
+class Course_Info(BaseModel):
+    inp1: List[str]
+
 tools = [    
-    Tool(
+    StructuredTool(
         name="course_info",
         func=rag_system.course_info_vector_chain().invoke,
         description="""Useful when you need to answer questions
@@ -44,6 +58,7 @@ tools = [
         the input should be:
         "Is Chris Manning Instructor of CS224N Stanford course?"
         """,
+        args_schema=Course_Info,
     ),
 
     # Tool(
@@ -69,18 +84,18 @@ tools = [
     #     ......
     #     """,
     # ),
-    Tool(
+    StructuredTool(
+        #1. Input only the number for which the factorial needs to be calculated. 
+        # Do not include any additional words or phrases like "factorial of."
         name="factorial",
         func=get_factorial,
         description="""
-        Purpose: Use this tool to calculate the exact factorial value of a given integer.
-        Instructions: 
-        1. Input only the number for which the factorial needs to be calculated. 
-        Do not include any additional words or phrases like "factorial of."
-        2. The tool will return a single number, which is the factorial of the input integer.
+        Purpose: Use this tool to calculate the exact factorial value of a given integer.              
+        The tool will return a single number, which is the factorial of the input integer.
         """,
+        args_schema=Fib_Fact_Tool_Input,
     ),
-        Tool(
+    StructuredTool(
         name="fibonachi",
         func=get_matrix_fibonacci,
         description="""
@@ -89,6 +104,7 @@ tools = [
         of the factorial which value neeed to evalute. 
         This tool returns a one number which is fibonacci of number N.
         """,
+        args_schema=Fib_Fact_Tool_Input,
     ),
 ]
 
@@ -109,3 +125,4 @@ CS224N_rag_agent_executor = AgentExecutor(
     return_intermediate_steps=True,
     verbose=True,
 )
+

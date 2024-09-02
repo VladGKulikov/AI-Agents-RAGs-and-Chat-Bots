@@ -6,4 +6,6 @@ langchain_openai
 langchain_chroma
 langchain_community
 chromadb
+langgraph
 ollama
+

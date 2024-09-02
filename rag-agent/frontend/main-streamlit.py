@@ -46,15 +46,18 @@ if prompt := st.chat_input("What do you want to know?"):
     data = {"text": prompt}
 
     with st.spinner("Searching for an answer..."):
+        print(f'Sending request with data: {data}')
         response = requests.post(BACKEND_URL, json=data)
 
         if response.status_code == 200:
-            output_text = response.json()["answer"]
+            response_data = response.json()
+            print(f'Received response: {response_data}')
+            output_text = response_data["output"] # ["answer"]
             # explanation = response.json()["intermediate_steps"]
         else:
-            output_text = f"""An error occurred while processing your message.
-            Please try again or rephrase your message. Error: {response.text}"""
-            
+            print(f'Error response: {response.text}')
+            output_text = f"An error occurred while processing your message. Please try again or rephrase your message. Status code: | {response.status_code} |  Data: {data} | Error: {response.text} |"
+
 
     st.chat_message("assistant").markdown(output_text)
     # st.status("How was this generated?", state="complete").info(explanation)

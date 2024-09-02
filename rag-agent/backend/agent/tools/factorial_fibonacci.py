@@ -11,8 +11,10 @@ in logarithmic time, making it ideal for very large n.
 https://www.geeksforgeeks.org/matrix-exponentiation/
 https://www.youtube.com/watch?v=eMXNWcbw75E
 '''
-def get_matrix_fibonacci(n_str):
-    n = int(n_str)
+def get_matrix_fibonacci(**kwargs):
+    # Time complexity - O(log N)
+    value = kwargs['inp1'][0]
+    n = int(value)    
     def matrix_mult(A, B):
         return np.dot(A, B)
     
@@ -32,20 +34,21 @@ def get_matrix_fibonacci(n_str):
     
     F = np.array([[1, 1], [1, 0]], dtype=object)
     result_matrix = matrix_power(F, n - 1)
-    return str(result_matrix[0][0])
+    f = str(result_matrix[0][0])
+    print('Fibonacci {n} = {f}')
+    return f
 
 # n = 10000
 # result = get_matrix_fibonacci(n)
 # print(f"Fibonacci number {n} has {len(str(result))} digits.")
 
 
-def get_factorial(*args, **kwargs) -> str:   
-    n = int(args[0])
-    print(f'N = {n}')
-
-    print('I AM IN get_factorial!!!!!')
-
-    return str(math.factorial(n))
+def get_factorial(**kwargs) -> str:   
+    value = kwargs['inp1'][0]
+    n = int(value)    
+    f = str(math.factorial(n))
+    print('Factorial {n} = {f}')
+    return f
 
 
 # if __name__ == '__main__':

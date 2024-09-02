@@ -1,6 +1,6 @@
 import os
 from fastapi import FastAPI, HTTPException
-from agent.agent import CS224N_rag_agent_executor
+from agent.agent import CS224N_rag_agent_executor 
 from pydantic import BaseModel
 
 
@@ -28,9 +28,9 @@ async def get_status():
 @app.post("/cs224n-rag-agent")
 async def ask_cs224n_agent(query: CS224NQueryInput) -> CS224NQueryOutput:
     try:
-        print(f'!!!!query.text = {query.text} type query = {type(query)}')
-        query_response = await CS224N_rag_agent_executor.ainvoke({"input": query.text}) # query.text |  
-        print(f'!!!!query_response = {query_response}')
+        print(f'!!!!query.text!!! = {query.text}. Type query = {type(query.text)}')
+        query_response = await CS224N_rag_agent_executor.ainvoke({"input": query.text}) # query.text |          
+        print(f'!!!!query_response!!! = {query_response}')
 
         return CS224NQueryOutput(
             input=query.text,
