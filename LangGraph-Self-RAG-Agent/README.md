@@ -1,4 +1,5 @@
-1. add .env file to /backend 
+1. add .env file to /backend  
+
 OPENAI_API_KEY = 'your_OPENAI_API_KEY'  
 LANGCHAIN_API_KEY = ''  
 USER_AGENT = "DefaultLangchainUserAgent"  
