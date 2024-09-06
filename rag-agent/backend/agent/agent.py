@@ -22,11 +22,13 @@ CS224N_AGENT_MODEL = os.getenv("CS224N_AGENT_MODEL")
 # LANGCHAIN_API_KEY =  os.getenv("LANGCHAIN_API_KEY")
 
 CS224N_agent_prompt = hub.pull("hwchase17/openai-functions-agent")
+print(f'CS224N_agent_prompt:\n {CS224N_agent_prompt}')
+print()
 
 # set the LANGCHAIN_API_KEY environment variable (create key in settings)
 from langchain import hub
-prompt = hub.pull("hwchase17/openai-functions-agent")
-# print(f'PROMPT: {prompt}')
+# prompt = hub.pull("hwchase17/openai-functions-agent")
+
 
 config = RAGConfig(
     model=os.getenv('CS224N_AGENT_MODEL'),
@@ -48,16 +50,21 @@ tools = [
     StructuredTool(
         name="course_info",
         func=rag_system.course_info_vector_chain().invoke,
-        description="""Useful when you need to answer questions
-        about course itself for example Instructors, Course Manager, 
-        Teaching Assistants, Logistics, Previous offerings, Schedule, 
-        Reference Texts, Coursework, Course Materials etc.
-        Use the entire prompt as input to the tool.
-        For instance, if the prompt is:
-        "Is Chris Manning Instructor of CS224N Stanford course?", 
-        the input should be:
-        "Is Chris Manning Instructor of CS224N Stanford course?"
-        """,
+        # description="""Useful when you need to answer questions
+        # about CS224N course 'Natural Language Processing with Deep Learning' 
+        # itself for example Instructors, Course Manager, 
+        # Teaching Assistants, Logistics, Previous offerings, Schedule, 
+        # Reference Texts, Coursework, Course Materials etc.
+        # Use the entire prompt as input to the tool.
+        # For instance, if the prompt is:
+        # "Is Chris Manning Instructor of CS224N Stanford course?", 
+        # the input should be:
+        # "Is Chris Manning Instructor of CS224N Stanford course?"
+        # If you don't know answer - you answer should be 'I don't know.'
+        # """,
+        description='''Useful for answering questions about Transformers, 
+        Natural Language Processing, attention and so on. 
+        ''',
         args_schema=Course_Info,
     ),
 
@@ -113,9 +120,26 @@ chat_model = ChatOpenAI(
     temperature=0,
 )
 
+#CS224N_agent_prompt = 
+'''
+input_variables=['agent_scratchpad', 'input'] optional_variables=['chat_history'] 
+
+input_types={'chat_history': typing.List[typing.Union[langchain_core.messages.ai.AIMessage, langchain_core.messages.human.HumanMessage, langchain_core.messages.chat.ChatMessage, langchain_core.messages.system.SystemMessage, langchain_core.messages.function.FunctionMessage, langchain_core.messages.tool.ToolMessage]], 'agent_scratchpad': typing.List[typing.Union[langchain_core.messages.ai.AIMessage, langchain_core.messages.human.HumanMessage, langchain_core.messages.chat.ChatMessage, langchain_core.messages.system.SystemMessage, langchain_core.messages.function.FunctionMessage, langchain_core.messages.tool.ToolMessage]]} 
+
+partial_variables={'chat_history': []} 
+
+metadata={'lc_hub_owner': 'hwchase17', 'lc_hub_repo': 'openai-functions-agent', 'lc_hub_commit_hash': 'a1655024b06afbd95d17449f21316291e0726f13dcfaf990cc0d18087ad689a5'} 
+
+messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], 
+                                      template='You are useful agent. You aim is assist(Q&A) about CS224N Stanford course')), 
+          MessagesPlaceholder(variable_name='chat_history', optional=True), 
+          HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['input'], template='{input}')), 
+          MessagesPlaceholder(variable_name='agent_scratchpad')]
+'''
+
 CS224N_rag_agent = create_openai_functions_agent(
     llm=chat_model,
-    prompt=CS224N_agent_prompt,
+    prompt= CS224N_agent_prompt,
     tools=tools,
 )
 
@@ -125,4 +149,22 @@ CS224N_rag_agent_executor = AgentExecutor(
     return_intermediate_steps=True,
     verbose=True,
 )
+
+
+#CS224N_agent_prompt = 
+'''
+input_variables=['agent_scratchpad', 'input'] optional_variables=['chat_history'] 
+
+input_types={'chat_history': typing.List[typing.Union[langchain_core.messages.ai.AIMessage, langchain_core.messages.human.HumanMessage, langchain_core.messages.chat.ChatMessage, langchain_core.messages.system.SystemMessage, langchain_core.messages.function.FunctionMessage, langchain_core.messages.tool.ToolMessage]], 'agent_scratchpad': typing.List[typing.Union[langchain_core.messages.ai.AIMessage, langchain_core.messages.human.HumanMessage, langchain_core.messages.chat.ChatMessage, langchain_core.messages.system.SystemMessage, langchain_core.messages.function.FunctionMessage, langchain_core.messages.tool.ToolMessage]]} 
+
+partial_variables={'chat_history': []} 
+
+metadata={'lc_hub_owner': 'hwchase17', 'lc_hub_repo': 'openai-functions-agent', 'lc_hub_commit_hash': 'a1655024b06afbd95d17449f21316291e0726f13dcfaf990cc0d18087ad689a5'} 
+
+messages=[SystemMessagePromptTemplate(prompt=PromptTemplate(input_variables=[], 
+                                      template='You are useful agent. You aim is assist(Q&A) about CS224N Stanford course')), 
+          MessagesPlaceholder(variable_name='chat_history', optional=True), 
+          HumanMessagePromptTemplate(prompt=PromptTemplate(input_variables=['input'], template='{input}')), 
+          MessagesPlaceholder(variable_name='agent_scratchpad')]
+'''
 

@@ -1,0 +1,7 @@
+demo/.env
+**/__pycache__/
+/venv
+/backend/.env
+create_vector_db.py
+/vector_dbs/*
+/notebooks/*
