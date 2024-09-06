@@ -34,11 +34,9 @@ An updated version, using the LangGraph system, can be found in my other project
 
 ---
 
-### 5. [LangGraph-Self-RAG-Agent (LangGraph, LangChain, FastAPI, Streamlit, Chroma, Docker)]()
+### 5. [LangGraph-Self-RAG-Agent (LangGraph, LangChain, FastAPI, Streamlit, Chroma, Docker)](https://github.com/VladGKulikov/AI-Agents-RAGs-and-Chat-Bots/tree/main/LangGraph-Self-RAG-Agent)
 
 This project implements a self-reflective AI RAG Agent system. It includes mechanisms for self-reflection and self-grading on both retrieved documents and generated responses. If the generated answer is deemed unsatisfactory or contains hallucinations, the original query is rewritten, and the process repeats until a satisfactory result is achieved, or a maximum iteration limit is reached.  
-
 The code builds upon ideas from the [LangGraph Tutorial](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/) with my own modifications and interpretations.    
-
 The core concept is inspired by the October 2023 paper: **[Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)**.
 
