@@ -1,5 +1,6 @@
 **/*.env
 **/__pycache__/
+demo/
 venv/*
 create_vector_db.py
 vector_dbs/*
