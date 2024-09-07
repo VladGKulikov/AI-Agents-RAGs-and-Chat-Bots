@@ -31,7 +31,8 @@ An intermediate project, operational but with partially implemented functionalit
 ### 4. [RAG Agent with multiple RAG Tools](https://github.com/VladGKulikov/AI-Agents-RAGs-and-Chat-Bots/tree/main/rag-agent)  
 (LangChain, FastAPI, Streamlit, Chroma Vector DB, Docker)
 
-This project extends the RAG system by incorporating specialized tools for mathematical operations, where LLMs typically struggle. The RAG Agent can answer questions from a PDF file and perform computations like factorials and Fibonacci sequences for large values (up to 50,000 digits). For instance, you can ask the agent, "What is the factorial of 1,000?" or "Fibonacci 1,000?" and the correct answer will be generated using the appropriate tool.  
+This project extends the RAG system by incorporating specialized tools for mathematical operations, where LLMs typically struggle. The RAG Agent can answer questions from a PDF file and perform computations like factorials and Fibonacci sequences for large values (up to 50,000 digits).  
+For instance, you can ask the agent, "What is the factorial of 1,000?" or "Fibonacci 1,000?" and the correct answer will be generated using the appropriate tool.  
 
 This project uses the now-legacy LangChain AgentExecutor interface.  
 An updated version, using the LangGraph system, can be found in my other project: **LangGraph-Self-RAG-Agent**.
