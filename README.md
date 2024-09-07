@@ -6,7 +6,7 @@ This repository contains my projects focused on:
 **AI Agents**, **Retrieval-Augmented Generation (RAG)**, and **AI Chatbots**.
 
 ### 1. [Async AI Bot](https://github.com/VladGKulikov/AI-Agents-RAGs-and-Chat-Bots/tree/main/async_ai_bot)  
-Python, asyncio, FastAPI, WebSockets
+(Python, JS, html, asyncio, FastAPI, WebSockets)
 
 Asynchronous AI bot without any specific UI or AI frameworks, but with memory capabilities, separate dialogue threads, FastAPI, a custom web interface (index.html), and WebSockets.
 
@@ -39,7 +39,7 @@ An updated version, using the LangGraph system, can be found in my other project
 ---
 
 ### 5. [LangGraph-Self-RAG-Agent](https://github.com/VladGKulikov/AI-Agents-RAGs-and-Chat-Bots/tree/main/LangGraph-Self-RAG-Agent)  
-(LangGraph, LangChain, FastAPI, Streamlit, Chroma Vector DB, Docker)
+(LangGRAPH, LangChain, FastAPI, Streamlit, Chroma Vector DB, Docker)
 
 This project implements a self-reflective AI RAG Agent system. It includes mechanisms for self-reflection and self-grading on both retrieved documents and generated responses. If the generated answer is deemed unsatisfactory or contains hallucinations, the original query is rewritten, and the process repeats until a satisfactory result is achieved, or a maximum iteration limit is reached.  
 The code builds upon ideas from the [LangGraph Tutorial](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/) with my own modifications and interpretations.    
