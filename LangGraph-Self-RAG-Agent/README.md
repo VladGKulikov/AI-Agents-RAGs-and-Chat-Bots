@@ -3,10 +3,11 @@
 
 This project implements a self-reflective AI RAG Agent system.   
 It includes mechanisms for self-reflection and self-grading on both retrieved documents and generated responses. If the generated answer is deemed unsatisfactory or contains hallucinations, the original query is rewritten, and the process repeats until a satisfactory result is achieved, or a maximum iteration limit is reached.  
-The code builds upon code and ideas from the [LangGraph Tutorial](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/) with my own modifications and interpretations.    
+The code builds upon code and ideas from the **[LangGraph Tutorial](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)** with my own modifications and interpretations.    
 The core concept is inspired by the October 2023 paper: **[Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection](https://arxiv.org/abs/2310.11511)**.
 
-![img.png](img.png)
+![img.png](img.png)  
+Picture from [Link](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)  
 
 For run:
 
