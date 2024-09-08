@@ -41,12 +41,16 @@ async def ask_self_rag_agent(query: QueryInput) -> QueryOutput:
     try:
         print(f'!!!!query.text!!! = {query.text}. Type query = {type(query.text)}')
         query_response = await agent.graph.ainvoke({"question": query.text}) # query.text |
-        print(f'!!!!query_response!!! = \n{query_response}\n')
+        print(f'!!!!query_response!!! = \n{query_response}\n Len = {len(query_response)}')
+        
+        if len(query_response) == 1:
+            out = "I'm sorry, but your question doesn't seem relevant to our topic. Could you please try again or rephrase your message?"
+        else:            
+            out=query_response['generation']
 
         return QueryOutput(
             input=query.text,
-            output=query_response['generation'],
-            # intermediate_steps=[str(step) for step in query_response["intermediate_steps"]]
+            output=out
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

@@ -2,6 +2,7 @@ from typing import List
 from typing_extensions import TypedDict
 from langgraph.graph import END, StateGraph, START
 from dataclasses import dataclass
+from agent.relevance_grader import RelevanceGrader
 from agent.retrieval_grader import RetrievalGrader
 from agent.rag_chain_generator import RagChainGenerator
 from agent.hallucination_grader import HallucinationGrader
@@ -49,24 +50,33 @@ class SelfRAGAgent:
         self.vectorstore = Chroma(persist_directory=config.chroma_db_path, embedding_function=self.embedding)
         self.retriever = self.vectorstore.as_retriever()
 
+        self.relevance_grader = RelevanceGrader().get_relevance_grader()
         self.retrieval_grader = RetrievalGrader().get_retrieval_grader()
         self.rag_chain = RagChainGenerator().get_rag_chain()
         self.hallucination_grader = HallucinationGrader().get_hallucination_grader()
         self.answer_grader = AnswerGrader().get_answer_grader()
         self.question_rewriter = QuestionRewriter().get_question_rewriter()
 
-
-
         graph = StateGraph(GraphState)
 
         # Define the nodes
+        graph.add_node("relevance", self.relevance) # grade relevance
         graph.add_node("retrieve", self.retrieve)  # retrieve
         graph.add_node("grade_documents", self.grade_documents)  # grade documents
         graph.add_node("generate", self.generate)  # generate
         graph.add_node("transform_query", self.transform_query)  # transform_query
 
         # Build graph
-        graph.add_edge(START, "retrieve")
+        graph.add_edge(START, "relevance")
+        graph.add_conditional_edges(
+            "relevance",
+            self.grade_relevance,
+            {
+                "not_relevant": END,
+                "relevant": "retrieve",
+            },
+        )
+        # graph.add_edge("relevance", "retrieve")
         graph.add_edge("retrieve", "grade_documents")
         graph.add_conditional_edges(
             "grade_documents",
@@ -81,15 +91,30 @@ class SelfRAGAgent:
             "generate",
             self.grade_generation_v_documents_and_question,
             {
-                "not supported": "generate",
+                "not_supported": "generate",
                 "useful": END,
-                "not useful": "transform_query",
+                "not_useful": "transform_query",
             },
         )
         # Compile
         self.graph = graph.compile()
 
     ### Nodes
+
+    def relevance(self, state):    
+        """
+        If the question (state["question"]) isn't relevant (self.grade_relevance) 
+        then len(state) == 1 and in main.py:
+
+            if len(query_response) == 1:
+                out = "I'm sorry, but your question doesn't seem relevant to our topic. 
+                    Could you please try again or rephrase your message?"
+            else:            
+                out=query_response['generation']
+        """
+
+        return state 
+
 
     def retrieve(self, state):
         """
@@ -125,6 +150,23 @@ class SelfRAGAgent:
         # RAG generation
         generation = (self.rag_chain.invoke({"context": documents, "question": question}))
         return {"documents": documents, "question": question, "generation": generation}
+
+    def grade_relevance(self, state):
+
+        question = state["question"]
+
+        score = self.relevance_grader.invoke(
+            {"question": question}
+        )
+
+        grade = score.binary_score
+
+        if grade == "yes":
+            return 'relevant'
+        else:
+            return 'not_relevant'
+
+
 
     def grade_documents(self, state):
         """
@@ -203,7 +245,7 @@ class SelfRAGAgent:
             # We have relevant documents, so generate answer
             # print("---DECISION: GENERATE---")
             return "generate"
-
+        
     def grade_generation_v_documents_and_question(self, state):
         """
         Determines whether the generation is grounded in the document and answers question.
@@ -237,7 +279,7 @@ class SelfRAGAgent:
                 return "useful"
             else:
                 # print("---DECISION: GENERATION DOES NOT ADDRESS QUESTION---")
-                return "not useful"
+                return "not_useful"
         else:
             # pprint("---DECISION: GENERATION IS NOT GROUNDED IN DOCUMENTS, RE-TRY---")
-            return "not supported"
+            return "not_supported"

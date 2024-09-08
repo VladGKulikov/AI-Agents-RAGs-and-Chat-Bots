@@ -6,7 +6,7 @@ It includes mechanisms for self-reflection and self-grading on both retrieved do
 The code builds upon code and ideas from the **[LangGraph Tutorial](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)** with my own modifications and interpretations.    
 The core concept is inspired by the October 2023 paper: **[Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection](https://arxiv.org/abs/2310.11511)**.
 
-![img.png](img.png)  
+![finite_state_machine](Img/finite_state_machine.png)  
 Picture from [Link](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)  
 
 For run:
@@ -25,3 +25,4 @@ CHROMA_DB_PATH = 'for example vector-db'
 
 3. docker-compose up --build
 
+![screenshot](Img/screenshot.png)
