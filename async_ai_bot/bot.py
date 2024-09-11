@@ -5,7 +5,6 @@ import uuid
 from typing import Dict
 
 load_dotenv()
-
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 async_client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 MODEL = 'gpt-4o-mini'  # 128K context

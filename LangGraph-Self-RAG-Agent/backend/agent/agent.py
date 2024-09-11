@@ -60,16 +60,16 @@ class SelfRAGAgent:
         graph = StateGraph(GraphState)
 
         # Define the nodes
-        graph.add_node("relevance", self.relevance) # grade relevance
+        # graph.add_node("relevance", self.relevance) # grade relevance
         graph.add_node("retrieve", self.retrieve)  # retrieve
         graph.add_node("grade_documents", self.grade_documents)  # grade documents
         graph.add_node("generate", self.generate)  # generate
         graph.add_node("transform_query", self.transform_query)  # transform_query
 
         # Build graph
-        graph.add_edge(START, "relevance")
+        # graph.add_edge(START, "relevance")
         graph.add_conditional_edges(
-            "relevance",
+            START,   # "relevance"
             self.grade_relevance,
             {
                 "not_relevant": END,
@@ -101,19 +101,19 @@ class SelfRAGAgent:
 
     ### Nodes
 
-    def relevance(self, state):    
-        """
-        If the question (state["question"]) isn't relevant (self.grade_relevance) 
-        then len(state) == 1 and in main.py:
-
-            if len(query_response) == 1:
-                out = "I'm sorry, but your question doesn't seem relevant to our topic. 
-                    Could you please try again or rephrase your message?"
-            else:            
-                out=query_response['generation']
-        """
-
-        return state 
+    # def relevance(self, state):
+    #     """
+    #     If the question (state["question"]) isn't relevant (self.grade_relevance)
+    #     then len(state) == 1 and in main.py:
+    #
+    #         if len(query_response) == 1:
+    #             out = "I'm sorry, but your question doesn't seem relevant to our topic.
+    #                 Could you please try again or rephrase your message?"
+    #         else:
+    #             out=query_response['generation']
+    #     """
+    #
+    #     return state
 
 
     def retrieve(self, state):
