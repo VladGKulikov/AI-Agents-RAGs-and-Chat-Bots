@@ -6,6 +6,7 @@ This is a demo based as a source for RAG on the [PDF file](https://web.stanford.
 specifically Chapter 10, Transformers and Large Language Models. 
 The link on pdf-source is from Stanford's Spring 2024 CS224N "Natural Language Processing with Deep Learning course". 
 
+![alt text](Img/image-1.png)
 
 ## Prerequisites
 
@@ -48,7 +49,7 @@ docker-compose up --build
 - `backend/`: Contains the FastAPI backend and RAG implementation.
 - `frontend/`: Contains the Streamlit frontend.
 - `docker-compose.yml`: Defines the multi-container Docker application.
-- `vector-db/`: Directory for storing the ChromaDB vector database.
+- `backend/vector-db/`: Directory for storing the ChromaDB vector database.
 
 ## Customization
 - To switch between different RAG methods, select method in UI selectbox.
