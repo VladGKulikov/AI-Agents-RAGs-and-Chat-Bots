@@ -26,4 +26,4 @@ CHROMA_DB_PATH = 'for example vector-db'
 
 3. docker-compose up --build
 
-![screenshot](demo/screenshot.png)
+![screenshot](Img/screenshot.png)
