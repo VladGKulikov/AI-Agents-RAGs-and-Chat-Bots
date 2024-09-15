@@ -8,12 +8,7 @@ The core concept is inspired by the October 2023 paper: **[Self-RAG: Learning to
 
 Detailed Graph-schema:  
 
-![Graph-schema](Img/graph-schema.jpeg)
-
-Schematic Graph-schema:  
-
-![finite_state_machine](Img/finite_state_machine.png)  
-Picture from [Link](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)  
+![Graph-schema](Img/Self-RAG-Agent01.png)
 
 For run:
 
@@ -31,4 +26,4 @@ CHROMA_DB_PATH = 'for example vector-db'
 
 3. docker-compose up --build
 
-![screenshot](Img/screenshot.png)
+![screenshot](demo/screenshot.png)
