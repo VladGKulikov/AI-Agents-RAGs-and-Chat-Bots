@@ -46,7 +46,7 @@ This project implements a self-reflective AI RAG Agent system. It includes mecha
 The code builds upon ideas from the [LangGraph Tutorial](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/) with my own modifications and interpretations.    
 The core concept is inspired by the October 2023 paper: **[Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection](https://langchain-ai.github.io/langgraph/tutorials/rag/langgraph_self_rag/)**.  
 
-![Agent schema](LangGraph-Self-RAG-Agent/Img/Self-RAG-Agent01.png)
+![Agent schema](LangGraph-Self-RAG-Agent/Img/Self-RAG-Agent.png)
 
   
 

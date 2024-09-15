@@ -8,7 +8,7 @@ The core concept is inspired by the October 2023 paper: **[Self-RAG: Learning to
 
 Detailed Graph-schema:  
 
-![Graph-schema](Img/Self-RAG-Agent01.png)
+![Graph-schema](Img/Self-RAG-Agent.png)
 
 For run:
 
